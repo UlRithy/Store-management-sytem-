@@ -1,4 +1,5 @@
 ﻿using StoreManagementSystem.Forms;
+using StoreMS.Forms;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -17,7 +18,7 @@ namespace StoreMS
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new Loign());
+            Application.Run(new DashboardForm());
         }
     }
 }

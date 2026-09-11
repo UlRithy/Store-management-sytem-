@@ -14,6 +14,13 @@ namespace StoreMS.Models
             get => Id;
             set => Id = value;
         }
+        public string Username { get; set; } = "";
+        public string Role { get; set; } = "";
+
+        public override string GetInfo()
+        {
+            return $"Employee: {Name}, Role: {Role}";
+        }
        
 
     }
