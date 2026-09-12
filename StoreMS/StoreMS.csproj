@@ -316,8 +316,6 @@
     <Folder Include="Repositories\" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\house-regular.png" />
-    <None Include="Resources\home.png" />
     <Content Include="Resources\lock %281%29.png" />
     <Content Include="Resources\logo-removebg-preview.png" />
     <Content Include="Resources\user.png" />
