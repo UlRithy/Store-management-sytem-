@@ -46,5 +46,35 @@ namespace StoreMS.Forms
         {
 
         }
+
+        private void label1_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void btnProduct_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void btnCategores_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void btnStock_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void btnSale_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void btnDasboad_Click(object sender, EventArgs e)
+        {
+
+        }
     }
 }
