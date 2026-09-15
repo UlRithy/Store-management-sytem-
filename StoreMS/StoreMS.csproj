@@ -267,11 +267,29 @@
     <Compile Include="Forms\DashboardForm.Designer.cs">
       <DependentUpon>DashboardForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="Forms\Loign.cs">
+    <Compile Include="Forms\CategoryForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Forms\Loign.Designer.cs">
-      <DependentUpon>Loign.cs</DependentUpon>
+    <Compile Include="Forms\CategoryForm.Designer.cs">
+      <DependentUpon>CategoryForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\LoignForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\LoignForm.Designer.cs">
+      <DependentUpon>LoignForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\ProductForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\ProductForm.Designer.cs">
+      <DependentUpon>ProductForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\StockForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\StockForm.Designer.cs">
+      <DependentUpon>StockForm.cs</DependentUpon>
     </Compile>
     <Compile Include="Models\Customer.cs" />
     <Compile Include="Models\Employee.cs" />
@@ -289,8 +307,17 @@
     <EmbeddedResource Include="Forms\DashboardForm.resx">
       <DependentUpon>DashboardForm.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Forms\Loign.resx">
-      <DependentUpon>Loign.cs</DependentUpon>
+    <EmbeddedResource Include="Forms\CategoryForm.resx">
+      <DependentUpon>CategoryForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\LoignForm.resx">
+      <DependentUpon>LoignForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\ProductForm.resx">
+      <DependentUpon>ProductForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\StockForm.resx">
+      <DependentUpon>StockForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>

@@ -10,9 +10,9 @@ using System.Windows.Forms;
 
 namespace StoreManagementSystem.Forms
 {
-    public partial class Loign : Form
+    public partial class LoignForm : Form
     {
-        public Loign()
+        public LoignForm()
         {
             InitializeComponent();
         }
