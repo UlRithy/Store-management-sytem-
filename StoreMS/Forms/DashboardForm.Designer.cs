@@ -22,7 +22,6 @@
             this.btnLogout = new Guna.UI2.WinForms.Guna2Button();
             this.panel2 = new System.Windows.Forms.Panel();
             this.lblMartName = new System.Windows.Forms.TextBox();
-            this.profile = new Guna.UI2.WinForms.Guna2PictureBox();
             this.flowLayoutPanel1 = new System.Windows.Forms.FlowLayoutPanel();
             this.btnDashboard = new Guna.UI2.WinForms.Guna2Button();
             this.btnSale = new Guna.UI2.WinForms.Guna2Button();
@@ -33,15 +32,17 @@
             this.btnCategories = new Guna.UI2.WinForms.Guna2Button();
             this.btnProduct = new Guna.UI2.WinForms.Guna2Button();
             this.headerPanel = new Guna.UI2.WinForms.Guna2Panel();
-            this.btnClose = new Guna.UI2.WinForms.Guna2Button();
-            this.lblCurrentPage = new System.Windows.Forms.Label();
+            this.guna2ControlBox1 = new Guna.UI2.WinForms.Guna2ControlBox();
             this.lblAdminName = new System.Windows.Forms.Label();
+            this.lblCurrentPage = new System.Windows.Forms.Label();
             this.mainPanel = new Guna.UI2.WinForms.Guna2Panel();
+            this.guna2TextBox1 = new Guna.UI2.WinForms.Guna2TextBox();
+            this.profile = new Guna.UI2.WinForms.Guna2PictureBox();
             this.panel1.SuspendLayout();
             this.panel2.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.profile)).BeginInit();
             this.flowLayoutPanel1.SuspendLayout();
             this.headerPanel.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.profile)).BeginInit();
             this.SuspendLayout();
             // 
             // panel1
@@ -102,19 +103,6 @@
             this.lblMartName.Size = new System.Drawing.Size(165, 31);
             this.lblMartName.TabIndex = 2;
             this.lblMartName.Text = "MARTKH24H";
-            // 
-            // profile
-            // 
-            this.profile.BorderRadius = 15;
-            this.profile.Image = global::StoreMS.Properties.Resources.logo_removebg_preview;
-            this.profile.ImageRotate = 0F;
-            this.profile.Location = new System.Drawing.Point(48, -20);
-            this.profile.Name = "profile";
-            this.profile.Size = new System.Drawing.Size(150, 90);
-            this.profile.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
-            this.profile.TabIndex = 1;
-            this.profile.TabStop = false;
-            this.profile.Click += new System.EventHandler(this.profile_Click);
             // 
             // flowLayoutPanel1
             // 
@@ -281,6 +269,7 @@
             this.btnCategories.Text = "Categories";
             this.btnCategories.TextAlign = System.Windows.Forms.HorizontalAlignment.Left;
             this.btnCategories.TextOffset = new System.Drawing.Point(18, 0);
+            this.btnCategories.Click += new System.EventHandler(this.btnCategories_Click);
             // 
             // btnProduct
             // 
@@ -307,7 +296,8 @@
             // headerPanel
             // 
             this.headerPanel.BackColor = System.Drawing.Color.White;
-            this.headerPanel.Controls.Add(this.btnClose);
+            this.headerPanel.Controls.Add(this.guna2TextBox1);
+            this.headerPanel.Controls.Add(this.guna2ControlBox1);
             this.headerPanel.Controls.Add(this.lblAdminName);
             this.headerPanel.Controls.Add(this.lblCurrentPage);
             this.headerPanel.Dock = System.Windows.Forms.DockStyle.Top;
@@ -315,43 +305,40 @@
             this.headerPanel.Name = "headerPanel";
             this.headerPanel.Size = new System.Drawing.Size(853, 70);
             this.headerPanel.TabIndex = 2;
+            this.headerPanel.Paint += new System.Windows.Forms.PaintEventHandler(this.headerPanel_Paint);
             // 
-            // btnClose
+            // guna2ControlBox1
             // 
-            this.btnClose.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnClose.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.btnClose.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(254)))), ((int)(((byte)(242)))), ((int)(((byte)(242))))); // ដាក់ពណ៌พื้นหลังស្រាលបន្តិចឱ្យងាយឃើញ
-            this.btnClose.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold);
-            this.btnClose.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(239)))), ((int)(((byte)(68)))), ((int)(((byte)(68)))));
-            this.btnClose.Location = new System.Drawing.Point(800, 15);
-            this.btnClose.Name = "btnClose";
-            this.btnClose.Size = new System.Drawing.Size(40, 40);
-            this.btnClose.TabIndex = 3;
-            this.btnClose.Text = "✕";
-            this.btnClose.Click += new System.EventHandler(this.btnClose_Click);
-            // 
-            // lblCurrentPage
-            // 
-            this.lblCurrentPage.AutoSize = true;
-            this.lblCurrentPage.Font = new System.Drawing.Font("Segoe UI", 14F, System.Drawing.FontStyle.Bold);
-            this.lblCurrentPage.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(30)))), ((int)(((byte)(41)))), ((int)(((byte)(59)))));
-            this.lblCurrentPage.Location = new System.Drawing.Point(20, 18);
-            this.lblCurrentPage.Name = "lblCurrentPage";
-            this.lblCurrentPage.Size = new System.Drawing.Size(138, 32);
-            this.lblCurrentPage.TabIndex = 0;
-            this.lblCurrentPage.Text = "Dashboard";
+            this.guna2ControlBox1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.guna2ControlBox1.FillColor = System.Drawing.Color.Red;
+            this.guna2ControlBox1.IconColor = System.Drawing.Color.White;
+            this.guna2ControlBox1.Location = new System.Drawing.Point(817, 0);
+            this.guna2ControlBox1.Name = "guna2ControlBox1";
+            this.guna2ControlBox1.Size = new System.Drawing.Size(36, 40);
+            this.guna2ControlBox1.TabIndex = 4;
             // 
             // lblAdminName
             // 
             this.lblAdminName.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.lblAdminName.Font = new System.Drawing.Font("Segoe UI Semibold", 10F, System.Drawing.FontStyle.Bold);
             this.lblAdminName.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(15)))), ((int)(((byte)(23)))), ((int)(((byte)(42)))));
-            this.lblAdminName.Location = new System.Drawing.Point(620, 22);
+            this.lblAdminName.Location = new System.Drawing.Point(641, 27);
             this.lblAdminName.Name = "lblAdminName";
             this.lblAdminName.Size = new System.Drawing.Size(170, 23);
             this.lblAdminName.TabIndex = 2;
             this.lblAdminName.Text = "Sok Dara (Admin)";
             this.lblAdminName.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            // 
+            // lblCurrentPage
+            // 
+            this.lblCurrentPage.AutoSize = true;
+            this.lblCurrentPage.Font = new System.Drawing.Font("Segoe UI", 14F, System.Drawing.FontStyle.Bold);
+            this.lblCurrentPage.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(30)))), ((int)(((byte)(41)))), ((int)(((byte)(59)))));
+            this.lblCurrentPage.Location = new System.Drawing.Point(6, 18);
+            this.lblCurrentPage.Name = "lblCurrentPage";
+            this.lblCurrentPage.Size = new System.Drawing.Size(138, 32);
+            this.lblCurrentPage.TabIndex = 0;
+            this.lblCurrentPage.Text = "Dashboard";
             // 
             // mainPanel
             // 
@@ -362,6 +349,48 @@
             this.mainPanel.Size = new System.Drawing.Size(853, 550);
             this.mainPanel.TabIndex = 1;
             this.mainPanel.Paint += new System.Windows.Forms.PaintEventHandler(this.mainPanel_Paint);
+            // 
+            // guna2TextBox1
+            // 
+            this.guna2TextBox1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.guna2TextBox1.AutoRoundedCorners = true;
+            this.guna2TextBox1.BorderRadius = 21;
+            this.guna2TextBox1.Cursor = System.Windows.Forms.Cursors.IBeam;
+            this.guna2TextBox1.DefaultText = "";
+            this.guna2TextBox1.DisabledState.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(208)))), ((int)(((byte)(208)))), ((int)(((byte)(208)))));
+            this.guna2TextBox1.DisabledState.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(226)))), ((int)(((byte)(226)))), ((int)(((byte)(226)))));
+            this.guna2TextBox1.DisabledState.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(138)))), ((int)(((byte)(138)))), ((int)(((byte)(138)))));
+            this.guna2TextBox1.DisabledState.PlaceholderForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(138)))), ((int)(((byte)(138)))), ((int)(((byte)(138)))));
+            this.guna2TextBox1.FocusedState.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(94)))), ((int)(((byte)(148)))), ((int)(((byte)(255)))));
+            this.guna2TextBox1.Font = new System.Drawing.Font("Segoe UI", 10.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.guna2TextBox1.HoverState.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(94)))), ((int)(((byte)(148)))), ((int)(((byte)(255)))));
+            this.guna2TextBox1.IconLeft = global::StoreMS.Properties.Resources.search_interface_symbol;
+            this.guna2TextBox1.IconLeftOffset = new System.Drawing.Point(5, 0);
+            this.guna2TextBox1.Location = new System.Drawing.Point(150, 21);
+            this.guna2TextBox1.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            this.guna2TextBox1.Multiline = true;
+            this.guna2TextBox1.Name = "guna2TextBox1";
+            this.guna2TextBox1.PlaceholderForeColor = System.Drawing.Color.Black;
+            this.guna2TextBox1.PlaceholderText = "Search something...";
+            this.guna2TextBox1.SelectedText = "";
+            this.guna2TextBox1.Size = new System.Drawing.Size(494, 45);
+            this.guna2TextBox1.TabIndex = 5;
+            this.guna2TextBox1.TextOffset = new System.Drawing.Point(10, 0);
+            this.guna2TextBox1.TextChanged += new System.EventHandler(this.guna2TextBox1_TextChanged);
+            // 
+            // profile
+            // 
+            this.profile.BorderRadius = 15;
+            this.profile.Image = global::StoreMS.Properties.Resources.logo_removebg_preview;
+            this.profile.ImageRotate = 0F;
+            this.profile.Location = new System.Drawing.Point(48, -20);
+            this.profile.Name = "profile";
+            this.profile.Size = new System.Drawing.Size(150, 90);
+            this.profile.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
+            this.profile.TabIndex = 1;
+            this.profile.TabStop = false;
+            this.profile.Click += new System.EventHandler(this.profile_Click);
             // 
             // DashboardForm
             // 
@@ -378,13 +407,14 @@
             this.Name = "DashboardForm";
             this.Text = "DashboardForm - Mart Management System";
             this.WindowState = System.Windows.Forms.FormWindowState.Maximized;
+            this.Load += new System.EventHandler(this.DashboardForm_Load);
             this.panel1.ResumeLayout(false);
             this.panel2.ResumeLayout(false);
             this.panel2.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.profile)).EndInit();
             this.flowLayoutPanel1.ResumeLayout(false);
             this.headerPanel.ResumeLayout(false);
             this.headerPanel.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.profile)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -410,6 +440,7 @@
         private Guna.UI2.WinForms.Guna2Panel headerPanel;
         private System.Windows.Forms.Label lblCurrentPage;
         private System.Windows.Forms.Label lblAdminName;
-        private Guna.UI2.WinForms.Guna2Button btnClose;
+        private Guna.UI2.WinForms.Guna2ControlBox guna2ControlBox1;
+        private Guna.UI2.WinForms.Guna2TextBox guna2TextBox1;
     }
 }

@@ -15,25 +15,46 @@ namespace StoreMS.Forms
         public DashboardForm()
         {
             InitializeComponent();
-            btnClose.BringToFront();
-            btnClose.BackColor = Color.White;
-            btnClose.ForeColor = Color.Red;
+            
+        }
+        private Form activeForm = null;
+
+        private void openChildForm(Form childForm)
+        {
+            if (activeForm != null)
+                activeForm.Close();
+
+            activeForm = childForm;
+            childForm.TopLevel = false;
+            childForm.FormBorderStyle = FormBorderStyle.None;
+            childForm.Dock = DockStyle.Fill;
+
+            mainPanel.Controls.Add(childForm);
+            mainPanel.Tag = childForm;
+            childForm.BringToFront();
+            childForm.Show();
         }
 
         private void DashboardForm_Load(object sender, EventArgs e)
         {
             // កូដដំណើរការពេល Form បើកឡើងដំបូង (បើមានអាចដាក់ទីនេះបាន)
+            openChildForm(new DashboardHomeForm());
+            btnDashboard.Checked = true;    
+
+
         }
 
-        private void btnClose_Click(object sender, EventArgs e)
-        {
-            Application.Exit(); // បិទកម្មវិធីទាំងមូលពេលចុចសញ្ញាខ្វែង (x)
-        }
+      
 
         private void btnDasboad_Click(object sender, EventArgs e)
         {
             lblCurrentPage.Text = "Dashboard";
             // ទីនេះអ្នកអាចសរសេរកូដ Load UserControl ចូលទៅក្នុង mainPanel បាន
+            openChildForm(new DashboardHomeForm());
+            
+           
+
+
         }
 
         private void btnSale_Click(object sender, EventArgs e)
@@ -64,6 +85,7 @@ namespace StoreMS.Forms
         private void btnCategores_Click(object sender, EventArgs e) // នេះជា Event សម្រាប់ btnCategories
         {
             lblCurrentPage.Text = "Categories Management";
+            openChildForm(new CategoryForm());
         }
 
         private void btnProduct_Click(object sender, EventArgs e)
@@ -87,6 +109,22 @@ namespace StoreMS.Forms
         }
 
         private void adminProfilePic_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void headerPanel_Paint(object sender, PaintEventArgs e)
+        {
+
+        }
+
+        private void btnCategories_Click(object sender, EventArgs e)
+        {
+           
+            
+        }
+
+        private void guna2TextBox1_TextChanged(object sender, EventArgs e)
         {
 
         }
