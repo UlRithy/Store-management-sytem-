@@ -10,16 +10,11 @@ using System.Windows.Forms;
 
 namespace StoreMS.Forms
 {
-    public partial class FormCategory : Form
+    public partial class SupplierForm : Form
     {
-        public FormCategory()
+        public SupplierForm()
         {
             InitializeComponent();
-        }
-
-        private void pnlButtonGroup_Paint(object sender, PaintEventArgs e)
-        {
-
         }
     }
 }

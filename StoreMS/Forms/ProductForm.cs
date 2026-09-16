@@ -10,11 +10,21 @@ using System.Windows.Forms;
 
 namespace StoreMS.Forms
 {
-    public partial class ProductForm : Form
+    public partial class FormProduct : Form  // ត្រូវមាន : Form នៅទីនេះ
     {
-        public ProductForm()
+        public FormProduct()
         {
             InitializeComponent();
+        }
+
+        private void lblTitle_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void dgvProducts_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        {
+
         }
 
         private void tableLayoutPanelMain_Paint(object sender, PaintEventArgs e)
@@ -22,7 +32,12 @@ namespace StoreMS.Forms
 
         }
 
-        private void lblTitle_Click(object sender, EventArgs e)
+        private void btnSearch_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void txtSearch_TextChanged(object sender, EventArgs e)
         {
 
         }

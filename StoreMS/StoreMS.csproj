@@ -261,6 +261,24 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Components\Add_EditForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Components\Add_EditForm.Designer.cs">
+      <DependentUpon>Add_EditForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Components\Cate_AddEdit_From1.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Components\Cate_AddEdit_From1.Designer.cs">
+      <DependentUpon>Cate_AddEdit_From1.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Components\Cus_AddEdit_Form.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Components\Cus_AddEdit_Form.Designer.cs">
+      <DependentUpon>Cus_AddEdit_Form.cs</DependentUpon>
+    </Compile>
     <Compile Include="Forms\CustomerForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -297,11 +315,23 @@
     <Compile Include="Forms\ProductForm.Designer.cs">
       <DependentUpon>ProductForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="Forms\Sale_POSForm.cs.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\Sale_POSForm.cs.Designer.cs">
+      <DependentUpon>Sale_POSForm.cs.cs</DependentUpon>
+    </Compile>
     <Compile Include="Forms\StockForm.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Forms\StockForm.Designer.cs">
       <DependentUpon>StockForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\SupplierForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\SupplierForm.Designer.cs">
+      <DependentUpon>SupplierForm.cs</DependentUpon>
     </Compile>
     <Compile Include="Models\Customer.cs" />
     <Compile Include="Models\Employee.cs" />
@@ -316,6 +346,9 @@
     </Compile>
     <Compile Include="System\Drawing\Drawing2.cs" />
     <Compile Include="Vicheka\Class1.cs" />
+    <EmbeddedResource Include="Components\Add_EditForm.resx">
+      <DependentUpon>Add_EditForm.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Forms\CustomerForm.resx">
       <DependentUpon>CustomerForm.cs</DependentUpon>
     </EmbeddedResource>
@@ -334,8 +367,14 @@
     <EmbeddedResource Include="Forms\ProductForm.resx">
       <DependentUpon>ProductForm.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Forms\Sale_POSForm.cs.resx">
+      <DependentUpon>Sale_POSForm.cs.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Forms\StockForm.resx">
       <DependentUpon>StockForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\SupplierForm.resx">
+      <DependentUpon>SupplierForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>

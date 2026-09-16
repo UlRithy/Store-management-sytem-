@@ -8,18 +8,13 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace StoreMS.Forms
+namespace StoreMS.Components
 {
-    public partial class FormCategory : Form
+    public partial class Cate_AddEdit_From1 : Form
     {
-        public FormCategory()
+        public Cate_AddEdit_From1()
         {
             InitializeComponent();
-        }
-
-        private void pnlButtonGroup_Paint(object sender, PaintEventArgs e)
-        {
-
         }
     }
 }
