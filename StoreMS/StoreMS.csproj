@@ -403,6 +403,8 @@
   <ItemGroup>
     <Content Include="Resources\lock %281%29.png" />
     <Content Include="Resources\logo-removebg-preview.png" />
+    <None Include="Resources\search-interface-symbol.png" />
+    <None Include="Resources\search-interface-symbol1.png" />
     <Content Include="Resources\user.png" />
   </ItemGroup>
   <ItemGroup>
