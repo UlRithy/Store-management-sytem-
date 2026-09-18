@@ -84,13 +84,14 @@ namespace StoreMS.Forms
 
         private void btnCategores_Click(object sender, EventArgs e) // នេះជា Event សម្រាប់ btnCategories
         {
-            lblCurrentPage.Text = "Categories Management";
-            openChildForm(new CategoryForm());
+            //lblCurrentPage.Text = "Categories Management";
+            //openChildForm(new CategoryForm());
         }
 
         private void btnProduct_Click(object sender, EventArgs e)
         {
             lblCurrentPage.Text = "Product Management";
+            openChildForm(new FormProduct());
         }
 
         private void panel2_Paint(object sender, PaintEventArgs e)
