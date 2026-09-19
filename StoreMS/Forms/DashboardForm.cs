@@ -60,6 +60,7 @@ namespace StoreMS.Forms
         private void btnSale_Click(object sender, EventArgs e)
         {
             lblCurrentPage.Text = "Sale / POS";
+            openChildForm(new Sale_POSForm());
         }
 
         private void btnSupplier_Click(object sender, EventArgs e)
@@ -70,22 +71,25 @@ namespace StoreMS.Forms
         private void btnStock_Click(object sender, EventArgs e)
         {
             lblCurrentPage.Text = "Stock Management";
+            openChildForm(new StockForm());
         }
 
         private void btnReport_Click(object sender, EventArgs e)
         {
             lblCurrentPage.Text = "Reports";
+            //openChildForm(new )
         }
 
         private void guna2Button1_Click(object sender, EventArgs e) // នេះជា Event សម្រាប់ btnCustomer
         {
             lblCurrentPage.Text = "Customer Management";
+            openChildForm(new CustomerForm());
         }
 
         private void btnCategores_Click(object sender, EventArgs e) // នេះជា Event សម្រាប់ btnCategories
         {
-            //lblCurrentPage.Text = "Categories Management";
-            //openChildForm(new CategoryForm());
+            lblCurrentPage.Text = "Categories Management";
+            openChildForm(new FormCategory());
         }
 
         private void btnProduct_Click(object sender, EventArgs e)
@@ -94,40 +98,6 @@ namespace StoreMS.Forms
             openChildForm(new FormProduct());
         }
 
-        private void panel2_Paint(object sender, PaintEventArgs e)
-        {
 
-        }
-
-        private void mainPanel_Paint(object sender, PaintEventArgs e)
-        {
-
-        }
-
-        private void profile_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void adminProfilePic_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void headerPanel_Paint(object sender, PaintEventArgs e)
-        {
-
-        }
-
-        private void btnCategories_Click(object sender, EventArgs e)
-        {
-           
-            
-        }
-
-        private void guna2TextBox1_TextChanged(object sender, EventArgs e)
-        {
-
-        }
     }
 }
