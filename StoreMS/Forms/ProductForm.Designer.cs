@@ -35,7 +35,7 @@ namespace StoreMS.Forms
             this.dgvProducts = new Guna.UI2.WinForms.Guna2DataGridView();
             this.colProductId = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.colProductCode = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.colProductImage = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.colProductImage = new System.Windows.Forms.DataGridViewImageColumn();
             this.colProductName = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.colCategoryName = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.colQuantity = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -161,6 +161,7 @@ namespace StoreMS.Forms
             this.btnAdd.Size = new System.Drawing.Size(180, 49);
             this.btnAdd.TabIndex = 0;
             this.btnAdd.Text = "+ Add product";
+            this.btnAdd.Click += new System.EventHandler(this.btnAdd_Click);
             // 
             // btnUpdate
             // 
@@ -178,6 +179,7 @@ namespace StoreMS.Forms
             this.btnUpdate.Size = new System.Drawing.Size(110, 49);
             this.btnUpdate.TabIndex = 1;
             this.btnUpdate.Text = "Edit";
+            this.btnUpdate.Click += new System.EventHandler(this.btnUpdate_Click);
             // 
             // btnDelete
             // 
@@ -193,6 +195,7 @@ namespace StoreMS.Forms
             this.btnDelete.Size = new System.Drawing.Size(110, 49);
             this.btnDelete.TabIndex = 2;
             this.btnDelete.Text = "Delete";
+            this.btnDelete.Click += new System.EventHandler(this.btnDelete_Click);
             // 
             // pnlGridCard
             // 
@@ -214,6 +217,7 @@ namespace StoreMS.Forms
             // 
             dataGridViewCellStyle1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(248)))), ((int)(((byte)(250)))), ((int)(((byte)(252)))));
             this.dgvProducts.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle1;
+            this.dgvProducts.AutoGenerateColumns = false;
             dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
             dataGridViewCellStyle2.BackColor = System.Drawing.Color.White;
             dataGridViewCellStyle2.Font = new System.Drawing.Font("Segoe UI Semibold", 9.75F);
@@ -263,70 +267,89 @@ namespace StoreMS.Forms
             this.dgvProducts.ThemeStyle.RowsStyle.Height = 42;
             this.dgvProducts.ThemeStyle.RowsStyle.SelectionBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(239)))), ((int)(((byte)(246)))), ((int)(((byte)(255)))));
             this.dgvProducts.ThemeStyle.RowsStyle.SelectionForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(15)))), ((int)(((byte)(23)))), ((int)(((byte)(42)))));
+            this.dgvProducts.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvProducts_CellContentClick_1);
             // 
             // colProductId
             // 
+            this.colProductId.DataPropertyName = "ProductID";
             this.colProductId.HeaderText = "ID";
             this.colProductId.MinimumWidth = 6;
             this.colProductId.Name = "colProductId";
             this.colProductId.ReadOnly = true;
             this.colProductId.Visible = false;
+            this.colProductId.Width = 125;
             // 
             // colProductCode
             // 
+            this.colProductCode.DataPropertyName = "Barcode";
             this.colProductCode.HeaderText = "Code";
             this.colProductCode.MinimumWidth = 6;
             this.colProductCode.Name = "colProductCode";
             this.colProductCode.ReadOnly = true;
+            this.colProductCode.Width = 159;
             // 
             // colProductImage
             // 
             this.colProductImage.HeaderText = "Image";
+            this.colProductImage.ImageLayout = System.Windows.Forms.DataGridViewImageCellLayout.Zoom;
             this.colProductImage.MinimumWidth = 6;
             this.colProductImage.Name = "colProductImage";
             this.colProductImage.ReadOnly = true;
+            this.colProductImage.Width = 90;
             // 
             // colProductName
             // 
+            this.colProductName.DataPropertyName = "ProductName";
             this.colProductName.HeaderText = "Product Name";
             this.colProductName.MinimumWidth = 6;
             this.colProductName.Name = "colProductName";
             this.colProductName.ReadOnly = true;
+            this.colProductName.Width = 159;
             // 
             // colCategoryName
             // 
+            this.colCategoryName.DataPropertyName = "CategoryName";
             this.colCategoryName.HeaderText = "Category";
             this.colCategoryName.MinimumWidth = 6;
             this.colCategoryName.Name = "colCategoryName";
             this.colCategoryName.ReadOnly = true;
+            this.colCategoryName.Width = 159;
             // 
             // colQuantity
             // 
+            this.colQuantity.DataPropertyName = "StockQty";
             this.colQuantity.HeaderText = "QTY";
             this.colQuantity.MinimumWidth = 6;
             this.colQuantity.Name = "colQuantity";
             this.colQuantity.ReadOnly = true;
+            this.colQuantity.Width = 159;
             // 
             // colCostPrice
             // 
+            this.colCostPrice.DataPropertyName = "CostPrice";
             this.colCostPrice.HeaderText = "Cost Price";
             this.colCostPrice.MinimumWidth = 6;
             this.colCostPrice.Name = "colCostPrice";
             this.colCostPrice.ReadOnly = true;
+            this.colCostPrice.Width = 159;
             // 
             // colSellingPrice
             // 
+            this.colSellingPrice.DataPropertyName = "Price";
             this.colSellingPrice.HeaderText = "Selling Price";
             this.colSellingPrice.MinimumWidth = 6;
             this.colSellingPrice.Name = "colSellingPrice";
             this.colSellingPrice.ReadOnly = true;
+            this.colSellingPrice.Width = 159;
             // 
             // colDescription
             // 
+            this.colDescription.DataPropertyName = "Description";
             this.colDescription.HeaderText = "Description";
             this.colDescription.MinimumWidth = 6;
             this.colDescription.Name = "colDescription";
             this.colDescription.ReadOnly = true;
+            this.colDescription.Width = 159;
             // 
             // lblGridHeader
             // 
@@ -349,6 +372,7 @@ namespace StoreMS.Forms
             this.Margin = new System.Windows.Forms.Padding(4);
             this.Name = "FormProduct";
             this.Text = "Product Management";
+            this.Load += new System.EventHandler(this.FormProduct_Load_1);
             this.tableLayoutPanelMain.ResumeLayout(false);
             this.pnlTopBar.ResumeLayout(false);
             this.pnlActionButtons.ResumeLayout(false);
@@ -374,7 +398,7 @@ namespace StoreMS.Forms
         private Guna.UI2.WinForms.Guna2DataGridView dgvProducts;
         private System.Windows.Forms.DataGridViewTextBoxColumn colProductId;
         private System.Windows.Forms.DataGridViewTextBoxColumn colProductCode;
-        private System.Windows.Forms.DataGridViewTextBoxColumn colProductImage;
+        private System.Windows.Forms.DataGridViewImageColumn colProductImage;
         private System.Windows.Forms.DataGridViewTextBoxColumn colProductName;
         private System.Windows.Forms.DataGridViewTextBoxColumn colCategoryName;
         private System.Windows.Forms.DataGridViewTextBoxColumn colQuantity;

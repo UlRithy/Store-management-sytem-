@@ -258,6 +258,8 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Data\Database.cs" />
+    <Compile Include="Interfaces\IRepository.cs" />
     <Compile Include="Layout\Add_EditForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -330,9 +332,20 @@
     <Compile Include="Forms\SupplierForm.Designer.cs">
       <DependentUpon>SupplierForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="Layout\Form_Stock_AddEdit.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Layout\Form_Stock_AddEdit.Designer.cs">
+      <DependentUpon>Form_Stock_AddEdit.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Category.cs" />
     <Compile Include="Models\Customer.cs" />
     <Compile Include="Models\Employee.cs" />
     <Compile Include="Models\Person.cs" />
+    <Compile Include="Models\Product.cs" />
+    <Compile Include="Models\Sale.cs" />
+    <Compile Include="Models\SaleDetail.cs" />
+    <Compile Include="Models\Supplier.cs" />
     <Compile Include="Models\User.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -341,6 +354,12 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
+    <Compile Include="Repositories\CategoryRepository.cs" />
+    <Compile Include="Repositories\CustomerRepository.cs" />
+    <Compile Include="Repositories\ProductRepository.cs" />
+    <Compile Include="Repositories\SaleRepository.cs" />
+    <Compile Include="Repositories\SupplierRepository.cs" />
+    <Compile Include="Repositories\UserRepository.cs" />
     <Compile Include="System\Drawing\Drawing2.cs" />
     <EmbeddedResource Include="Layout\Add_EditForm.resx">
       <DependentUpon>Add_EditForm.cs</DependentUpon>
@@ -372,6 +391,9 @@
     <EmbeddedResource Include="Forms\SupplierForm.resx">
       <DependentUpon>SupplierForm.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Layout\Cate_AddEdit_From1.resx">
+      <DependentUpon>Cate_AddEdit_From1.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Layout\Cus_AddEdit_Form.resx">
       <DependentUpon>Cus_AddEdit_Form.cs</DependentUpon>
     </EmbeddedResource>
@@ -394,11 +416,7 @@
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Data\" />
-    <Folder Include="Interfaces\" />
-    <Folder Include="Repositories\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <Content Include="Resources\lock %281%29.png" />
     <Content Include="Resources\logo-removebg-preview.png" />

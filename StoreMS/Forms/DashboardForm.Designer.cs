@@ -184,7 +184,7 @@
             this.btnCategories.Text = "Categories";
             this.btnCategories.TextAlign = System.Windows.Forms.HorizontalAlignment.Left;
             this.btnCategories.TextOffset = new System.Drawing.Point(18, 0);
-       
+            this.btnCategories.Click += new System.EventHandler(this.btnCategories_Click);
             // 
             // btnStock
             // 
@@ -209,6 +209,7 @@
             this.btnStock.Text = "Stock";
             this.btnStock.TextAlign = System.Windows.Forms.HorizontalAlignment.Left;
             this.btnStock.TextOffset = new System.Drawing.Point(18, 0);
+            this.btnStock.Click += new System.EventHandler(this.btnStock_Click_1);
             // 
             // btnSupplier
             // 
@@ -233,6 +234,7 @@
             this.btnSupplier.Text = "Supplier";
             this.btnSupplier.TextAlign = System.Windows.Forms.HorizontalAlignment.Left;
             this.btnSupplier.TextOffset = new System.Drawing.Point(18, 0);
+            this.btnSupplier.Click += new System.EventHandler(this.btnSupplier_Click_1);
             // 
             // btnCustomer
             // 
@@ -257,6 +259,7 @@
             this.btnCustomer.Text = "Customer";
             this.btnCustomer.TextAlign = System.Windows.Forms.HorizontalAlignment.Left;
             this.btnCustomer.TextOffset = new System.Drawing.Point(18, 0);
+            this.btnCustomer.Click += new System.EventHandler(this.btnCustomer_Click);
             // 
             // btnReport
             // 
@@ -281,6 +284,7 @@
             this.btnReport.Text = "Report";
             this.btnReport.TextAlign = System.Windows.Forms.HorizontalAlignment.Left;
             this.btnReport.TextOffset = new System.Drawing.Point(18, 0);
+            this.btnReport.Click += new System.EventHandler(this.btnReport_Click_1);
             // 
             // guna2Panel1
             // 
@@ -320,7 +324,6 @@
             this.panel2.Name = "panel2";
             this.panel2.Size = new System.Drawing.Size(320, 148);
             this.panel2.TabIndex = 3;
-          
             // 
             // lblMartName
             // 
@@ -362,7 +365,7 @@
             this.headerPanel.Margin = new System.Windows.Forms.Padding(4);
             this.headerPanel.Name = "headerPanel";
             this.headerPanel.Size = new System.Drawing.Size(1280, 79);
-       
+            this.headerPanel.TabIndex = 2;
             // 
             // lblCurrentPage
             // 
@@ -404,7 +407,6 @@
             this.guna2TextBox1.Size = new System.Drawing.Size(427, 44);
             this.guna2TextBox1.TabIndex = 2;
             this.guna2TextBox1.TextOffset = new System.Drawing.Point(12, 0);
-    
             // 
             // lblAdminName
             // 
@@ -474,7 +476,6 @@
             this.mainPanel.Padding = new System.Windows.Forms.Padding(27, 25, 27, 25);
             this.mainPanel.Size = new System.Drawing.Size(1280, 783);
             this.mainPanel.TabIndex = 1;
-            
             // 
             // dragHeader
             // 

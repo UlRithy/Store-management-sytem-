@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace StoreMS.Forms
+﻿namespace StoreMS.Forms
 {
     partial class StockForm
     {
@@ -19,30 +17,21 @@ namespace StoreMS.Forms
 
         private void InitializeComponent()
         {
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle7 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle8 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle9 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle13 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle14 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle15 = new System.Windows.Forms.DataGridViewCellStyle();
             this.tableLayoutPanelMain = new System.Windows.Forms.TableLayoutPanel();
             this.lblTitle = new System.Windows.Forms.Label();
             this.pnlSearchGroup = new System.Windows.Forms.Panel();
             this.txtSearch = new Guna.UI2.WinForms.Guna2TextBox();
             this.btnSearch = new Guna.UI2.WinForms.Guna2Button();
             this.btnRefresh = new Guna.UI2.WinForms.Guna2Button();
-            this.lblProductName = new System.Windows.Forms.Label();
-            this.cmbProduct = new Guna.UI2.WinForms.Guna2ComboBox();
-            this.lblCategory = new System.Windows.Forms.Label();
-            this.cmbCategory = new Guna.UI2.WinForms.Guna2ComboBox();
-            this.lblQuantity = new System.Windows.Forms.Label();
-            this.txtQuantity = new Guna.UI2.WinForms.Guna2TextBox();
-            this.lblMinStock = new System.Windows.Forms.Label();
-            this.txtMinStock = new Guna.UI2.WinForms.Guna2TextBox();
-            this.lblStatus = new System.Windows.Forms.Label();
-            this.cmbStatus = new Guna.UI2.WinForms.Guna2ComboBox();
             this.pnlButtonGroup = new System.Windows.Forms.Panel();
             this.btnInsert = new Guna.UI2.WinForms.Guna2Button();
             this.btnUpdate = new Guna.UI2.WinForms.Guna2Button();
             this.btnDelete = new Guna.UI2.WinForms.Guna2Button();
             this.btnClear = new Guna.UI2.WinForms.Guna2Button();
+            this.pnlGridCard = new Guna.UI2.WinForms.Guna2Panel();
             this.dgvStock = new Guna.UI2.WinForms.Guna2DataGridView();
             this.colStockId = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.colProductName = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -51,334 +40,229 @@ namespace StoreMS.Forms
             this.colMinStock = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.colStatus = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.colLastUpdated = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.lblGridHeader = new System.Windows.Forms.Label();
             this.tableLayoutPanelMain.SuspendLayout();
             this.pnlSearchGroup.SuspendLayout();
             this.pnlButtonGroup.SuspendLayout();
+            this.pnlGridCard.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvStock)).BeginInit();
             this.SuspendLayout();
             // 
             // tableLayoutPanelMain
             // 
-            this.tableLayoutPanelMain.ColumnCount = 4;
-            this.tableLayoutPanelMain.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 120F));
-            this.tableLayoutPanelMain.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tableLayoutPanelMain.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 120F));
-            this.tableLayoutPanelMain.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tableLayoutPanelMain.ColumnCount = 1;
+            this.tableLayoutPanelMain.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tableLayoutPanelMain.Controls.Add(this.lblTitle, 0, 0);
             this.tableLayoutPanelMain.Controls.Add(this.pnlSearchGroup, 0, 1);
-            this.tableLayoutPanelMain.Controls.Add(this.lblProductName, 0, 2);
-            this.tableLayoutPanelMain.Controls.Add(this.cmbProduct, 1, 2);
-            this.tableLayoutPanelMain.Controls.Add(this.lblCategory, 2, 2);
-            this.tableLayoutPanelMain.Controls.Add(this.cmbCategory, 3, 2);
-            this.tableLayoutPanelMain.Controls.Add(this.lblQuantity, 0, 3);
-            this.tableLayoutPanelMain.Controls.Add(this.txtQuantity, 1, 3);
-            this.tableLayoutPanelMain.Controls.Add(this.lblMinStock, 2, 3);
-            this.tableLayoutPanelMain.Controls.Add(this.txtMinStock, 3, 3);
-            this.tableLayoutPanelMain.Controls.Add(this.lblStatus, 0, 4);
-            this.tableLayoutPanelMain.Controls.Add(this.cmbStatus, 1, 4);
-            this.tableLayoutPanelMain.Controls.Add(this.pnlButtonGroup, 0, 5);
-            this.tableLayoutPanelMain.Controls.Add(this.dgvStock, 0, 6);
+            this.tableLayoutPanelMain.Controls.Add(this.pnlButtonGroup, 0, 2);
+            this.tableLayoutPanelMain.Controls.Add(this.pnlGridCard, 0, 3);
             this.tableLayoutPanelMain.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tableLayoutPanelMain.Location = new System.Drawing.Point(20, 20);
+            this.tableLayoutPanelMain.Location = new System.Drawing.Point(27, 25);
+            this.tableLayoutPanelMain.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.tableLayoutPanelMain.Name = "tableLayoutPanelMain";
-            this.tableLayoutPanelMain.RowCount = 7;
-            this.tableLayoutPanelMain.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 40F));
-            this.tableLayoutPanelMain.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 55F));
-            this.tableLayoutPanelMain.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 45F));
-            this.tableLayoutPanelMain.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 45F));
-            this.tableLayoutPanelMain.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 45F));
-            this.tableLayoutPanelMain.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 50F));
+            this.tableLayoutPanelMain.RowCount = 4;
+            this.tableLayoutPanelMain.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 39F));
+            this.tableLayoutPanelMain.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 71F));
+            this.tableLayoutPanelMain.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 71F));
             this.tableLayoutPanelMain.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanelMain.Size = new System.Drawing.Size(900, 560);
+            this.tableLayoutPanelMain.Size = new System.Drawing.Size(1199, 688);
             this.tableLayoutPanelMain.TabIndex = 0;
             // 
             // lblTitle
             // 
-            this.lblTitle.AutoSize = true;
-            this.tableLayoutPanelMain.SetColumnSpan(this.lblTitle, 4);
             this.lblTitle.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.lblTitle.Font = new System.Drawing.Font("Segoe UI", 16F, System.Drawing.FontStyle.Bold);
-            this.lblTitle.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(30)))), ((int)(((byte)(41)))), ((int)(((byte)(59)))));
-            this.lblTitle.Location = new System.Drawing.Point(3, 0);
+            this.lblTitle.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblTitle.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(116)))), ((int)(((byte)(139)))));
+            this.lblTitle.Location = new System.Drawing.Point(4, 0);
+            this.lblTitle.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.lblTitle.Name = "lblTitle";
-            this.lblTitle.Size = new System.Drawing.Size(894, 40);
+            this.lblTitle.Size = new System.Drawing.Size(1191, 39);
             this.lblTitle.TabIndex = 0;
-            this.lblTitle.Text = "Inventory & Stock Management";
-            this.lblTitle.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.lblTitle.Text = "Search, adjust, and manage stock quantities for every product.";
+            this.lblTitle.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // pnlSearchGroup
             // 
-            this.tableLayoutPanelMain.SetColumnSpan(this.pnlSearchGroup, 4);
             this.pnlSearchGroup.Controls.Add(this.txtSearch);
             this.pnlSearchGroup.Controls.Add(this.btnSearch);
             this.pnlSearchGroup.Controls.Add(this.btnRefresh);
             this.pnlSearchGroup.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.pnlSearchGroup.Location = new System.Drawing.Point(3, 43);
+            this.pnlSearchGroup.Location = new System.Drawing.Point(4, 43);
+            this.pnlSearchGroup.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.pnlSearchGroup.Name = "pnlSearchGroup";
-            this.pnlSearchGroup.Size = new System.Drawing.Size(894, 49);
+            this.pnlSearchGroup.Size = new System.Drawing.Size(1191, 63);
             this.pnlSearchGroup.TabIndex = 1;
             // 
             // txtSearch
             // 
             this.txtSearch.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.txtSearch.AutoRoundedCorners = true;
-            this.txtSearch.BorderRadius = 17;
+            this.txtSearch.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(226)))), ((int)(((byte)(232)))), ((int)(((byte)(240)))));
+            this.txtSearch.BorderRadius = 10;
             this.txtSearch.Cursor = System.Windows.Forms.Cursors.IBeam;
             this.txtSearch.DefaultText = "";
-            this.txtSearch.Font = new System.Drawing.Font("Segoe UI", 9F);
-            this.txtSearch.Location = new System.Drawing.Point(0, 5);
+            this.txtSearch.FocusedState.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(37)))), ((int)(((byte)(99)))), ((int)(((byte)(235)))));
+            this.txtSearch.Font = new System.Drawing.Font("Segoe UI", 9.5F);
+            this.txtSearch.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(15)))), ((int)(((byte)(23)))), ((int)(((byte)(42)))));
+            this.txtSearch.HoverState.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(148)))), ((int)(((byte)(163)))), ((int)(((byte)(184)))));
+            this.txtSearch.IconLeft = global::StoreMS.Properties.Resources.search_interface_symbol;
+            this.txtSearch.IconLeftOffset = new System.Drawing.Point(8, 0);
+            this.txtSearch.IconLeftSize = new System.Drawing.Size(16, 16);
+            this.txtSearch.Location = new System.Drawing.Point(0, 7);
+            this.txtSearch.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.txtSearch.Name = "txtSearch";
-            this.txtSearch.PlaceholderText = "Search by product or status...";
+            this.txtSearch.PlaceholderForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(148)))), ((int)(((byte)(163)))), ((int)(((byte)(184)))));
+            this.txtSearch.PlaceholderText = "Search by product name or status...";
             this.txtSearch.SelectedText = "";
-            this.txtSearch.Size = new System.Drawing.Size(674, 36);
+            this.txtSearch.Size = new System.Drawing.Size(512, 49);
             this.txtSearch.TabIndex = 0;
+            this.txtSearch.TextOffset = new System.Drawing.Point(12, 0);
             // 
             // btnSearch
             // 
             this.btnSearch.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnSearch.BorderRadius = 8;
-            this.btnSearch.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(60)))), ((int)(((byte)(130)))), ((int)(((byte)(246)))));
-            this.btnSearch.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Bold);
+            this.btnSearch.BorderRadius = 10;
+            this.btnSearch.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.btnSearch.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(37)))), ((int)(((byte)(99)))), ((int)(((byte)(235)))));
+            this.btnSearch.Font = new System.Drawing.Font("Segoe UI Semibold", 9.5F);
             this.btnSearch.ForeColor = System.Drawing.Color.White;
-            this.btnSearch.Location = new System.Drawing.Point(684, 5);
+            this.btnSearch.HoverState.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(29)))), ((int)(((byte)(78)))), ((int)(((byte)(216)))));
+            this.btnSearch.Location = new System.Drawing.Point(530, 7);
+            this.btnSearch.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.btnSearch.Name = "btnSearch";
-            this.btnSearch.Size = new System.Drawing.Size(100, 36);
+            this.btnSearch.Size = new System.Drawing.Size(133, 49);
             this.btnSearch.TabIndex = 1;
             this.btnSearch.Text = "Search";
             // 
             // btnRefresh
             // 
             this.btnRefresh.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnRefresh.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(60)))), ((int)(((byte)(130)))), ((int)(((byte)(246)))));
-            this.btnRefresh.BorderRadius = 8;
+            this.btnRefresh.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(37)))), ((int)(((byte)(99)))), ((int)(((byte)(235)))));
+            this.btnRefresh.BorderRadius = 10;
             this.btnRefresh.BorderThickness = 1;
+            this.btnRefresh.Cursor = System.Windows.Forms.Cursors.Hand;
             this.btnRefresh.FillColor = System.Drawing.Color.White;
-            this.btnRefresh.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Bold);
-            this.btnRefresh.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(60)))), ((int)(((byte)(130)))), ((int)(((byte)(246)))));
-            this.btnRefresh.Location = new System.Drawing.Point(790, 5);
+            this.btnRefresh.Font = new System.Drawing.Font("Segoe UI Semibold", 9.5F);
+            this.btnRefresh.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(37)))), ((int)(((byte)(99)))), ((int)(((byte)(235)))));
+            this.btnRefresh.HoverState.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(239)))), ((int)(((byte)(246)))), ((int)(((byte)(255)))));
+            this.btnRefresh.Location = new System.Drawing.Point(685, 7);
+            this.btnRefresh.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.btnRefresh.Name = "btnRefresh";
-            this.btnRefresh.Size = new System.Drawing.Size(100, 36);
+            this.btnRefresh.Size = new System.Drawing.Size(133, 49);
             this.btnRefresh.TabIndex = 2;
             this.btnRefresh.Text = "Refresh";
             // 
-            // lblProductName
-            // 
-            this.lblProductName.Anchor = System.Windows.Forms.AnchorStyles.Left;
-            this.lblProductName.AutoSize = true;
-            this.lblProductName.Font = new System.Drawing.Font("Segoe UI", 9F);
-            this.lblProductName.Location = new System.Drawing.Point(3, 110);
-            this.lblProductName.Name = "lblProductName";
-            this.lblProductName.Size = new System.Drawing.Size(83, 15);
-            this.lblProductName.TabIndex = 2;
-            this.lblProductName.Text = "Select Product";
-            // 
-            // cmbProduct
-            // 
-            this.cmbProduct.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
-            this.cmbProduct.BackColor = System.Drawing.Color.Transparent;
-            this.cmbProduct.BorderRadius = 8;
-            this.cmbProduct.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed;
-            this.cmbProduct.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cmbProduct.FocusedColor = System.Drawing.Color.Empty;
-            this.cmbProduct.Font = new System.Drawing.Font("Segoe UI", 9F);
-            this.cmbProduct.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(68)))), ((int)(((byte)(88)))), ((int)(((byte)(112)))));
-            this.cmbProduct.ItemHeight = 30;
-            this.cmbProduct.Location = new System.Drawing.Point(123, 99);
-            this.cmbProduct.Name = "cmbProduct";
-            this.cmbProduct.Size = new System.Drawing.Size(324, 36);
-            this.cmbProduct.TabIndex = 3;
-            // 
-            // lblCategory
-            // 
-            this.lblCategory.Anchor = System.Windows.Forms.AnchorStyles.Left;
-            this.lblCategory.AutoSize = true;
-            this.lblCategory.Font = new System.Drawing.Font("Segoe UI", 9F);
-            this.lblCategory.Location = new System.Drawing.Point(453, 110);
-            this.lblCategory.Name = "lblCategory";
-            this.lblCategory.Size = new System.Drawing.Size(55, 15);
-            this.lblCategory.TabIndex = 4;
-            this.lblCategory.Text = "Category";
-            // 
-            // cmbCategory
-            // 
-            this.cmbCategory.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
-            this.cmbCategory.BackColor = System.Drawing.Color.Transparent;
-            this.cmbCategory.BorderRadius = 8;
-            this.cmbCategory.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed;
-            this.cmbCategory.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cmbCategory.FocusedColor = System.Drawing.Color.Empty;
-            this.cmbCategory.Font = new System.Drawing.Font("Segoe UI", 9F);
-            this.cmbCategory.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(68)))), ((int)(((byte)(88)))), ((int)(((byte)(112)))));
-            this.cmbCategory.ItemHeight = 30;
-            this.cmbCategory.Location = new System.Drawing.Point(573, 99);
-            this.cmbCategory.Name = "cmbCategory";
-            this.cmbCategory.Size = new System.Drawing.Size(324, 36);
-            this.cmbCategory.TabIndex = 5;
-            // 
-            // lblQuantity
-            // 
-            this.lblQuantity.Anchor = System.Windows.Forms.AnchorStyles.Left;
-            this.lblQuantity.AutoSize = true;
-            this.lblQuantity.Font = new System.Drawing.Font("Segoe UI", 9F);
-            this.lblQuantity.Location = new System.Drawing.Point(3, 155);
-            this.lblQuantity.Name = "lblQuantity";
-            this.lblQuantity.Size = new System.Drawing.Size(53, 15);
-            this.lblQuantity.TabIndex = 6;
-            this.lblQuantity.Text = "Quantity";
-            // 
-            // txtQuantity
-            // 
-            this.txtQuantity.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
-            this.txtQuantity.BorderRadius = 8;
-            this.txtQuantity.Cursor = System.Windows.Forms.Cursors.IBeam;
-            this.txtQuantity.DefaultText = "";
-            this.txtQuantity.Font = new System.Drawing.Font("Segoe UI", 9F);
-            this.txtQuantity.Location = new System.Drawing.Point(123, 145);
-            this.txtQuantity.Name = "txtQuantity";
-            this.txtQuantity.PlaceholderText = "0";
-            this.txtQuantity.SelectedText = "";
-            this.txtQuantity.Size = new System.Drawing.Size(324, 35);
-            this.txtQuantity.TabIndex = 7;
-            // 
-            // lblMinStock
-            // 
-            this.lblMinStock.Anchor = System.Windows.Forms.AnchorStyles.Left;
-            this.lblMinStock.AutoSize = true;
-            this.lblMinStock.Font = new System.Drawing.Font("Segoe UI", 9F);
-            this.lblMinStock.Location = new System.Drawing.Point(453, 155);
-            this.lblMinStock.Name = "lblMinStock";
-            this.lblMinStock.Size = new System.Drawing.Size(90, 15);
-            this.lblMinStock.TabIndex = 8;
-            this.lblMinStock.Text = "Min Stock Level";
-            // 
-            // txtMinStock
-            // 
-            this.txtMinStock.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
-            this.txtMinStock.BorderRadius = 8;
-            this.txtMinStock.Cursor = System.Windows.Forms.Cursors.IBeam;
-            this.txtMinStock.DefaultText = "";
-            this.txtMinStock.Font = new System.Drawing.Font("Segoe UI", 9F);
-            this.txtMinStock.Location = new System.Drawing.Point(573, 145);
-            this.txtMinStock.Name = "txtMinStock";
-            this.txtMinStock.PlaceholderText = "5";
-            this.txtMinStock.SelectedText = "";
-            this.txtMinStock.Size = new System.Drawing.Size(324, 35);
-            this.txtMinStock.TabIndex = 9;
-            // 
-            // lblStatus
-            // 
-            this.lblStatus.Anchor = System.Windows.Forms.AnchorStyles.Left;
-            this.lblStatus.AutoSize = true;
-            this.lblStatus.Font = new System.Drawing.Font("Segoe UI", 9F);
-            this.lblStatus.Location = new System.Drawing.Point(3, 200);
-            this.lblStatus.Name = "lblStatus";
-            this.lblStatus.Size = new System.Drawing.Size(39, 15);
-            this.lblStatus.TabIndex = 10;
-            this.lblStatus.Text = "Status";
-            // 
-            // cmbStatus
-            // 
-            this.cmbStatus.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
-            this.cmbStatus.BackColor = System.Drawing.Color.Transparent;
-            this.cmbStatus.BorderRadius = 8;
-            this.cmbStatus.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed;
-            this.cmbStatus.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cmbStatus.FocusedColor = System.Drawing.Color.Empty;
-            this.cmbStatus.Font = new System.Drawing.Font("Segoe UI", 9F);
-            this.cmbStatus.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(68)))), ((int)(((byte)(88)))), ((int)(((byte)(112)))));
-            this.cmbStatus.ItemHeight = 30;
-            this.cmbStatus.Items.AddRange(new object[] {
-            "In Stock",
-            "Low Stock",
-            "Out of Stock"});
-            this.cmbStatus.Location = new System.Drawing.Point(123, 189);
-            this.cmbStatus.Name = "cmbStatus";
-            this.cmbStatus.Size = new System.Drawing.Size(324, 36);
-            this.cmbStatus.TabIndex = 11;
-            // 
             // pnlButtonGroup
             // 
-            this.tableLayoutPanelMain.SetColumnSpan(this.pnlButtonGroup, 4);
             this.pnlButtonGroup.Controls.Add(this.btnInsert);
             this.pnlButtonGroup.Controls.Add(this.btnUpdate);
             this.pnlButtonGroup.Controls.Add(this.btnDelete);
             this.pnlButtonGroup.Controls.Add(this.btnClear);
             this.pnlButtonGroup.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.pnlButtonGroup.Location = new System.Drawing.Point(3, 233);
+            this.pnlButtonGroup.Location = new System.Drawing.Point(4, 114);
+            this.pnlButtonGroup.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.pnlButtonGroup.Name = "pnlButtonGroup";
-            this.pnlButtonGroup.Size = new System.Drawing.Size(894, 44);
-            this.pnlButtonGroup.TabIndex = 12;
+            this.pnlButtonGroup.Size = new System.Drawing.Size(1191, 63);
+            this.pnlButtonGroup.TabIndex = 2;
             // 
             // btnInsert
             // 
-            this.btnInsert.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnInsert.BorderRadius = 8;
-            this.btnInsert.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(40)))), ((int)(((byte)(167)))), ((int)(((byte)(69)))));
-            this.btnInsert.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Bold);
+            this.btnInsert.BorderRadius = 10;
+            this.btnInsert.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.btnInsert.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(37)))), ((int)(((byte)(99)))), ((int)(((byte)(235)))));
+            this.btnInsert.Font = new System.Drawing.Font("Segoe UI Semibold", 9.5F);
             this.btnInsert.ForeColor = System.Drawing.Color.White;
-            this.btnInsert.Location = new System.Drawing.Point(466, 4);
+            this.btnInsert.HoverState.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(29)))), ((int)(((byte)(78)))), ((int)(((byte)(216)))));
+            this.btnInsert.Location = new System.Drawing.Point(0, 10);
+            this.btnInsert.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.btnInsert.Name = "btnInsert";
-            this.btnInsert.Size = new System.Drawing.Size(100, 36);
+            this.btnInsert.Size = new System.Drawing.Size(149, 52);
             this.btnInsert.TabIndex = 0;
-            this.btnInsert.Text = "Insert";
+            this.btnInsert.Text = "+ Add stock";
+            this.btnInsert.Click += new System.EventHandler(this.btnInsert_Click);
             // 
             // btnUpdate
             // 
-            this.btnUpdate.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnUpdate.BorderRadius = 8;
-            this.btnUpdate.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(193)))), ((int)(((byte)(7)))));
-            this.btnUpdate.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Bold);
-            this.btnUpdate.ForeColor = System.Drawing.Color.White;
-            this.btnUpdate.Location = new System.Drawing.Point(574, 4);
+            this.btnUpdate.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(37)))), ((int)(((byte)(99)))), ((int)(((byte)(235)))));
+            this.btnUpdate.BorderRadius = 10;
+            this.btnUpdate.BorderThickness = 1;
+            this.btnUpdate.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.btnUpdate.FillColor = System.Drawing.Color.White;
+            this.btnUpdate.Font = new System.Drawing.Font("Segoe UI Semibold", 9.5F);
+            this.btnUpdate.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(37)))), ((int)(((byte)(99)))), ((int)(((byte)(235)))));
+            this.btnUpdate.HoverState.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(239)))), ((int)(((byte)(246)))), ((int)(((byte)(255)))));
+            this.btnUpdate.Location = new System.Drawing.Point(160, 10);
+            this.btnUpdate.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.btnUpdate.Name = "btnUpdate";
-            this.btnUpdate.Size = new System.Drawing.Size(100, 36);
+            this.btnUpdate.Size = new System.Drawing.Size(133, 52);
             this.btnUpdate.TabIndex = 1;
             this.btnUpdate.Text = "Update";
+            this.btnUpdate.Click += new System.EventHandler(this.btnUpdate_Click);
             // 
             // btnDelete
             // 
-            this.btnDelete.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnDelete.BorderRadius = 8;
-            this.btnDelete.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(220)))), ((int)(((byte)(53)))), ((int)(((byte)(69)))));
-            this.btnDelete.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Bold);
+            this.btnDelete.BorderRadius = 10;
+            this.btnDelete.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.btnDelete.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(220)))), ((int)(((byte)(38)))), ((int)(((byte)(38)))));
+            this.btnDelete.Font = new System.Drawing.Font("Segoe UI Semibold", 9.5F);
             this.btnDelete.ForeColor = System.Drawing.Color.White;
-            this.btnDelete.Location = new System.Drawing.Point(682, 4);
+            this.btnDelete.HoverState.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(185)))), ((int)(((byte)(28)))), ((int)(((byte)(28)))));
+            this.btnDelete.Location = new System.Drawing.Point(304, 10);
+            this.btnDelete.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.btnDelete.Name = "btnDelete";
-            this.btnDelete.Size = new System.Drawing.Size(100, 36);
+            this.btnDelete.Size = new System.Drawing.Size(133, 52);
             this.btnDelete.TabIndex = 2;
             this.btnDelete.Text = "Delete";
+            this.btnDelete.Click += new System.EventHandler(this.btnDelete_Click);
             // 
             // btnClear
             // 
-            this.btnClear.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnClear.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(108)))), ((int)(((byte)(117)))), ((int)(((byte)(125)))));
-            this.btnClear.BorderRadius = 8;
+            this.btnClear.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(226)))), ((int)(((byte)(232)))), ((int)(((byte)(240)))));
+            this.btnClear.BorderRadius = 10;
             this.btnClear.BorderThickness = 1;
+            this.btnClear.Cursor = System.Windows.Forms.Cursors.Hand;
             this.btnClear.FillColor = System.Drawing.Color.White;
-            this.btnClear.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Bold);
-            this.btnClear.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(108)))), ((int)(((byte)(117)))), ((int)(((byte)(125)))));
-            this.btnClear.Location = new System.Drawing.Point(790, 4);
+            this.btnClear.Font = new System.Drawing.Font("Segoe UI Semibold", 9.5F);
+            this.btnClear.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(116)))), ((int)(((byte)(139)))));
+            this.btnClear.HoverState.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(248)))), ((int)(((byte)(250)))), ((int)(((byte)(252)))));
+            this.btnClear.Location = new System.Drawing.Point(448, 10);
+            this.btnClear.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.btnClear.Name = "btnClear";
-            this.btnClear.Size = new System.Drawing.Size(100, 36);
+            this.btnClear.Size = new System.Drawing.Size(133, 52);
             this.btnClear.TabIndex = 3;
             this.btnClear.Text = "Clear";
+            this.btnClear.Click += new System.EventHandler(this.btnClear_Click);
+            // 
+            // pnlGridCard
+            // 
+            this.pnlGridCard.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(226)))), ((int)(((byte)(232)))), ((int)(((byte)(240)))));
+            this.pnlGridCard.BorderRadius = 12;
+            this.pnlGridCard.BorderThickness = 1;
+            this.pnlGridCard.Controls.Add(this.dgvStock);
+            this.pnlGridCard.Controls.Add(this.lblGridHeader);
+            this.pnlGridCard.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.pnlGridCard.FillColor = System.Drawing.Color.White;
+            this.pnlGridCard.Location = new System.Drawing.Point(4, 185);
+            this.pnlGridCard.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.pnlGridCard.Name = "pnlGridCard";
+            this.pnlGridCard.Padding = new System.Windows.Forms.Padding(21, 17, 21, 20);
+            this.pnlGridCard.Size = new System.Drawing.Size(1191, 499);
+            this.pnlGridCard.TabIndex = 3;
             // 
             // dgvStock
             // 
             this.dgvStock.AllowUserToAddRows = false;
             this.dgvStock.AllowUserToDeleteRows = false;
-            dataGridViewCellStyle7.BackColor = System.Drawing.Color.White;
-            this.dgvStock.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle7;
-            this.dgvStock.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
-            dataGridViewCellStyle8.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle8.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(60)))), ((int)(((byte)(130)))), ((int)(((byte)(246)))));
-            dataGridViewCellStyle8.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Bold);
-            dataGridViewCellStyle8.ForeColor = System.Drawing.Color.White;
-            dataGridViewCellStyle8.SelectionBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(60)))), ((int)(((byte)(130)))), ((int)(((byte)(246)))));
-            dataGridViewCellStyle8.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle8.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.dgvStock.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle8;
+            dataGridViewCellStyle13.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(248)))), ((int)(((byte)(250)))), ((int)(((byte)(252)))));
+            this.dgvStock.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle13;
+            dataGridViewCellStyle14.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle14.BackColor = System.Drawing.Color.White;
+            dataGridViewCellStyle14.Font = new System.Drawing.Font("Segoe UI Semibold", 9.75F);
+            dataGridViewCellStyle14.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(116)))), ((int)(((byte)(139)))));
+            dataGridViewCellStyle14.SelectionBackColor = System.Drawing.Color.White;
+            dataGridViewCellStyle14.SelectionForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(116)))), ((int)(((byte)(139)))));
+            dataGridViewCellStyle14.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.dgvStock.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle14;
             this.dgvStock.ColumnHeadersHeight = 40;
             this.dgvStock.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.colStockId,
@@ -388,44 +272,53 @@ namespace StoreMS.Forms
             this.colMinStock,
             this.colStatus,
             this.colLastUpdated});
-            this.tableLayoutPanelMain.SetColumnSpan(this.dgvStock, 4);
-            dataGridViewCellStyle9.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle9.BackColor = System.Drawing.Color.White;
-            dataGridViewCellStyle9.Font = new System.Drawing.Font("Segoe UI", 9F);
-            dataGridViewCellStyle9.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(71)))), ((int)(((byte)(69)))), ((int)(((byte)(94)))));
-            dataGridViewCellStyle9.SelectionBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(231)))), ((int)(((byte)(229)))), ((int)(((byte)(255)))));
-            dataGridViewCellStyle9.SelectionForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(71)))), ((int)(((byte)(69)))), ((int)(((byte)(94)))));
-            dataGridViewCellStyle9.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-            this.dgvStock.DefaultCellStyle = dataGridViewCellStyle9;
+            dataGridViewCellStyle15.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle15.BackColor = System.Drawing.Color.White;
+            dataGridViewCellStyle15.Font = new System.Drawing.Font("Segoe UI", 9.5F);
+            dataGridViewCellStyle15.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(15)))), ((int)(((byte)(23)))), ((int)(((byte)(42)))));
+            dataGridViewCellStyle15.SelectionBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(239)))), ((int)(((byte)(246)))), ((int)(((byte)(255)))));
+            dataGridViewCellStyle15.SelectionForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(15)))), ((int)(((byte)(23)))), ((int)(((byte)(42)))));
+            dataGridViewCellStyle15.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.dgvStock.DefaultCellStyle = dataGridViewCellStyle15;
             this.dgvStock.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.dgvStock.GridColor = System.Drawing.Color.FromArgb(((int)(((byte)(231)))), ((int)(((byte)(229)))), ((int)(((byte)(255)))));
-            this.dgvStock.Location = new System.Drawing.Point(3, 283);
+            this.dgvStock.GridColor = System.Drawing.Color.FromArgb(((int)(((byte)(241)))), ((int)(((byte)(245)))), ((int)(((byte)(249)))));
+            this.dgvStock.Location = new System.Drawing.Point(21, 54);
+            this.dgvStock.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.dgvStock.Name = "dgvStock";
             this.dgvStock.ReadOnly = true;
             this.dgvStock.RowHeadersVisible = false;
-            this.dgvStock.RowTemplate.Height = 40;
-            this.dgvStock.Size = new System.Drawing.Size(894, 274);
-            this.dgvStock.TabIndex = 13;
-            this.dgvStock.ThemeStyle.AlternatingRowsStyle.BackColor = System.Drawing.Color.White;
-            this.dgvStock.ThemeStyle.HeaderStyle.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(60)))), ((int)(((byte)(130)))), ((int)(((byte)(246)))));
-            this.dgvStock.ThemeStyle.HeaderStyle.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Bold);
+            this.dgvStock.RowHeadersWidth = 51;
+            this.dgvStock.RowTemplate.Height = 42;
+            this.dgvStock.Size = new System.Drawing.Size(1149, 425);
+            this.dgvStock.TabIndex = 1;
+            this.dgvStock.ThemeStyle.AlternatingRowsStyle.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(248)))), ((int)(((byte)(250)))), ((int)(((byte)(252)))));
+            this.dgvStock.ThemeStyle.GridColor = System.Drawing.Color.FromArgb(((int)(((byte)(241)))), ((int)(((byte)(245)))), ((int)(((byte)(249)))));
+            this.dgvStock.ThemeStyle.HeaderStyle.BackColor = System.Drawing.Color.White;
+            this.dgvStock.ThemeStyle.HeaderStyle.Font = new System.Drawing.Font("Segoe UI Semibold", 9.75F);
+            this.dgvStock.ThemeStyle.HeaderStyle.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(116)))), ((int)(((byte)(139)))));
             this.dgvStock.ThemeStyle.HeaderStyle.HeaightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
             this.dgvStock.ThemeStyle.HeaderStyle.Height = 40;
             this.dgvStock.ThemeStyle.ReadOnly = true;
-            this.dgvStock.ThemeStyle.RowsStyle.Font = new System.Drawing.Font("Segoe UI", 9F);
-            this.dgvStock.ThemeStyle.RowsStyle.Height = 40;
+            this.dgvStock.ThemeStyle.RowsStyle.Font = new System.Drawing.Font("Segoe UI", 9.5F);
+            this.dgvStock.ThemeStyle.RowsStyle.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(15)))), ((int)(((byte)(23)))), ((int)(((byte)(42)))));
+            this.dgvStock.ThemeStyle.RowsStyle.Height = 42;
+            this.dgvStock.ThemeStyle.RowsStyle.SelectionBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(239)))), ((int)(((byte)(246)))), ((int)(((byte)(255)))));
+            this.dgvStock.ThemeStyle.RowsStyle.SelectionForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(15)))), ((int)(((byte)(23)))), ((int)(((byte)(42)))));
             // 
             // colStockId
             // 
             this.colStockId.DataPropertyName = "StockId";
             this.colStockId.HeaderText = "ID";
+            this.colStockId.MinimumWidth = 6;
             this.colStockId.Name = "colStockId";
             this.colStockId.ReadOnly = true;
+            this.colStockId.Visible = false;
             // 
             // colProductName
             // 
             this.colProductName.DataPropertyName = "ProductName";
             this.colProductName.HeaderText = "Product Name";
+            this.colProductName.MinimumWidth = 6;
             this.colProductName.Name = "colProductName";
             this.colProductName.ReadOnly = true;
             // 
@@ -433,6 +326,7 @@ namespace StoreMS.Forms
             // 
             this.colCategory.DataPropertyName = "CategoryName";
             this.colCategory.HeaderText = "Category";
+            this.colCategory.MinimumWidth = 6;
             this.colCategory.Name = "colCategory";
             this.colCategory.ReadOnly = true;
             // 
@@ -440,13 +334,15 @@ namespace StoreMS.Forms
             // 
             this.colQuantity.DataPropertyName = "Quantity";
             this.colQuantity.HeaderText = "Quantity";
+            this.colQuantity.MinimumWidth = 6;
             this.colQuantity.Name = "colQuantity";
             this.colQuantity.ReadOnly = true;
             // 
             // colMinStock
             // 
             this.colMinStock.DataPropertyName = "MinStockLevel";
-            this.colMinStock.HeaderText = "Min Stock";
+            this.colMinStock.HeaderText = "Reorder At";
+            this.colMinStock.MinimumWidth = 6;
             this.colMinStock.Name = "colMinStock";
             this.colMinStock.ReadOnly = true;
             // 
@@ -454,6 +350,7 @@ namespace StoreMS.Forms
             // 
             this.colStatus.DataPropertyName = "Status";
             this.colStatus.HeaderText = "Status";
+            this.colStatus.MinimumWidth = 6;
             this.colStatus.Name = "colStatus";
             this.colStatus.ReadOnly = true;
             // 
@@ -461,24 +358,38 @@ namespace StoreMS.Forms
             // 
             this.colLastUpdated.DataPropertyName = "LastUpdated";
             this.colLastUpdated.HeaderText = "Last Updated";
+            this.colLastUpdated.MinimumWidth = 6;
             this.colLastUpdated.Name = "colLastUpdated";
             this.colLastUpdated.ReadOnly = true;
             // 
+            // lblGridHeader
+            // 
+            this.lblGridHeader.Dock = System.Windows.Forms.DockStyle.Top;
+            this.lblGridHeader.Font = new System.Drawing.Font("Segoe UI Semibold", 12F);
+            this.lblGridHeader.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(15)))), ((int)(((byte)(23)))), ((int)(((byte)(42)))));
+            this.lblGridHeader.Location = new System.Drawing.Point(21, 17);
+            this.lblGridHeader.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.lblGridHeader.Name = "lblGridHeader";
+            this.lblGridHeader.Size = new System.Drawing.Size(1149, 37);
+            this.lblGridHeader.TabIndex = 0;
+            this.lblGridHeader.Text = "Stock levels";
+            // 
             // StockForm
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(244)))), ((int)(((byte)(247)))), ((int)(((byte)(250)))));
-            this.ClientSize = new System.Drawing.Size(940, 600);
+            this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(248)))), ((int)(((byte)(250)))), ((int)(((byte)(252)))));
+            this.ClientSize = new System.Drawing.Size(1253, 738);
             this.Controls.Add(this.tableLayoutPanelMain);
+            this.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.Name = "StockForm";
-            this.Padding = new System.Windows.Forms.Padding(20);
+            this.Padding = new System.Windows.Forms.Padding(27, 25, 27, 25);
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Stock Management";
             this.tableLayoutPanelMain.ResumeLayout(false);
-            this.tableLayoutPanelMain.PerformLayout();
             this.pnlSearchGroup.ResumeLayout(false);
             this.pnlButtonGroup.ResumeLayout(false);
+            this.pnlGridCard.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.dgvStock)).EndInit();
             this.ResumeLayout(false);
 
@@ -492,26 +403,13 @@ namespace StoreMS.Forms
         private Guna.UI2.WinForms.Guna2TextBox txtSearch;
         private Guna.UI2.WinForms.Guna2Button btnSearch;
         private Guna.UI2.WinForms.Guna2Button btnRefresh;
-
-        private System.Windows.Forms.Label lblProductName;
-        private Guna.UI2.WinForms.Guna2ComboBox cmbProduct;
-        private System.Windows.Forms.Label lblCategory;
-        private Guna.UI2.WinForms.Guna2ComboBox cmbCategory;
-
-        private System.Windows.Forms.Label lblQuantity;
-        private Guna.UI2.WinForms.Guna2TextBox txtQuantity;
-        private System.Windows.Forms.Label lblMinStock;
-        private Guna.UI2.WinForms.Guna2TextBox txtMinStock;
-
-        private System.Windows.Forms.Label lblStatus;
-        private Guna.UI2.WinForms.Guna2ComboBox cmbStatus;
-
         private System.Windows.Forms.Panel pnlButtonGroup;
         private Guna.UI2.WinForms.Guna2Button btnInsert;
         private Guna.UI2.WinForms.Guna2Button btnUpdate;
         private Guna.UI2.WinForms.Guna2Button btnDelete;
         private Guna.UI2.WinForms.Guna2Button btnClear;
-
+        private Guna.UI2.WinForms.Guna2Panel pnlGridCard;
+        private System.Windows.Forms.Label lblGridHeader;
         private Guna.UI2.WinForms.Guna2DataGridView dgvStock;
         private System.Windows.Forms.DataGridViewTextBoxColumn colStockId;
         private System.Windows.Forms.DataGridViewTextBoxColumn colProductName;

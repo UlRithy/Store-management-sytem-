@@ -40,21 +40,11 @@ namespace StoreMS.Forms
             // កូដដំណើរការពេល Form បើកឡើងដំបូង (បើមានអាចដាក់ទីនេះបាន)
             openChildForm(new DashboardHomeForm());
             btnDashboard.Checked = true;    
-
-
         }
-
-      
-
         private void btnDasboad_Click(object sender, EventArgs e)
         {
             lblCurrentPage.Text = "Dashboard";
-            // ទីនេះអ្នកអាចសរសេរកូដ Load UserControl ចូលទៅក្នុង mainPanel បាន
             openChildForm(new DashboardHomeForm());
-            
-           
-
-
         }
 
         private void btnSale_Click(object sender, EventArgs e)
@@ -68,36 +58,49 @@ namespace StoreMS.Forms
             lblCurrentPage.Text = "Supplier Management";
         }
 
-        private void btnStock_Click(object sender, EventArgs e)
-        {
-            lblCurrentPage.Text = "Stock Management";
-            openChildForm(new StockForm());
-        }
-
         private void btnReport_Click(object sender, EventArgs e)
         {
             lblCurrentPage.Text = "Reports";
             //openChildForm(new )
         }
-
-        private void guna2Button1_Click(object sender, EventArgs e) // នេះជា Event សម្រាប់ btnCustomer
-        {
-            lblCurrentPage.Text = "Customer Management";
-            openChildForm(new CustomerForm());
-        }
-
-        private void btnCategores_Click(object sender, EventArgs e) // នេះជា Event សម្រាប់ btnCategories
-        {
-            lblCurrentPage.Text = "Categories Management";
-            openChildForm(new FormCategory());
-        }
-
         private void btnProduct_Click(object sender, EventArgs e)
         {
             lblCurrentPage.Text = "Product Management";
             openChildForm(new FormProduct());
         }
 
+        private void btnCategories_Click(object sender, EventArgs e)
+        {
+            lblCurrentPage.Text = "Categories Management";
+            openChildForm(new FormCategory());
+        }
 
+        private void btnStock_Click_1(object sender, EventArgs e)
+        {
+            NavigateToStock();
+        }
+
+        public void NavigateToStock()
+        {
+            lblCurrentPage.Text = "Stock Management";
+            openChildForm(new StockForm());
+        }
+
+        private void btnSupplier_Click_1(object sender, EventArgs e)
+        {
+            lblCurrentPage.Text = "Supplier Manegenent";
+            openChildForm(new SupplierForm());
+        }
+
+        private void btnCustomer_Click(object sender, EventArgs e)
+        {
+            lblCurrentPage.Text = "Customer Management";
+            openChildForm(new CustomerForm());
+        }
+
+        private void btnReport_Click_1(object sender, EventArgs e)
+        {
+
+        }
     }
 }

@@ -16,5 +16,10 @@ namespace StoreMS.Forms
         {
             InitializeComponent();
         }
+
+        private void pnlTop_Paint(object sender, PaintEventArgs e)
+        {
+
+        }
     }
 }

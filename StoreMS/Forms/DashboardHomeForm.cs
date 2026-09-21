@@ -1,19 +1,27 @@
-﻿using System;
+using System;
+using System.Data;
 using System.Drawing;
+using System.Linq;
 using System.Windows.Forms;
+using StoreMS.Data;
+using StoreMS.Repositories;
 
 namespace StoreMS.Forms
 {
     public partial class DashboardHomeForm : Form
     {
+        private readonly ProductRepository productRepo;
+
         public DashboardHomeForm()
         {
             InitializeComponent();
+            productRepo = new ProductRepository();
         }
 
         private void DashboardHomeForm_Load(object sender, EventArgs e)
         {
             SetGreeting();
+            LoadKpis();
             LoadRecentSales();
             LoadLowStock();
         }
@@ -22,59 +30,169 @@ namespace StoreMS.Forms
         {
             int hour = DateTime.Now.Hour;
             string timeOfDay = hour < 12 ? "morning" : (hour < 18 ? "afternoon" : "evening");
-            lblGreeting.Text = "Good " + timeOfDay + ", Sok Dara";
+            lblGreeting.Text = "Good " + timeOfDay + ", Admin";
             lblDateToday.Text = DateTime.Now.ToString("dddd, d MMMM yyyy");
         }
 
-        // TODO: replace with a real query against the sales/orders table.
+        private void LoadKpis()
+        {
+            try
+            {
+                var products = productRepo.GetAll();
+                int productCount = products.Count;
+                int lowStockCount = products.Count(p => p.StockQty <= 10);
+                int categoryCount = products
+                    .Where(p => !string.IsNullOrWhiteSpace(p.CategoryName))
+                    .Select(p => p.CategoryName)
+                    .Distinct()
+                    .Count();
+
+                lblKpiProductsValue.Text = productCount.ToString("N0");
+                lblKpiProductsDelta.Text = "Across " + categoryCount + " categories";
+                lblKpiLowStockValue.Text = lowStockCount.ToString("N0");
+                lblKpiLowStockDelta.Text = lowStockCount > 0 ? "Needs restocking" : "Stock looks healthy";
+            }
+            catch (Exception)
+            {
+                lblKpiProductsValue.Text = "0";
+                lblKpiProductsDelta.Text = "Product data unavailable";
+                lblKpiLowStockValue.Text = "0";
+                lblKpiLowStockDelta.Text = "Stock data unavailable";
+            }
+
+            DataTable salesSummary = TryGetDataTable(@"
+                SELECT 
+                    COUNT(*) AS OrderCount,
+                    ISNULL(SUM(TotalAmount), 0) AS TotalSales
+                FROM Sales
+                WHERE CAST(SaleDate AS date) = CAST(GETDATE() AS date)");
+
+            if (salesSummary == null)
+            {
+                salesSummary = TryGetDataTable(@"
+                    SELECT
+                        COUNT(DISTINCT o.OrderID) AS OrderCount,
+                        ISNULL(SUM(ISNULL(od.Quantity, 0) * ISNULL(p.Price, 0)), 0) AS TotalSales
+                    FROM tbOrders o
+                    LEFT JOIN tbOrderDetails od ON o.OrderID = od.OrderID
+                    LEFT JOIN tbProducts p ON od.ProductID = p.ProductID
+                    WHERE CAST(o.OrderDate AS date) = CAST(GETDATE() AS date)");
+            }
+
+            if (salesSummary != null && salesSummary.Rows.Count > 0)
+            {
+                DataRow row = salesSummary.Rows[0];
+                decimal totalSales = row["TotalSales"] != DBNull.Value ? Convert.ToDecimal(row["TotalSales"]) : 0m;
+                int orderCount = row["OrderCount"] != DBNull.Value ? Convert.ToInt32(row["OrderCount"]) : 0;
+
+                lblKpiSalesValue.Text = totalSales.ToString("$#,##0.00");
+                lblKpiOrdersValue.Text = orderCount.ToString("N0");
+                lblKpiSalesDelta.Text = "Today's revenue";
+                lblKpiOrdersDelta.Text = "Orders today";
+            }
+            else
+            {
+                lblKpiSalesValue.Text = "$0.00";
+                lblKpiOrdersValue.Text = "0";
+                lblKpiSalesDelta.Text = "Sales data unavailable";
+                lblKpiOrdersDelta.Text = "Orders data unavailable";
+            }
+        }
+
         private void LoadRecentSales()
         {
             dgvRecentSales.Rows.Clear();
 
-            var sample = new (string Invoice, string Customer, string Items, string Total, string Payment, string Time)[]
-            {
-                ("INV-1042", "Chan Sopheak",   "4", "$28.50", "Cash",     "10:42 AM"),
-                ("INV-1041", "Walk-in",        "2", "$9.00",  "Cash",     "10:31 AM"),
-                ("INV-1040", "Ly Vannak",      "9", "$64.20", "Card",     "10:05 AM"),
-                ("INV-1039", "Srey Neang",     "1", "$4.50",  "ABA Pay",  "9:52 AM"),
-                ("INV-1038", "Walk-in",        "3", "$15.75", "Cash",     "9:40 AM"),
-                ("INV-1037", "Heng Dara",      "6", "$41.00", "Card",     "9:21 AM"),
-                ("INV-1036", "Walk-in",        "2", "$7.20",  "Cash",     "9:08 AM"),
-            };
+            DataTable sales = TryGetDataTable(@"
+                SELECT TOP 10
+                    s.InvoiceNo AS Invoice,
+                    ISNULL(c.Name, 'Walk-in') AS Customer,
+                    CAST(ISNULL(SUM(sd.Quantity), 0) AS varchar(20)) AS Items,
+                    s.TotalAmount AS Total,
+                    s.PaymentMethod AS Payment,
+                    s.SaleDate AS SaleTime
+                FROM Sales s
+                LEFT JOIN Customers c ON s.CustomerId = c.Id
+                LEFT JOIN SaleDetails sd ON s.SaleId = sd.SaleId
+                GROUP BY s.SaleId, s.InvoiceNo, c.Name, s.TotalAmount, s.PaymentMethod, s.SaleDate
+                ORDER BY s.SaleDate DESC");
 
-            foreach (var row in sample)
+            if (sales == null)
             {
-                dgvRecentSales.Rows.Add(row.Invoice, row.Customer, row.Items, row.Total, row.Payment, row.Time);
+                sales = TryGetDataTable(@"
+                    SELECT TOP 10
+                        'ORD-' + CAST(o.OrderID AS varchar(20)) AS Invoice,
+                        ISNULL(c.CustomerName, 'Walk-in') AS Customer,
+                        CAST(ISNULL(SUM(od.Quantity), 0) AS varchar(20)) AS Items,
+                        ISNULL(SUM(ISNULL(od.Quantity, 0) * ISNULL(p.Price, 0)), 0) AS Total,
+                        'Cash' AS Payment,
+                        o.OrderDate AS SaleTime
+                    FROM tbOrders o
+                    LEFT JOIN tbCustomers c ON o.CustomerID = c.CustomerID
+                    LEFT JOIN tbOrderDetails od ON o.OrderID = od.OrderID
+                    LEFT JOIN tbProducts p ON od.ProductID = p.ProductID
+                    GROUP BY o.OrderID, c.CustomerName, o.OrderDate
+                    ORDER BY o.OrderDate DESC, o.OrderID DESC");
+            }
+
+            if (sales == null || sales.Rows.Count == 0)
+            {
+                dgvRecentSales.Rows.Add("No sales", "No transactions yet", "-", "$0.00", "-", "-");
+                return;
+            }
+
+            foreach (DataRow row in sales.Rows)
+            {
+                decimal total = row["Total"] != DBNull.Value ? Convert.ToDecimal(row["Total"]) : 0m;
+                string time = row["SaleTime"] != DBNull.Value
+                    ? Convert.ToDateTime(row["SaleTime"]).ToString("h:mm tt")
+                    : "-";
+
+                dgvRecentSales.Rows.Add(
+                    row["Invoice"]?.ToString(),
+                    row["Customer"]?.ToString(),
+                    row["Items"]?.ToString(),
+                    total.ToString("$#,##0.00"),
+                    row["Payment"]?.ToString(),
+                    time);
             }
         }
 
-        // TODO: replace with a real query for products at or below their reorder threshold.
         private void LoadLowStock()
         {
             flpLowStock.Controls.Clear();
 
-            var items = new (string Name, int Qty, int Threshold)[]
+            try
             {
-                ("Coca-Cola 330ml",       2, 10),
-                ("Instant Noodles (box)", 3, 15),
-                ("Cooking Oil 1L",        1, 8),
-                ("Fresh Eggs (tray)",     4, 12),
-                ("Bottled Water 500ml",   5, 20),
-                ("Rice 5kg",              2, 6),
-                ("Toothpaste 100g",       3, 10),
-            };
+                var items = productRepo.GetAll()
+                    .Where(p => p.StockQty <= 10)
+                    .OrderBy(p => p.StockQty)
+                    .ThenBy(p => p.ProductName)
+                    .Take(10)
+                    .ToList();
 
-            foreach (var item in items)
+                if (items.Count == 0)
+                {
+                    flpLowStock.Controls.Add(BuildMessageRow("All products have enough stock."));
+                    return;
+                }
+
+                foreach (var item in items)
+                {
+                    flpLowStock.Controls.Add(BuildStockRow(item.ProductName, item.StockQty, 10));
+                }
+            }
+            catch (Exception)
             {
-                flpLowStock.Controls.Add(BuildStockRow(item.Name, item.Qty, item.Threshold));
+                flpLowStock.Controls.Add(BuildMessageRow("Stock data is unavailable."));
             }
         }
 
         private Control BuildStockRow(string name, int qty, int threshold)
         {
             Color badgeColor = qty <= threshold / 3
-                ? Color.FromArgb(220, 38, 38)   // critical - red
-                : Color.FromArgb(217, 119, 6);  // low - amber
+                ? Color.FromArgb(220, 38, 38)
+                : Color.FromArgb(217, 119, 6);
 
             var row = new Panel
             {
@@ -134,11 +252,39 @@ namespace StoreMS.Forms
             return row;
         }
 
+        private Control BuildMessageRow(string message)
+        {
+            return new Label
+            {
+                Text = message,
+                Font = new Font("Segoe UI", 9.5F),
+                ForeColor = Color.FromArgb(100, 116, 139),
+                Size = new Size(268, 42),
+                TextAlign = ContentAlignment.MiddleLeft,
+                AutoEllipsis = true,
+                Margin = new Padding(0, 0, 0, 4)
+            };
+        }
+
+        private DataTable TryGetDataTable(string query)
+        {
+            try
+            {
+                //  ចំណាំ៖ ដើម្បីដោះស្រាយបញ្ហា Timeout លើសពី 30 វិនាទី
+                // អ្នកគួរតែចូលទៅកែប្រែ Class ឈ្មោះ Database ត្រង់កន្លែង ExecuteQuery
+                // ឱ្យកំណត់ cmd.CommandTimeout = 60; (ឬច្រើនជាងនេះ)។
+                return Database.ExecuteQuery(query);
+            }
+            catch (Exception)
+            {
+                return null;
+            }
+        }
+
         private void btnViewStock_Click(object sender, EventArgs e)
         {
-            // TODO: wire this to the same navigation the sidebar's Stock button uses,
-            // e.g. raise an event the parent DashboardForm subscribes to, or call
-            // ((DashboardForm)this.ParentForm)?.NavigateTo("Stock");
+            DashboardForm dashboard = ParentForm as DashboardForm;
+            dashboard?.NavigateToStock();
         }
     }
 }

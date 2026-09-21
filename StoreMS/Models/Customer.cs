@@ -6,22 +6,16 @@ using System.Threading.Tasks;
 
 namespace StoreMS.Models
 {
-    public class Customer:Person
+    public class Customer
     {
-        public int CustomerID
-        {
-            get => Id;
-            set => Id= value;
-        }
-        public String CustomerName
-        {
-            get => Name;
-            set => Name= value;
-        }
-
-        public override string GetInfo()
-        {
-            return $"Customer :{CustomerName}, Phone: {Phone}";
-        }
+        public int Id { get; set; }
+        public string CustomerName { get; set; }
+        public string ContactName { get; set; }
+        public string Address { get; set; }
+        public string City { get; set; }
+        public string PostalCode { get; set; }
+        public string Country { get; set; }
+        public string Phone { get; set; }
+        public string Email { get; set; }
     }
 }
