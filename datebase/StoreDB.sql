@@ -35,7 +35,6 @@ CREATE TABLE [dbo].[tbCustomers](
 ) ON [PRIMARY];
 GO
 
-
 -- =============================================
 -- 4. tbEmployees
 -- =============================================
@@ -81,16 +80,18 @@ CREATE TABLE [dbo].[tbSuppliers](
 GO
 
 -- =============================================
--- 7. tbUsers
+-- 7. tbUsers (បានបន្ថែម Column Role និង FullName ស្របតាមកូដ C# របស់អ្នក)
 -- =============================================
 CREATE TABLE [dbo].[tbUsers](
 	[UserID] [int] IDENTITY(1,1) NOT NULL,
-	[EmployeeID] [int] NOT NULL,
-	[FirstName] [varchar](20) NOT NULL,
-	[LastName] [varchar](20) NOT NULL,
+	[EmployeeID] [int] NULL,
+	[FirstName] [varchar](20) NULL,
+	[LastName] [varchar](20) NULL,
 	[Username] [varchar](40) NOT NULL,
 	[Password] [varchar](20) NOT NULL,
-	[Position] [varchar](20) NOT NULL,
+	[Position] [varchar](20) NULL,
+	[Role] [varchar](50) NULL,         -- បន្ថែមသຳหรับ Admin/User
+	[FullName] [varchar](100) NULL,     -- បន្ថែមសម្រាប់បង្ហាញឈ្មោះពេញ
 
 	CONSTRAINT [PK_tbUsers] PRIMARY KEY ([UserID]),
 	CONSTRAINT [FK_tbUsers_tbEmployees]
@@ -129,7 +130,49 @@ CREATE TABLE [dbo].[tbProducts](
 GO
 
 -- =============================================
--- 9. tbOrders
+-- 9. tbStock
+-- =============================================
+CREATE TABLE tbStock (
+    StockId INT IDENTITY(1,1) PRIMARY KEY,
+    ProductId INT FOREIGN KEY REFERENCES tbProducts(ProductId) ON DELETE CASCADE,
+    Quantity INT NOT NULL DEFAULT 0,
+    MinStockLevel INT NOT NULL DEFAULT 5,
+    Status NVARCHAR(50) DEFAULT 'In Stock', 
+    LastUpdated DATETIME DEFAULT GETDATE()
+);
+GO
+
+-- Trigger សម្រាប់ Update Stock
+CREATE TRIGGER trg_UpdateProductStock
+ON tbStock
+AFTER INSERT
+AS
+BEGIN
+    UPDATE p
+    SET p.StockQty = p.StockQty + i.Quantity
+    FROM tbProducts p
+    INNER JOIN inserted i ON p.ProductID = i.ProductId;
+END;
+GO
+
+-- View Stock Details
+CREATE VIEW vwStockDetails AS
+SELECT 
+    s.StockId,
+    p.ProductId,
+    p.ProductName,
+    ISNULL(c.CategoryName, N'N/A') AS CategoryName,
+    s.Quantity,
+    s.MinStockLevel,
+    s.Status,
+    s.LastUpdated
+FROM tbStock s
+INNER JOIN tbProducts p ON s.ProductId = p.ProductId
+LEFT JOIN tbCategory c ON p.CategoryId = c.CategoryId;
+GO
+
+-- =============================================
+-- 10. tbOrders & tbOrderDetails
 -- =============================================
 CREATE TABLE [dbo].[tbOrders](
 	[OrderID] [int] IDENTITY(1,1) NOT NULL,
@@ -139,24 +182,12 @@ CREATE TABLE [dbo].[tbOrders](
 	[ShipperID] [int] NULL,
 
 	CONSTRAINT [PK_tbOrders] PRIMARY KEY ([OrderID]),
-
-	CONSTRAINT [FK_tbOrders_tbCustomers]
-		FOREIGN KEY ([CustomerID])
-		REFERENCES [dbo].[tbCustomers] ([CustomerID]),
-
-	CONSTRAINT [FK_tbOrders_tbEmployees]
-		FOREIGN KEY ([EmployeeID])
-		REFERENCES [dbo].[tbEmployees] ([EmployeeID]),
-
-	CONSTRAINT [FK_tbOrders_tbShippers]
-		FOREIGN KEY ([ShipperID])
-		REFERENCES [dbo].[tbShippers] ([ShipperID])
+	CONSTRAINT [FK_tbOrders_tbCustomers] FOREIGN KEY ([CustomerID]) REFERENCES [dbo].[tbCustomers] ([CustomerID]),
+	CONSTRAINT [FK_tbOrders_tbEmployees] FOREIGN KEY ([EmployeeID]) REFERENCES [dbo].[tbEmployees] ([EmployeeID]),
+	CONSTRAINT [FK_tbOrders_tbShippers] FOREIGN KEY ([ShipperID]) REFERENCES [dbo].[tbShippers] ([ShipperID])
 ) ON [PRIMARY];
 GO
 
--- =============================================
--- 10. tbOrderDetails
--- =============================================
 CREATE TABLE [dbo].[tbOrderDetails](
 	[OrderDetailID] [int] IDENTITY(1,1) NOT NULL,
 	[OrderID] [int] NULL,
@@ -164,25 +195,38 @@ CREATE TABLE [dbo].[tbOrderDetails](
 	[Quantity] [int] NULL,
 
 	CONSTRAINT [PK_tbOrderDetails] PRIMARY KEY ([OrderDetailID]),
-
-	CONSTRAINT [FK_tbOrderDetails_tbOrders]
-		FOREIGN KEY ([OrderID])
-		REFERENCES [dbo].[tbOrders] ([OrderID]),
-
-	CONSTRAINT [FK_tbOrderDetails_tbProducts]
-		FOREIGN KEY ([ProductID])
-		REFERENCES [dbo].[tbProducts] ([ProductID])
+	CONSTRAINT [FK_tbOrderDetails_tbOrders] FOREIGN KEY ([OrderID]) REFERENCES [dbo].[tbOrders] ([OrderID]),
+	CONSTRAINT [FK_tbOrderDetails_tbProducts] FOREIGN KEY ([ProductID]) REFERENCES [dbo].[tbProducts] ([ProductID])
 ) ON [PRIMARY];
 GO
 
 -- =============================================
--- 11. បង្កើត Indexes ដើម្បីបង្កើនល្បឿន Query (Optimization)
+-- 11. tbSales & tbSaleDetails
 -- =============================================
-CREATE NONCLUSTERED INDEX IX_tbProducts_Category ON tbProducts(CategoryID);
-CREATE NONCLUSTERED INDEX IX_tbProducts_Supplier ON tbProducts(SupplierID);
-CREATE NONCLUSTERED INDEX IX_tbOrderDetails_Order ON tbOrderDetails(OrderID, ProductID);
-CREATE NONCLUSTERED INDEX IX_tbOrderDetails_Product ON tbOrderDetails(ProductID);
-CREATE NONCLUSTERED INDEX IX_tbOrders_Date ON tbOrders(OrderDate);
+CREATE TABLE [dbo].[tbSales](
+	[SaleID] [int] IDENTITY(1,1) NOT NULL,
+	[InvoiceNo] [varchar](50) NULL,
+	[SaleDate] [datetime] NULL,
+	[CustomerID] [int] NULL,
+	[UserID] [int] NULL,
+	[TotalAmount] [decimal](18,2) NULL,
+	[PaymentMethod] [varchar](50) NULL,
+
+	CONSTRAINT [PK_tbSales] PRIMARY KEY ([SaleID])
+) ON [PRIMARY];
+GO
+
+CREATE TABLE [dbo].[tbSaleDetails](
+	[SaleDetailID] [int] IDENTITY(1,1) NOT NULL,
+	[SaleID] [int] NULL,
+	[ProductID] [int] NULL,
+	[Quantity] [int] NULL,
+	[Price] [decimal](18,2) NULL,
+
+	CONSTRAINT [PK_tbSaleDetails] PRIMARY KEY ([SaleDetailID]),
+	CONSTRAINT [FK_tbSaleDetails_tbSales] FOREIGN KEY ([SaleID]) REFERENCES [dbo].[tbSales] ([SaleID]) ON DELETE CASCADE,
+	CONSTRAINT [FK_tbSaleDetails_tbProducts] FOREIGN KEY ([ProductID]) REFERENCES [dbo].[tbProducts] ([ProductID])
+) ON [PRIMARY];
 GO
 
 -- =============================================
@@ -203,16 +247,24 @@ INSERT INTO tbProducts (ProductName, SupplierID, CategoryID, Unit, Price, CostPr
 ('Snack Potato', 1, 2, 'Pack', 1.50, 1.00, 50, '8852022234567', 'Crispy potato snack');
 GO
 
--- លុបចោលទិន្នន័យស្ទួន (បើមាន)
-WITH CTE AS (
-    SELECT SupplierID,
-           ROW_NUMBER() OVER (PARTITION BY SupplierName ORDER BY SupplierID) as row_num
-    FROM tbSuppliers
-)
-DELETE FROM CTE WHERE row_num > 1;
+-- បញ្ចូលគណនី Admin សម្រាប់ Login
+INSERT INTO tbUsers (Username, Password, Role, FullName, Position)
+VALUES ('admin', '123456', 'Admin', 'System Administrator', 'Manager');
 GO
+-- លុបចោលទិន្នន័យស្ទួន (បើមាន)
+--WITH CTE AS (
+   -- SELECT SupplierID,
+ --          ROW_NUMBER() OVER (PARTITION BY SupplierName ORDER BY SupplierID) as row_num
+ --   FROM tbSuppliers
+--)DELETE FROM CTE WHERE row_num > 1;
+--GO
 
 SELECT * FROM tbProducts;
+SELECT * FROM tbCategory;
+SELECT * FROM tbOrders;
+SELECT * FROM tbSuppliers;
+SELECT * FROM tbStock;
+SELECT * FROM tbCustomers
 
 -- បិទ និងលុប Database ចាស់ចោល
 --USE master;

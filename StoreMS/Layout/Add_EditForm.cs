@@ -104,7 +104,7 @@ namespace StoreMS.Components
             try
             {
                 var suppliers = supplierRepo.GetAll();
-                cmbSupplier.DataSource = suppliers.ToList();
+                cmbSupplier.DataSource = suppliers;
                 cmbSupplier.DisplayMember = "SupplierName";
                 cmbSupplier.ValueMember = "SupplierId";  
                 cmbSupplier.SelectedIndex = -1;

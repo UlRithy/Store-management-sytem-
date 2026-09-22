@@ -2,97 +2,130 @@
 using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
-using StoreMS.Data;
-using StoreMS.Interfaces;
 using StoreMS.Models;
 
 namespace StoreMS.Repositories
 {
-    public class SupplierRepository : IRepository<Supplier>
+    public class SupplierRepository
     {
-        // ១. ទាញយកបញ្ជីអ្នកផ្គត់ផ្គង់ទាំងអស់
-        public IEnumerable<Supplier> GetAll()
-        {
-            List<Supplier> suppliers = new List<Supplier>();
-            string query = "SELECT SupplierID, SupplierName, Phone, ContactName FROM tbSuppliers";
+        // ផ្លាស់ប្តូរ Connection String នេះទៅតាម Server របស់អ្នក (ឧ. localhost, .\SQLEXPRESS ឬ ឈ្មោះ Server ផ្ទាល់ខ្លួន)
+        private readonly string connectionString = "Data Source=.\\SQLEXPRESS;Initial Catalog=StoreManagement;Integrated Security=True";
 
-            DataTable dt = Database.ExecuteQuery(query);
-            foreach (DataRow row in dt.Rows)
+        // ១. ទាញយកទិន្នន័យ Supplier ទាំងអស់ (សម្រាប់បង្ហាញជា DataTable ក្នុង DataGridView)
+        public DataTable GetAll()
+        {
+            DataTable dt = new DataTable();
+            string query = "SELECT SupplierID, SupplierName, ContactName, Phone, Address, City, PostalCode, Country FROM tbSuppliers";
+
+            using (SqlConnection conn = new SqlConnection(connectionString))
             {
-                suppliers.Add(new Supplier
+                using (SqlCommand cmd = new SqlCommand(query, conn))
                 {
-                    SupplierId = Convert.ToInt32(row["SupplierID"]),
-                    SupplierName = row["SupplierName"].ToString(),
-                    Phone = row["Phone"] != DBNull.Value ? row["Phone"].ToString() : "",
-                    ContactPerson = row["ContactName"] != DBNull.Value ? row["ContactName"].ToString() : ""
-                });
+                    using (SqlDataAdapter adapter = new SqlDataAdapter(cmd))
+                    {
+                        adapter.Fill(dt);
+                    }
+                }
             }
-            return suppliers;
+            return dt;
         }
 
-        // ២. ទាញយកព័ត៌មានអ្នកផ្គត់ផ្គង់តាម ID
-        public Supplier GetById(int id)
+        // ២. ស្វែងរក Supplier តាមឈ្មោះ លេខទូរស័ព្ទ ឬ ក្រុង (City)
+        public DataTable SearchSuppliers(string keyword)
         {
-            Supplier supplier = null;
-            string query = "SELECT SupplierID, SupplierName, Phone, ContactName FROM tbSuppliers WHERE SupplierID = @SupplierID";
-            SqlParameter[] parameters = {
-                new SqlParameter("@SupplierID", id)
-            };
+            DataTable dt = new DataTable();
+            string query = @"SELECT SupplierID, SupplierName, ContactName, Phone, Address, City, PostalCode, Country 
+                             FROM tbSuppliers 
+                             WHERE SupplierName LIKE @Keyword OR Phone LIKE @Keyword OR City LIKE @Keyword";
 
-            DataTable dt = Database.ExecuteQuery(query, parameters);
-            if (dt.Rows.Count > 0)
+            using (SqlConnection conn = new SqlConnection(connectionString))
             {
-                DataRow row = dt.Rows[0];
-                supplier = new Supplier
+                using (SqlCommand cmd = new SqlCommand(query, conn))
                 {
-                    SupplierId = Convert.ToInt32(row["SupplierID"]),
-                    SupplierName = row["SupplierName"].ToString(),
-                    Phone = row["Phone"] != DBNull.Value ? row["Phone"].ToString() : "",
-                    ContactPerson = row["ContactName"] != DBNull.Value ? row["ContactName"].ToString() : ""
-                };
+                    cmd.Parameters.AddWithValue("@Keyword", "%" + keyword + "%");
+                    using (SqlDataAdapter adapter = new SqlDataAdapter(cmd))
+                    {
+                        adapter.Fill(dt);
+                    }
+                }
             }
-            return supplier;
+            return dt;
         }
 
-        // ៣. បន្ថែមអ្នកផ្គត់ផ្គង់ថ្មី
-        public bool Add(Supplier entity)
+        // ៣. បន្ថែម Supplier ថ្មី (Insert)
+        public bool InsertSupplier(Supplier supplier)
         {
-            string query = "INSERT INTO tbSuppliers (SupplierName, Phone, ContactName) VALUES (@SupplierName, @Phone, @ContactName)";
-            SqlParameter[] parameters = {
-                new SqlParameter("@SupplierName", entity.SupplierName),
-                new SqlParameter("@Phone", (object)entity.Phone ?? DBNull.Value),
-                new SqlParameter("@ContactName", (object)entity.ContactPerson ?? DBNull.Value)
-            };
+            string query = @"INSERT INTO tbSuppliers (SupplierName, ContactName, Address, City, PostalCode, Country, Phone) 
+                             VALUES (@SupplierName, @ContactName, @Address, @City, @PostalCode, @Country, @Phone)";
 
-            int rows = Database.ExecuteNonQuery(query, parameters);
-            return rows > 0;
+            using (SqlConnection conn = new SqlConnection(connectionString))
+            {
+                using (SqlCommand cmd = new SqlCommand(query, conn))
+                {
+                    cmd.Parameters.AddWithValue("@SupplierName", (object)supplier.SupplierName ?? DBNull.Value);
+                    cmd.Parameters.AddWithValue("@ContactName", (object)supplier.ContactName ?? DBNull.Value);
+                    cmd.Parameters.AddWithValue("@Address", (object)supplier.Address ?? DBNull.Value);
+                    cmd.Parameters.AddWithValue("@City", (object)supplier.City ?? DBNull.Value);
+                    cmd.Parameters.AddWithValue("@PostalCode", (object)supplier.PostalCode ?? DBNull.Value);
+                    cmd.Parameters.AddWithValue("@Country", (object)supplier.Country ?? DBNull.Value);
+                    cmd.Parameters.AddWithValue("@Phone", (object)supplier.Phone ?? DBNull.Value);
+
+                    conn.Open();
+                    int rowsAffected = cmd.ExecuteNonQuery();
+                    return rowsAffected > 0;
+                }
+            }
         }
 
-        // ៤. កែប្រែព័ត៌មានអ្នកផ្គត់ផ្គង់
-        public bool Update(Supplier entity)
+        // ៤. កែប្រែទិន្នន័យ Supplier (Update)
+        public bool UpdateSupplier(Supplier supplier)
         {
-            string query = "UPDATE tbSuppliers SET SupplierName = @SupplierName, Phone = @Phone, ContactName = @ContactName WHERE SupplierID = @SupplierID";
-            SqlParameter[] parameters = {
-                new SqlParameter("@SupplierID", entity.SupplierId),
-                new SqlParameter("@SupplierName", entity.SupplierName),
-                new SqlParameter("@Phone", (object)entity.Phone ?? DBNull.Value),
-                new SqlParameter("@ContactName", (object)entity.ContactPerson ?? DBNull.Value)
-            };
+            string query = @"UPDATE tbSuppliers 
+                             SET SupplierName = @SupplierName, 
+                                 ContactName = @ContactName, 
+                                 Address = @Address, 
+                                 City = @City, 
+                                 PostalCode = @PostalCode, 
+                                 Country = @Country, 
+                                 Phone = @Phone 
+                             WHERE SupplierID = @SupplierID";
 
-            int rows = Database.ExecuteNonQuery(query, parameters);
-            return rows > 0;
+            using (SqlConnection conn = new SqlConnection(connectionString))
+            {
+                using (SqlCommand cmd = new SqlCommand(query, conn))
+                {
+                    cmd.Parameters.AddWithValue("@SupplierID", supplier.SupplierId);
+                    cmd.Parameters.AddWithValue("@SupplierName", (object)supplier.SupplierName ?? DBNull.Value);
+                    cmd.Parameters.AddWithValue("@ContactName", (object)supplier.ContactName ?? DBNull.Value);
+                    cmd.Parameters.AddWithValue("@Address", (object)supplier.Address ?? DBNull.Value);
+                    cmd.Parameters.AddWithValue("@City", (object)supplier.City ?? DBNull.Value);
+                    cmd.Parameters.AddWithValue("@PostalCode", (object)supplier.PostalCode ?? DBNull.Value);
+                    cmd.Parameters.AddWithValue("@Country", (object)supplier.Country ?? DBNull.Value);
+                    cmd.Parameters.AddWithValue("@Phone", (object)supplier.Phone ?? DBNull.Value);
+
+                    conn.Open();
+                    int rowsAffected = cmd.ExecuteNonQuery();
+                    return rowsAffected > 0;
+                }
+            }
         }
 
-        // ៥. លុបអ្នកផ្គត់ផ្គង់
-        public bool Delete(int id)
+        // ៥. លុប Supplier (Delete)
+        public bool DeleteSupplier(int supplierId)
         {
             string query = "DELETE FROM tbSuppliers WHERE SupplierID = @SupplierID";
-            SqlParameter[] parameters = {
-                new SqlParameter("@SupplierID", id)
-            };
 
-            int rows = Database.ExecuteNonQuery(query, parameters);
-            return rows > 0;
+            using (SqlConnection conn = new SqlConnection(connectionString))
+            {
+                using (SqlCommand cmd = new SqlCommand(query, conn))
+                {
+                    cmd.Parameters.AddWithValue("@SupplierID", supplierId);
+
+                    conn.Open();
+                    int rowsAffected = cmd.ExecuteNonQuery();
+                    return rowsAffected > 0;
+                }
+            }
         }
     }
 }

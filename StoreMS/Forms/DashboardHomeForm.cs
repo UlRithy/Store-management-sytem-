@@ -12,15 +12,29 @@ namespace StoreMS.Forms
     {
         private readonly ProductRepository productRepo;
 
+        // ប្រកាស Properties ដើម្បីរក្សាទុកទិន្នន័យអ្នកដែលបាន Login ចូល
+        public int CurrentUserId { get; set; }
+        public string CurrentFullName { get; set; }
+        public string CurrentRole { get; set; }
+
+        // 1. Default Constructor (ករណីហៅដោយគ្មាន Parameter)
         public DashboardHomeForm()
         {
             InitializeComponent();
             productRepo = new ProductRepository();
         }
 
+        // 2. Overloaded Constructor (ទទួលយកទិន្នន័យ 3 ពី DashboardForm)
+        public DashboardHomeForm(int userId, string fullName, string role) : this()
+        {
+            CurrentUserId = userId;
+            CurrentFullName = fullName;
+            CurrentRole = role;
+        }
+
         private void DashboardHomeForm_Load(object sender, EventArgs e)
         {
-            SetGreeting();
+            SetGreeting(); // បើកដំណើរការ SetGreeting ឡើងវិញធម្មតា
             LoadKpis();
             LoadRecentSales();
             LoadLowStock();
@@ -30,7 +44,11 @@ namespace StoreMS.Forms
         {
             int hour = DateTime.Now.Hour;
             string timeOfDay = hour < 12 ? "morning" : (hour < 18 ? "afternoon" : "evening");
-            lblGreeting.Text = "Good " + timeOfDay + ", Admin";
+
+            // ប្រើប្រាស់ FullName ដែលទទួលបានពីការ Login មកបង្ហាញ (បើគ្មាន ដាក់ Admin ជាតម្លៃលំនាំដើម)
+            string displayName = !string.IsNullOrEmpty(CurrentFullName) ? CurrentFullName : "Admin";
+
+            lblGreeting.Text = "Good " + timeOfDay + ", " + displayName;
             lblDateToday.Text = DateTime.Now.ToString("dddd, d MMMM yyyy");
         }
 
@@ -270,9 +288,6 @@ namespace StoreMS.Forms
         {
             try
             {
-                //  ចំណាំ៖ ដើម្បីដោះស្រាយបញ្ហា Timeout លើសពី 30 វិនាទី
-                // អ្នកគួរតែចូលទៅកែប្រែ Class ឈ្មោះ Database ត្រង់កន្លែង ExecuteQuery
-                // ឱ្យកំណត់ cmd.CommandTimeout = 60; (ឬច្រើនជាងនេះ)។
                 return Database.ExecuteQuery(query);
             }
             catch (Exception)

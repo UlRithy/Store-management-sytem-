@@ -18,7 +18,17 @@ namespace StoreMS
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new DashboardForm());
+            Application.Run(new LoignForm ());
+      
+            //try
+            //{
+            //    Application.Run(new LoignForm());
+            //}
+            //catch (Exception ex)
+            //{
+            //    MessageBox.Show("Error on Startup: " + ex.Message, "Fatal Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            //}
         }
     }
+
 }

@@ -1,21 +1,32 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Drawing;
 
 namespace StoreMS.Models
 {
     public class SaleDetail
     {
         public int SaleDetailId { get; set; }
+
         public int SaleId { get; set; }
+
         public int ProductId { get; set; }
-        public string ProductName { get; set; } = "";
-        public decimal Price { get; set; } // តម្លៃលក់ក្នុងពេលធ្វើប្រតិបត្តិការ
+
+        // សម្រាប់បង្ហាញក្នុង Cart
+        public string ProductName { get; set; }
+
         public int Quantity { get; set; }
 
-        // Computed Property សម្រាប់គណនាទឹកប្រាក់សរុបតាមមុខទំនិញនីមួយៗ (Price * Quantity)
-        public decimal SubTotal => Price * Quantity;
+        public decimal Price { get; set; }
+
+        // សម្រាប់បង្ហាញរូបភាពក្នុង Cart
+        public Image ProductImage { get; set; }
+
+        // សរុប = Price × Quantity
+        public decimal SubTotal
+        {
+            get
+            {
+                return Price * Quantity;
+            }
+        }
     }
 }

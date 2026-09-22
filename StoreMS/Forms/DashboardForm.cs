@@ -12,12 +12,26 @@ namespace StoreMS.Forms
 {
     public partial class DashboardForm : Form
     {
+        // Properties សម្រាប់រក្សាទុកទិន្នន័យ User
+        public int CurrentUserId { get; set; }
+        public string CurrentFullName { get; set; }
+        public string CurrentRole { get; set; }
+
+        private Form activeForm = null;
+
+        // 1. Default Constructor (គ្មាន Argument)
         public DashboardForm()
         {
             InitializeComponent();
-            
         }
-        private Form activeForm = null;
+
+        // 2. Overloaded Constructor (ទទួលយក 3 តម្លៃពី LoginForm) - ទុកតែមួយនេះបានហើយ
+        public DashboardForm(int userId, string fullName, string role) : this()
+        {
+            CurrentUserId = userId;
+            CurrentFullName = fullName;
+            CurrentRole = role;
+        }
 
         private void openChildForm(Form childForm)
         {
@@ -37,14 +51,18 @@ namespace StoreMS.Forms
 
         private void DashboardForm_Load(object sender, EventArgs e)
         {
-            // កូដដំណើរការពេល Form បើកឡើងដំបូង (បើមានអាចដាក់ទីនេះបាន)
-            openChildForm(new DashboardHomeForm());
-            btnDashboard.Checked = true;    
+            // បញ្ជូនទិន្នន័យ User ទៅកាន់ DashboardHomeForm ពេលបើកឡើងដំបូង
+            DashboardHomeForm homeForm = new DashboardHomeForm(CurrentUserId, CurrentFullName, CurrentRole);
+            openChildForm(homeForm);
+            btnDashboard.Checked = true;
         }
+
         private void btnDasboad_Click(object sender, EventArgs e)
         {
             lblCurrentPage.Text = "Dashboard";
-            openChildForm(new DashboardHomeForm());
+            // បញ្ជូនទិន្នន័យ User ទៅជាមួយពេលចុចប៊ូតុង Dashboard
+            DashboardHomeForm homeForm = new DashboardHomeForm(CurrentUserId, CurrentFullName, CurrentRole);
+            openChildForm(homeForm);
         }
 
         private void btnSale_Click(object sender, EventArgs e)
@@ -53,16 +71,6 @@ namespace StoreMS.Forms
             openChildForm(new Sale_POSForm());
         }
 
-        private void btnSupplier_Click(object sender, EventArgs e)
-        {
-            lblCurrentPage.Text = "Supplier Management";
-        }
-
-        private void btnReport_Click(object sender, EventArgs e)
-        {
-            lblCurrentPage.Text = "Reports";
-            //openChildForm(new )
-        }
         private void btnProduct_Click(object sender, EventArgs e)
         {
             lblCurrentPage.Text = "Product Management";
@@ -88,7 +96,7 @@ namespace StoreMS.Forms
 
         private void btnSupplier_Click_1(object sender, EventArgs e)
         {
-            lblCurrentPage.Text = "Supplier Manegenent";
+            lblCurrentPage.Text = "Supplier Management";
             openChildForm(new SupplierForm());
         }
 
@@ -100,7 +108,7 @@ namespace StoreMS.Forms
 
         private void btnReport_Click_1(object sender, EventArgs e)
         {
-
+            lblCurrentPage.Text = "Reports";
         }
     }
 }

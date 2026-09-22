@@ -20,18 +20,18 @@ namespace StoreMS.Repositories
             {
                 users.Add(new User
                 {
-                    UserId = row["UserId"].ToString(),
-                    UserName = row["UserName"].ToString(),
-                    FullName = row["FullName"].ToString(),
-                    Role = row["Role"].ToString(),
-                    IsActive = Convert.ToBoolean(row["IsActive"])
+                    UserId = Convert.ToInt32(row["UserId"]), // ប្ដូរមកជា Convert.ToInt32
+                    UserName = row["UserName"]?.ToString() ?? "",
+                    FullName = row["FullName"]?.ToString() ?? "",
+                    Role = row["Role"]?.ToString() ?? "",
+                    IsActive = row["IsActive"] != DBNull.Value && Convert.ToBoolean(row["IsActive"])
                 });
             }
             return users;
         }
 
         // ២. ទាញយកព័ត៌មានអ្នកប្រើប្រាស់តាម UserId
-        public User GetById(string userId)
+        public User GetById(int userId) // Parameter ទទួលយក int
         {
             User user = null;
             string query = "SELECT UserId, UserName, FullName, Role, IsActive FROM Users WHERE UserId = @UserId";
@@ -45,11 +45,11 @@ namespace StoreMS.Repositories
                 DataRow row = dt.Rows[0];
                 user = new User
                 {
-                    UserId = row["UserId"].ToString(),
-                    UserName = row["UserName"].ToString(),
-                    FullName = row["FullName"].ToString(),
-                    Role = row["Role"].ToString(),
-                    IsActive = Convert.ToBoolean(row["IsActive"])
+                    UserId = Convert.ToInt32(row["UserId"]),
+                    UserName = row["UserName"]?.ToString() ?? "",
+                    FullName = row["FullName"]?.ToString() ?? "",
+                    Role = row["Role"]?.ToString() ?? "",
+                    IsActive = row["IsActive"] != DBNull.Value && Convert.ToBoolean(row["IsActive"])
                 };
             }
             return user;
@@ -58,9 +58,8 @@ namespace StoreMS.Repositories
         // ៣. បន្ថែមអ្នកប្រើប្រាស់ថ្មី
         public bool Add(User entity)
         {
-            string query = "INSERT INTO Users (UserId, UserName, FullName, Role, IsActive) VALUES (@UserId, @UserName, @FullName, @Role, @IsActive)";
+            string query = "INSERT INTO Users (UserName, FullName, Role, IsActive) VALUES (@UserName, @FullName, @Role, @IsActive)";
             SqlParameter[] parameters = {
-                new SqlParameter("@UserId", entity.UserId),
                 new SqlParameter("@UserName", entity.UserName),
                 new SqlParameter("@FullName", entity.FullName),
                 new SqlParameter("@Role", entity.Role),
@@ -88,7 +87,7 @@ namespace StoreMS.Repositories
         }
 
         // ៥. លុបអ្នកប្រើប្រាស់
-        public bool Delete(string userId)
+        public bool Delete(int userId) // Parameter ទទួលយក int
         {
             string query = "DELETE FROM Users WHERE UserId = @UserId";
             SqlParameter[] parameters = {
@@ -103,7 +102,6 @@ namespace StoreMS.Repositories
         public User Authenticate(string userName, string password)
         {
             User user = null;
-            //បញ្ជាក់៖ ក្នុងប្រព័ន្ធពិត អ្នកគួរតែប្រើប្រាស់ Password Hashing (SHA256 ឬ BCrypt) ជំនួសការឆែកអត្ថបទផ្ទាល់
             string query = "SELECT UserId, UserName, FullName, Role, IsActive FROM Users WHERE UserName = @UserName AND Password = @Password AND IsActive = 1";
             SqlParameter[] parameters = {
                 new SqlParameter("@UserName", userName),
@@ -116,11 +114,11 @@ namespace StoreMS.Repositories
                 DataRow row = dt.Rows[0];
                 user = new User
                 {
-                    UserId = row["UserId"].ToString(),
-                    UserName = row["UserName"].ToString(),
-                    FullName = row["FullName"].ToString(),
-                    Role = row["Role"].ToString(),
-                    IsActive = Convert.ToBoolean(row["IsActive"])
+                    UserId = Convert.ToInt32(row["UserId"]),
+                    UserName = row["UserName"]?.ToString() ?? "",
+                    FullName = row["FullName"]?.ToString() ?? "",
+                    Role = row["Role"]?.ToString() ?? "",
+                    IsActive = row["IsActive"] != DBNull.Value && Convert.ToBoolean(row["IsActive"])
                 };
             }
             return user;
