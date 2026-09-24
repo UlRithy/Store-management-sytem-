@@ -18,7 +18,7 @@ namespace StoreMS
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new LoignForm ());
+            Application.Run(new DashboardForm());
       
             //try
             //{
