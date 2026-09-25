@@ -33,7 +33,7 @@ namespace StoreMS.Models
         public string PaymentMethod { get; set; }
 
         // ទំនិញក្នុង Invoice
-        public List<SaleDetail> SaleDetails { get; set; }
+        public List<OrderDetail> SaleDetails { get; set; }
 
         public Sale()
         {
@@ -41,7 +41,7 @@ namespace StoreMS.Models
             SaleDate = DateTime.Now;
             CustomerName = "";
             PaymentMethod = "Cash";
-            SaleDetails = new List<SaleDetail>();
+            SaleDetails = new List<OrderDetail>();
         }
     }
 }

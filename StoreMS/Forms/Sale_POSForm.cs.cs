@@ -23,7 +23,7 @@ namespace StoreMS.Forms
 
         private readonly SaleRepository saleRepo = new SaleRepository();
 
-        private readonly BindingList<SaleDetail> cartList = new BindingList<SaleDetail>();
+        private readonly BindingList<OrderDetail> cartList = new BindingList<OrderDetail>();
 
         private readonly PrintDocument printDocument1 = new PrintDocument();
 
@@ -357,7 +357,7 @@ namespace StoreMS.Forms
                 return;
             }
 
-            SaleDetail existingItem = cartList.FirstOrDefault(x => x.ProductId == productId);
+            OrderDetail existingItem = cartList.FirstOrDefault(x => x.ProductId == productId);
 
             if (existingItem != null)
             {
@@ -383,7 +383,7 @@ namespace StoreMS.Forms
                     return;
                 }
 
-                cartList.Add(new SaleDetail
+                cartList.Add(new OrderDetail
                 {
                     ProductId = productId,
                     ProductName = productName,
@@ -405,7 +405,7 @@ namespace StoreMS.Forms
         {
             decimal grandTotal = 0m;
 
-            foreach (SaleDetail item in cartList)
+            foreach (OrderDetail item in cartList)
             {
                 grandTotal += item.SubTotal;
             }
