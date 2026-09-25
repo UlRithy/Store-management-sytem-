@@ -109,6 +109,7 @@ namespace StoreMS.Forms
         private void btnReport_Click_1(object sender, EventArgs e)
         {
             lblCurrentPage.Text = "Reports";
+            openChildForm(new ReportForm());
         }
     }
 }

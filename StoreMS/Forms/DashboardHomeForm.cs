@@ -12,19 +12,16 @@ namespace StoreMS.Forms
     {
         private readonly ProductRepository productRepo;
 
-        // ប្រកាស Properties ដើម្បីរក្សាទុកទិន្នន័យអ្នកដែលបាន Login ចូល
         public int CurrentUserId { get; set; }
         public string CurrentFullName { get; set; }
         public string CurrentRole { get; set; }
 
-        // 1. Default Constructor (ករណីហៅដោយគ្មាន Parameter)
         public DashboardHomeForm()
         {
             InitializeComponent();
             productRepo = new ProductRepository();
         }
 
-        // 2. Overloaded Constructor (ទទួលយកទិន្នន័យ 3 ពី DashboardForm)
         public DashboardHomeForm(int userId, string fullName, string role) : this()
         {
             CurrentUserId = userId;
@@ -34,7 +31,7 @@ namespace StoreMS.Forms
 
         private void DashboardHomeForm_Load(object sender, EventArgs e)
         {
-            SetGreeting(); // បើកដំណើរការ SetGreeting ឡើងវិញធម្មតា
+            SetGreeting();
             LoadKpis();
             LoadRecentSales();
             LoadLowStock();
@@ -44,8 +41,6 @@ namespace StoreMS.Forms
         {
             int hour = DateTime.Now.Hour;
             string timeOfDay = hour < 12 ? "morning" : (hour < 18 ? "afternoon" : "evening");
-
-            // ប្រើប្រាស់ FullName ដែលទទួលបានពីការ Login មកបង្ហាញ (បើគ្មាន ដាក់ Admin ជាតម្លៃលំនាំដើម)
             string displayName = !string.IsNullOrEmpty(CurrentFullName) ? CurrentFullName : "Admin";
 
             lblGreeting.Text = "Good " + timeOfDay + ", " + displayName;
@@ -78,24 +73,13 @@ namespace StoreMS.Forms
                 lblKpiLowStockDelta.Text = "Stock data unavailable";
             }
 
+            // ទាញយកទឹកប្រាក់សរុប និងចំនួនបញ្ជាទិញថ្ងៃនេះពី tbSales
             DataTable salesSummary = TryGetDataTable(@"
                 SELECT 
                     COUNT(*) AS OrderCount,
                     ISNULL(SUM(TotalAmount), 0) AS TotalSales
-                FROM Sales
+                FROM tbSales
                 WHERE CAST(SaleDate AS date) = CAST(GETDATE() AS date)");
-
-            if (salesSummary == null)
-            {
-                salesSummary = TryGetDataTable(@"
-                    SELECT
-                        COUNT(DISTINCT o.OrderID) AS OrderCount,
-                        ISNULL(SUM(ISNULL(od.Quantity, 0) * ISNULL(p.Price, 0)), 0) AS TotalSales
-                    FROM tbOrders o
-                    LEFT JOIN tbOrderDetails od ON o.OrderID = od.OrderID
-                    LEFT JOIN tbProducts p ON od.ProductID = p.ProductID
-                    WHERE CAST(o.OrderDate AS date) = CAST(GETDATE() AS date)");
-            }
 
             if (salesSummary != null && salesSummary.Rows.Count > 0)
             {
@@ -121,41 +105,22 @@ namespace StoreMS.Forms
         {
             dgvRecentSales.Rows.Clear();
 
+            // ទាញយកទិន្នន័យលក់ចុងក្រោយដោយដក Customer ចេញ
             DataTable sales = TryGetDataTable(@"
                 SELECT TOP 10
                     s.InvoiceNo AS Invoice,
-                    ISNULL(c.Name, 'Walk-in') AS Customer,
                     CAST(ISNULL(SUM(sd.Quantity), 0) AS varchar(20)) AS Items,
                     s.TotalAmount AS Total,
                     s.PaymentMethod AS Payment,
                     s.SaleDate AS SaleTime
-                FROM Sales s
-                LEFT JOIN Customers c ON s.CustomerId = c.Id
-                LEFT JOIN SaleDetails sd ON s.SaleId = sd.SaleId
-                GROUP BY s.SaleId, s.InvoiceNo, c.Name, s.TotalAmount, s.PaymentMethod, s.SaleDate
+                FROM tbSales s
+                LEFT JOIN tbSaleDetails sd ON s.SaleID = sd.SaleID
+                GROUP BY s.SaleID, s.InvoiceNo, s.TotalAmount, s.PaymentMethod, s.SaleDate
                 ORDER BY s.SaleDate DESC");
-
-            if (sales == null)
-            {
-                sales = TryGetDataTable(@"
-                    SELECT TOP 10
-                        'ORD-' + CAST(o.OrderID AS varchar(20)) AS Invoice,
-                        ISNULL(c.CustomerName, 'Walk-in') AS Customer,
-                        CAST(ISNULL(SUM(od.Quantity), 0) AS varchar(20)) AS Items,
-                        ISNULL(SUM(ISNULL(od.Quantity, 0) * ISNULL(p.Price, 0)), 0) AS Total,
-                        'Cash' AS Payment,
-                        o.OrderDate AS SaleTime
-                    FROM tbOrders o
-                    LEFT JOIN tbCustomers c ON o.CustomerID = c.CustomerID
-                    LEFT JOIN tbOrderDetails od ON o.OrderID = od.OrderID
-                    LEFT JOIN tbProducts p ON od.ProductID = p.ProductID
-                    GROUP BY o.OrderID, c.CustomerName, o.OrderDate
-                    ORDER BY o.OrderDate DESC, o.OrderID DESC");
-            }
 
             if (sales == null || sales.Rows.Count == 0)
             {
-                dgvRecentSales.Rows.Add("No sales", "No transactions yet", "-", "$0.00", "-", "-");
+                dgvRecentSales.Rows.Add("No sales", "No transactions yet", "$0.00", "-", "-");
                 return;
             }
 
@@ -168,7 +133,6 @@ namespace StoreMS.Forms
 
                 dgvRecentSales.Rows.Add(
                     row["Invoice"]?.ToString(),
-                    row["Customer"]?.ToString(),
                     row["Items"]?.ToString(),
                     total.ToString("$#,##0.00"),
                     row["Payment"]?.ToString(),

@@ -45,8 +45,6 @@
             this.btnRemoveItem = new Guna.UI2.WinForms.Guna2Button();
             this.lblTotalAmount = new System.Windows.Forms.Label();
             this.lblTotalTitle = new System.Windows.Forms.Label();
-            this.cmbCustomer = new Guna.UI2.WinForms.Guna2ComboBox();
-            this.lblCustomer = new System.Windows.Forms.Label();
             this.pnlTop.SuspendLayout();
             this.pnlLeft.SuspendLayout();
             this.pnlProductSearch.SuspendLayout();
@@ -66,11 +64,10 @@
             this.pnlTop.Name = "pnlTop";
             this.pnlTop.Size = new System.Drawing.Size(1712, 74);
             this.pnlTop.TabIndex = 0;
-          
             // 
             // txtBarcodeScan
             // 
-            this.txtBarcodeScan.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
+            this.txtBarcodeScan.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.txtBarcodeScan.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(191)))), ((int)(((byte)(219)))), ((int)(((byte)(254)))));
             this.txtBarcodeScan.BorderRadius = 10;
@@ -328,8 +325,6 @@
             this.pnlRight.Controls.Add(this.btnRemoveItem);
             this.pnlRight.Controls.Add(this.lblTotalAmount);
             this.pnlRight.Controls.Add(this.lblTotalTitle);
-            this.pnlRight.Controls.Add(this.cmbCustomer);
-            this.pnlRight.Controls.Add(this.lblCustomer);
             this.pnlRight.Dock = System.Windows.Forms.DockStyle.Right;
             this.pnlRight.Location = new System.Drawing.Point(1219, 74);
             this.pnlRight.Margin = new System.Windows.Forms.Padding(4);
@@ -372,7 +367,7 @@
             this.btnClearCart.Font = new System.Drawing.Font("Segoe UI Semibold", 9.5F);
             this.btnClearCart.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(220)))), ((int)(((byte)(38)))), ((int)(((byte)(38)))));
             this.btnClearCart.HoverState.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(254)))), ((int)(((byte)(242)))), ((int)(((byte)(242)))));
-            this.btnClearCart.Location = new System.Drawing.Point(257, 129);
+            this.btnClearCart.Location = new System.Drawing.Point(253, 26);
             this.btnClearCart.Margin = new System.Windows.Forms.Padding(4);
             this.btnClearCart.Name = "btnClearCart";
             this.btnClearCart.Size = new System.Drawing.Size(213, 49);
@@ -390,7 +385,7 @@
             this.btnRemoveItem.Font = new System.Drawing.Font("Segoe UI Semibold", 9.5F);
             this.btnRemoveItem.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(116)))), ((int)(((byte)(139)))));
             this.btnRemoveItem.HoverState.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(248)))), ((int)(((byte)(250)))), ((int)(((byte)(252)))));
-            this.btnRemoveItem.Location = new System.Drawing.Point(24, 129);
+            this.btnRemoveItem.Location = new System.Drawing.Point(20, 26);
             this.btnRemoveItem.Margin = new System.Windows.Forms.Padding(4);
             this.btnRemoveItem.Name = "btnRemoveItem";
             this.btnRemoveItem.Size = new System.Drawing.Size(213, 49);
@@ -421,34 +416,6 @@
             this.lblTotalTitle.Size = new System.Drawing.Size(125, 25);
             this.lblTotalTitle.TabIndex = 4;
             this.lblTotalTitle.Text = "Total amount";
-            // 
-            // cmbCustomer
-            // 
-            this.cmbCustomer.BackColor = System.Drawing.Color.Transparent;
-            this.cmbCustomer.BorderRadius = 10;
-            this.cmbCustomer.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed;
-            this.cmbCustomer.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cmbCustomer.FocusedColor = System.Drawing.Color.Empty;
-            this.cmbCustomer.Font = new System.Drawing.Font("Segoe UI", 9.5F);
-            this.cmbCustomer.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(15)))), ((int)(((byte)(23)))), ((int)(((byte)(42)))));
-            this.cmbCustomer.ItemHeight = 30;
-            this.cmbCustomer.Location = new System.Drawing.Point(24, 50);
-            this.cmbCustomer.Margin = new System.Windows.Forms.Padding(4);
-            this.cmbCustomer.Name = "cmbCustomer";
-            this.cmbCustomer.Size = new System.Drawing.Size(445, 36);
-            this.cmbCustomer.TabIndex = 1;
-            // 
-            // lblCustomer
-            // 
-            this.lblCustomer.AutoSize = true;
-            this.lblCustomer.Font = new System.Drawing.Font("Segoe UI", 9.5F);
-            this.lblCustomer.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(71)))), ((int)(((byte)(85)))), ((int)(((byte)(105)))));
-            this.lblCustomer.Location = new System.Drawing.Point(24, 25);
-            this.lblCustomer.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
-            this.lblCustomer.Name = "lblCustomer";
-            this.lblCustomer.Size = new System.Drawing.Size(78, 21);
-            this.lblCustomer.TabIndex = 0;
-            this.lblCustomer.Text = "Customer";
             // 
             // Sale_POSForm
             // 
@@ -502,8 +469,7 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn colTotal;
 
         private System.Windows.Forms.Panel pnlRight;
-        private System.Windows.Forms.Label lblCustomer;
-        private Guna.UI2.WinForms.Guna2ComboBox cmbCustomer;
+        //private Guna.UI2.WinForms.Guna2ComboBox cmbCustomer;
         private Guna.UI2.WinForms.Guna2Button btnRemoveItem;
         private Guna.UI2.WinForms.Guna2Button btnClearCart;
         private System.Windows.Forms.Panel pnlTotalDivider;

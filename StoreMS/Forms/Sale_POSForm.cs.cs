@@ -21,17 +21,13 @@ namespace StoreMS.Forms
         // VARIABLES
         // =========================================================
 
-        private readonly SaleRepository saleRepo =
-            new SaleRepository();
+        private readonly SaleRepository saleRepo = new SaleRepository();
 
-        private readonly BindingList<SaleDetail> cartList =
-            new BindingList<SaleDetail>();
+        private readonly BindingList<SaleDetail> cartList = new BindingList<SaleDetail>();
 
-        private readonly PrintDocument printDocument1 =
-            new PrintDocument();
+        private readonly PrintDocument printDocument1 = new PrintDocument();
 
-        // User ដែល Login ចូល
-        // បច្ចុប្បន្នប្រើ 1 ជា Default
+        // User ដែល Login ចូល (បច្ចុប្បន្នប្រើ 1 ជា Default)
         private int currentUserId = 1;
 
 
@@ -49,60 +45,29 @@ namespace StoreMS.Forms
         // FORM LOAD
         // =========================================================
 
-        private void Sale_POSForm_Load(
-            object sender,
-            EventArgs e)
+        private void Sale_POSForm_Load(object sender, EventArgs e)
         {
             try
             {
-                // -----------------------------
                 // Cart DataGridView
-                // -----------------------------
-
                 dgvCart.AutoGenerateColumns = false;
-
                 dgvCart.DataSource = cartList;
-
                 dgvCart.RowTemplate.Height = 50;
 
-                // -----------------------------
                 // Print
-                // -----------------------------
+                printDocument1.PrintPage += new PrintPageEventHandler(printDocument1_PrintPage);
 
-                printDocument1.PrintPage +=
-                    new PrintPageEventHandler(
-                        printDocument1_PrintPage
-                    );
-
-                // -----------------------------
-                // Load Customer
-                // -----------------------------
-
-                LoadCustomers();
-
-                // -----------------------------
-                // Load Category
-                // -----------------------------
-
+                // Load Category & Products
                 LoadCategories();
-
-                // -----------------------------
-                // Load Products
-                // -----------------------------
-
                 LoadProducts("");
 
-                // -----------------------------
                 // Total
-                // -----------------------------
-
                 CalculateTotal();
             }
             catch (Exception ex)
             {
                 MessageBox.Show(
-                    "Error loading POS:\n\n" +
-                    ex.Message,
+                    "Error loading POS:\n\n" + ex.Message,
                     "Error",
                     MessageBoxButtons.OK,
                     MessageBoxIcon.Error
@@ -115,55 +80,9 @@ namespace StoreMS.Forms
         // PANEL PAINT
         // =========================================================
 
-        private void pnlTop_Paint(
-            object sender,
-            PaintEventArgs e)
+        private void pnlTop_Paint(object sender, PaintEventArgs e)
         {
             // មិនចាំបាច់មាន code
-        }
-
-
-        // =========================================================
-        // LOAD CUSTOMERS
-        // =========================================================
-
-        private void LoadCustomers()
-        {
-            try
-            {
-                string query = @"
-                    SELECT
-                        CustomerID,
-                        CustomerName
-                    FROM tbCustomers
-                    ORDER BY CustomerName ASC";
-
-                DataTable dt =
-                    Database.ExecuteQuery(query);
-
-                cmbCustomer.DataSource = dt;
-
-                cmbCustomer.DisplayMember =
-                    "CustomerName";
-
-                cmbCustomer.ValueMember =
-                    "CustomerID";
-
-                if (dt.Rows.Count > 0)
-                {
-                    cmbCustomer.SelectedIndex = 0;
-                }
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(
-                    "Error loading customers:\n\n" +
-                    ex.Message,
-                    "Database Error",
-                    MessageBoxButtons.OK,
-                    MessageBoxIcon.Error
-                );
-            }
         }
 
 
@@ -176,44 +95,28 @@ namespace StoreMS.Forms
             try
             {
                 string query = @"
-                    SELECT
-                        CategoryID,
-                        CategoryName
-                    FROM tbCategory
+                    SELECT 
+                        CategoryID, 
+                        CategoryName 
+                    FROM tbCategory 
                     ORDER BY CategoryName ASC";
 
-                DataTable dt =
-                    Database.ExecuteQuery(query);
+                DataTable dt = Database.ExecuteQuery(query);
 
-                // Add All Categories
-                DataRow allRow =
-                    dt.NewRow();
-
+                DataRow allRow = dt.NewRow();
                 allRow["CategoryID"] = 0;
-
-                allRow["CategoryName"] =
-                    "All Categories";
-
-                dt.Rows.InsertAt(
-                    allRow,
-                    0
-                );
+                allRow["CategoryName"] = "All Categories";
+                dt.Rows.InsertAt(allRow, 0);
 
                 cmbCategory.DataSource = dt;
-
-                cmbCategory.DisplayMember =
-                    "CategoryName";
-
-                cmbCategory.ValueMember =
-                    "CategoryID";
-
+                cmbCategory.DisplayMember = "CategoryName";
+                cmbCategory.ValueMember = "CategoryID";
                 cmbCategory.SelectedIndex = 0;
             }
             catch (Exception ex)
             {
                 MessageBox.Show(
-                    "Error loading categories:\n\n" +
-                    ex.Message,
+                    "Error loading categories:\n\n" + ex.Message,
                     "Database Error",
                     MessageBoxButtons.OK,
                     MessageBoxIcon.Error
@@ -226,121 +129,48 @@ namespace StoreMS.Forms
         // LOAD PRODUCT IMAGE
         // =========================================================
 
-        private Image LoadProductImage(
-            string imagePath)
+        private Image LoadProductImage(string imagePath)
         {
             try
             {
-                // -----------------------------------------
-                // Empty ImagePath
-                // -----------------------------------------
-
                 if (string.IsNullOrWhiteSpace(imagePath))
                 {
                     return CreateNoImage();
                 }
 
-                imagePath =
-                    imagePath.Trim();
-
-
-                // -----------------------------------------
-                // Possible paths
-                // -----------------------------------------
-
-                List<string> possiblePaths =
-                    new List<string>();
-
-
-                // -----------------------------------------
-                // 1. Absolute Path
-                // -----------------------------------------
+                imagePath = imagePath.Trim();
+                List<string> possiblePaths = new List<string>();
 
                 if (Path.IsPathRooted(imagePath))
                 {
-                    possiblePaths.Add(
-                        imagePath
-                    );
+                    possiblePaths.Add(imagePath);
                 }
 
+                possiblePaths.Add(Path.Combine(Application.StartupPath, imagePath));
+                possiblePaths.Add(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, imagePath));
 
-                // -----------------------------------------
-                // 2. Application Startup Path
-                // -----------------------------------------
-
-                possiblePaths.Add(
-                    Path.Combine(
-                        Application.StartupPath,
-                        imagePath
-                    )
-                );
-
-
-                // -----------------------------------------
-                // 3. Base Directory
-                // -----------------------------------------
-
-                possiblePaths.Add(
-                    Path.Combine(
-                        AppDomain.CurrentDomain.BaseDirectory,
-                        imagePath
-                    )
-                );
-
-
-                // -----------------------------------------
-                // 4. Project Folder
-                // -----------------------------------------
-
-                DirectoryInfo directory =
-                    Directory.GetParent(
-                        Application.StartupPath
-                    );
-
+                DirectoryInfo directory = Directory.GetParent(Application.StartupPath);
                 if (directory != null)
                 {
-                    directory =
-                        directory.Parent;
+                    directory = directory.Parent;
                 }
 
                 if (directory != null)
                 {
-                    string projectPath =
-                        directory.FullName;
-
-                    possiblePaths.Add(
-                        Path.Combine(
-                            projectPath,
-                            imagePath
-                        )
-                    );
+                    string projectPath = directory.FullName;
+                    possiblePaths.Add(Path.Combine(projectPath, imagePath));
                 }
 
-
-                // -----------------------------------------
-                // Find Image
-                // -----------------------------------------
-
-                foreach (string path
-                    in possiblePaths.Distinct())
+                foreach (string path in possiblePaths.Distinct())
                 {
                     if (File.Exists(path))
                     {
-                        // Clone image so file won't be locked
-                        using (
-                            Image temp =
-                            Image.FromFile(path)
-                        )
+                        using (Image temp = Image.FromFile(path))
                         {
                             return new Bitmap(temp);
                         }
                     }
                 }
-
-
-                // -----------------------------------------
-                // Image not found
-                // -----------------------------------------
 
                 return CreateNoImage();
             }
@@ -357,56 +187,25 @@ namespace StoreMS.Forms
 
         private Image CreateNoImage()
         {
-            Bitmap bmp =
-                new Bitmap(
-                    120,
-                    100
-                );
+            Bitmap bmp = new Bitmap(120, 100);
 
-            using (
-                Graphics g =
-                Graphics.FromImage(bmp)
-            )
+            using (Graphics g = Graphics.FromImage(bmp))
             {
-                g.Clear(
-                    Color.WhiteSmoke
-                );
+                g.Clear(Color.WhiteSmoke);
 
-                using (
-                    Font font =
-                    new Font(
-                        "Segoe UI",
-                        10F,
-                        FontStyle.Italic
-                    )
-                )
+                using (Font font = new Font("Segoe UI", 10F, FontStyle.Italic))
                 {
-                    using (
-                        Brush brush =
-                        new SolidBrush(
-                            Color.Gray
-                        )
-                    )
+                    using (Brush brush = new SolidBrush(Color.Gray))
                     {
-                        StringFormat sf =
-                            new StringFormat();
-
-                        sf.Alignment =
-                            StringAlignment.Center;
-
-                        sf.LineAlignment =
-                            StringAlignment.Center;
+                        StringFormat sf = new StringFormat();
+                        sf.Alignment = StringAlignment.Center;
+                        sf.LineAlignment = StringAlignment.Center;
 
                         g.DrawString(
                             "No Image",
                             font,
                             brush,
-                            new Rectangle(
-                                0,
-                                0,
-                                120,
-                                100
-                            ),
+                            new Rectangle(0, 0, 120, 100),
                             sf
                         );
                     }
@@ -421,410 +220,123 @@ namespace StoreMS.Forms
         // LOAD PRODUCTS
         // =========================================================
 
-        private void LoadProducts(
-            string searchName,
-            int categoryId = 0)
+        private void LoadProducts(string searchName, int categoryId = 0)
         {
-            // Clear old cards
             flpProducts.Controls.Clear();
 
             try
             {
                 string query = @"
-                    SELECT
-                        ProductID,
-                        ProductName,
-                        Price,
-                        StockQty,
-                        ImagePath
-                    FROM tbProducts
+                    SELECT 
+                        ProductID, 
+                        ProductName, 
+                        Price, 
+                        StockQty, 
+                        ImagePath 
+                    FROM tbProducts 
                     WHERE 1 = 1";
 
-                List<SqlParameter> parameters =
-                    new List<SqlParameter>();
-
-
-                // -----------------------------------------
-                // Search Product Name
-                // -----------------------------------------
+                List<SqlParameter> parameters = new List<SqlParameter>();
 
                 if (!string.IsNullOrWhiteSpace(searchName))
                 {
-                    query += @"
-                        AND ProductName LIKE @SearchName";
-
-                    parameters.Add(
-                        new SqlParameter(
-                            "@SearchName",
-                            "%" +
-                            searchName +
-                            "%"
-                        )
-                    );
+                    query += " AND ProductName LIKE @SearchName";
+                    parameters.Add(new SqlParameter("@SearchName", "%" + searchName + "%"));
                 }
-
-
-                // -----------------------------------------
-                // Category
-                // -----------------------------------------
 
                 if (categoryId > 0)
                 {
-                    query += @"
-                        AND CategoryID = @CategoryID";
-
-                    parameters.Add(
-                        new SqlParameter(
-                            "@CategoryID",
-                            categoryId
-                        )
-                    );
+                    query += " AND CategoryID = @CategoryID";
+                    parameters.Add(new SqlParameter("@CategoryID", categoryId));
                 }
 
+                query += " ORDER BY ProductName ASC";
 
-                // -----------------------------------------
-                // Order
-                // -----------------------------------------
+                DataTable dt = Database.ExecuteQuery(query, parameters.ToArray());
 
-                query += @"
-                    ORDER BY ProductName ASC";
-
-
-                // -----------------------------------------
-                // Execute
-                // -----------------------------------------
-
-                DataTable dt =
-                    Database.ExecuteQuery(
-                        query,
-                        parameters.ToArray()
-                    );
-
-
-                // -----------------------------------------
-                // Create Product Cards
-                // -----------------------------------------
-
-                foreach (
-                    DataRow row
-                    in dt.Rows
-                )
+                foreach (DataRow row in dt.Rows)
                 {
-                    int productId =
-                        Convert.ToInt32(
-                            row["ProductID"]
-                        );
+                    int productId = Convert.ToInt32(row["ProductID"]);
+                    string productName = row["ProductName"] == DBNull.Value ? "" : row["ProductName"].ToString();
+                    decimal price = row["Price"] == DBNull.Value ? 0m : Convert.ToDecimal(row["Price"]);
+                    int stock = row["StockQty"] == DBNull.Value ? 0 : Convert.ToInt32(row["StockQty"]);
+                    string imagePath = row["ImagePath"] == DBNull.Value ? "" : row["ImagePath"].ToString();
 
+                    Image productImage = LoadProductImage(imagePath);
 
-                    string productName =
-                        row["ProductName"]
-                        == DBNull.Value
-                        ? ""
-                        : row["ProductName"]
-                            .ToString();
+                    Panel card = new Panel
+                    {
+                        Width = 150,
+                        Height = 190,
+                        BackColor = Color.White,
+                        Margin = new Padding(8),
+                        Cursor = Cursors.Hand,
+                        BorderStyle = BorderStyle.FixedSingle
+                    };
 
-
-                    decimal price =
-                        row["Price"]
-                        == DBNull.Value
-                        ? 0m
-                        : Convert.ToDecimal(
-                            row["Price"]
-                        );
-
-
-                    int stock =
-                        row["StockQty"]
-                        == DBNull.Value
-                        ? 0
-                        : Convert.ToInt32(
-                            row["StockQty"]
-                        );
-
-
-                    string imagePath =
-                        row["ImagePath"]
-                        == DBNull.Value
-                        ? ""
-                        : row["ImagePath"]
-                            .ToString();
-
-
-                    // -----------------------------------------
-                    // Load Image
-                    // -----------------------------------------
-
-                    Image productImage =
-                        LoadProductImage(
-                            imagePath
-                        );
-
-
-                    // -----------------------------------------
-                    // Product Card
-                    // -----------------------------------------
-
-                    Panel card =
-                        new Panel
-                        {
-                            Width = 150,
-
-                            Height = 190,
-
-                            BackColor =
-                                Color.White,
-
-                            Margin =
-                                new Padding(8),
-
-                            Cursor =
-                                Cursors.Hand,
-
-                            BorderStyle =
-                                BorderStyle.FixedSingle
-                        };
-
-
-                    // -----------------------------------------
-                    // PictureBox
-                    // -----------------------------------------
-
-                    PictureBox pb =
-                        new PictureBox
-                        {
-                            Width = 140,
-
-                            Height = 100,
-
-                            Dock =
-                                DockStyle.Top,
-
-                            SizeMode =
-                                PictureBoxSizeMode.Zoom,
-
-                            BackColor =
-                                Color.WhiteSmoke,
-
-                            Cursor =
-                                Cursors.Hand
-                        };
-
+                    PictureBox pb = new PictureBox
+                    {
+                        Width = 140,
+                        Height = 100,
+                        Dock = DockStyle.Top,
+                        SizeMode = PictureBoxSizeMode.Zoom,
+                        BackColor = Color.WhiteSmoke,
+                        Cursor = Cursors.Hand
+                    };
 
                     if (productImage != null)
                     {
-                        pb.Image =
-                            productImage;
+                        pb.Image = productImage;
                     }
 
+                    Label lblName = new Label
+                    {
+                        Text = productName,
+                        Dock = DockStyle.Top,
+                        Height = 35,
+                        Font = new Font("Segoe UI", 9F, FontStyle.Bold),
+                        TextAlign = ContentAlignment.MiddleCenter,
+                        Cursor = Cursors.Hand
+                    };
 
-                    // -----------------------------------------
-                    // Product Name
-                    // -----------------------------------------
+                    Label lblPrice = new Label
+                    {
+                        Text = "$" + price.ToString("N2"),
+                        Dock = DockStyle.Bottom,
+                        Height = 25,
+                        Font = new Font("Segoe UI", 9.5F, FontStyle.Bold),
+                        ForeColor = Color.FromArgb(40, 167, 69),
+                        TextAlign = ContentAlignment.MiddleCenter,
+                        Cursor = Cursors.Hand
+                    };
 
-                    Label lblName =
-                        new Label
-                        {
-                            Text =
-                                productName,
+                    Label lblStock = new Label
+                    {
+                        Text = "Stock: " + stock,
+                        Dock = DockStyle.Bottom,
+                        Height = 25,
+                        Font = new Font("Segoe UI", 8.5F, FontStyle.Regular),
+                        ForeColor = stock > 0 ? Color.DarkGreen : Color.Red,
+                        TextAlign = ContentAlignment.MiddleCenter
+                    };
 
-                            Dock =
-                                DockStyle.Top,
+                    card.Controls.Add(lblStock);
+                    card.Controls.Add(lblPrice);
+                    card.Controls.Add(lblName);
+                    card.Controls.Add(pb);
 
-                            Height = 35,
+                    card.Click += (s, e) => AddToCart(productId, productName, price, 1, stock, productImage);
+                    pb.Click += (s, e) => AddToCart(productId, productName, price, 1, stock, productImage);
+                    lblName.Click += (s, e) => AddToCart(productId, productName, price, 1, stock, productImage);
+                    lblPrice.Click += (s, e) => AddToCart(productId, productName, price, 1, stock, productImage);
 
-                            Font =
-                                new Font(
-                                    "Segoe UI",
-                                    9F,
-                                    FontStyle.Bold
-                                ),
-
-                            TextAlign =
-                                ContentAlignment.MiddleCenter,
-
-                            Cursor =
-                                Cursors.Hand
-                        };
-
-
-                    // -----------------------------------------
-                    // Price
-                    // -----------------------------------------
-
-                    Label lblPrice =
-                        new Label
-                        {
-                            Text =
-                                "$" +
-                                price.ToString("N2"),
-
-                            Dock =
-                                DockStyle.Bottom,
-
-                            Height = 25,
-
-                            Font =
-                                new Font(
-                                    "Segoe UI",
-                                    9.5F,
-                                    FontStyle.Bold
-                                ),
-
-                            ForeColor =
-                                Color.FromArgb(
-                                    40,
-                                    167,
-                                    69
-                                ),
-
-                            TextAlign =
-                                ContentAlignment.MiddleCenter,
-
-                            Cursor =
-                                Cursors.Hand
-                        };
-
-
-                    // -----------------------------------------
-                    // Stock
-                    // -----------------------------------------
-
-                    Label lblStock =
-                        new Label
-                        {
-                            Text =
-                                "Stock: " +
-                                stock,
-
-                            Dock =
-                                DockStyle.Bottom,
-
-                            Height = 25,
-
-                            Font =
-                                new Font(
-                                    "Segoe UI",
-                                    8.5F,
-                                    FontStyle.Regular
-                                ),
-
-                            ForeColor =
-                                stock > 0
-                                ? Color.DarkGreen
-                                : Color.Red,
-
-                            TextAlign =
-                                ContentAlignment.MiddleCenter
-                        };
-
-
-                    // -----------------------------------------
-                    // Add controls
-                    // -----------------------------------------
-
-                    card.Controls.Add(
-                        lblStock
-                    );
-
-                    card.Controls.Add(
-                        lblPrice
-                    );
-
-                    card.Controls.Add(
-                        lblName
-                    );
-
-                    card.Controls.Add(
-                        pb
-                    );
-
-
-                    // -----------------------------------------
-                    // Click Card
-                    // -----------------------------------------
-
-                    card.Click +=
-                        (s, e) =>
-                        {
-                            AddToCart(
-                                productId,
-                                productName,
-                                price,
-                                1,
-                                stock,
-                                productImage
-                            );
-                        };
-
-
-                    // -----------------------------------------
-                    // Click Image
-                    // -----------------------------------------
-
-                    pb.Click +=
-                        (s, e) =>
-                        {
-                            AddToCart(
-                                productId,
-                                productName,
-                                price,
-                                1,
-                                stock,
-                                productImage
-                            );
-                        };
-
-
-                    // -----------------------------------------
-                    // Click Name
-                    // -----------------------------------------
-
-                    lblName.Click +=
-                        (s, e) =>
-                        {
-                            AddToCart(
-                                productId,
-                                productName,
-                                price,
-                                1,
-                                stock,
-                                productImage
-                            );
-                        };
-
-
-                    // -----------------------------------------
-                    // Click Price
-                    // -----------------------------------------
-
-                    lblPrice.Click +=
-                        (s, e) =>
-                        {
-                            AddToCart(
-                                productId,
-                                productName,
-                                price,
-                                1,
-                                stock,
-                                productImage
-                            );
-                        };
-
-
-                    // -----------------------------------------
-                    // Add Card
-                    // -----------------------------------------
-
-                    flpProducts.Controls.Add(
-                        card
-                    );
+                    flpProducts.Controls.Add(card);
                 }
             }
             catch (Exception ex)
             {
                 MessageBox.Show(
-                    "Error loading products:\n\n" +
-                    ex.Message,
+                    "Error loading products:\n\n" + ex.Message,
                     "Database Error",
                     MessageBoxButtons.OK,
                     MessageBoxIcon.Error
@@ -837,125 +349,49 @@ namespace StoreMS.Forms
         // ADD TO CART
         // =========================================================
 
-        private void AddToCart(
-            int productId,
-            string productName,
-            decimal price,
-            int qty,
-            int stockQty,
-            Image productImage = null)
+        private void AddToCart(int productId, string productName, decimal price, int qty, int stockQty, Image productImage = null)
         {
-            // -----------------------------------------
-            // Check Stock
-            // -----------------------------------------
-
             if (stockQty <= 0)
             {
-                MessageBox.Show(
-                    "ទំនិញនេះអស់ពីស្តុក!",
-                    "Out of Stock",
-                    MessageBoxButtons.OK,
-                    MessageBoxIcon.Warning
-                );
-
+                MessageBox.Show("ទំនិញនេះអស់ពីស្តុក!", "Out of Stock", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
             }
 
-
-            // -----------------------------------------
-            // Existing Item
-            // -----------------------------------------
-
-            SaleDetail existingItem =
-                cartList.FirstOrDefault(
-                    x =>
-                    x.ProductId ==
-                    productId
-                );
-
+            SaleDetail existingItem = cartList.FirstOrDefault(x => x.ProductId == productId);
 
             if (existingItem != null)
             {
-                // Check quantity
-                if (
-                    existingItem.Quantity +
-                    qty >
-                    stockQty
-                )
+                if (existingItem.Quantity + qty > stockQty)
                 {
-                    MessageBox.Show(
-                        "ស្តុកក្នុងឃ្លាំងមិនគ្រប់គ្រាន់ទេ!",
-                        "Warning",
-                        MessageBoxButtons.OK,
-                        MessageBoxIcon.Warning
-                    );
-
+                    MessageBox.Show("ស្តុកក្នុងឃ្លាំងមិនគ្រប់គ្រាន់ទេ!", "Warning", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                     return;
                 }
 
-
                 existingItem.Quantity += qty;
-
-
-                // Image
-                if (
-                    existingItem.ProductImage ==
-                    null
-                    &&
-                    productImage != null
-                )
+                if (existingItem.ProductImage == null && productImage != null)
                 {
-                    existingItem.ProductImage =
-                        productImage;
+                    existingItem.ProductImage = productImage;
                 }
-
 
                 dgvCart.Refresh();
             }
             else
             {
-                // -----------------------------------------
-                // New Item
-                // -----------------------------------------
-
                 if (qty > stockQty)
                 {
-                    MessageBox.Show(
-                        "ស្តុកក្នុងឃ្លាំងមិនគ្រប់គ្រាន់ទេ!",
-                        "Warning",
-                        MessageBoxButtons.OK,
-                        MessageBoxIcon.Warning
-                    );
-
+                    MessageBox.Show("ស្តុកក្នុងឃ្លាំងមិនគ្រប់គ្រាន់ទេ!", "Warning", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                     return;
                 }
 
-
-                cartList.Add(
-                    new SaleDetail
-                    {
-                        ProductId =
-                            productId,
-
-                        ProductName =
-                            productName,
-
-                        Price =
-                            price,
-
-                        Quantity =
-                            qty,
-
-                        ProductImage =
-                            productImage
-                    }
-                );
+                cartList.Add(new SaleDetail
+                {
+                    ProductId = productId,
+                    ProductName = productName,
+                    Price = price,
+                    Quantity = qty,
+                    ProductImage = productImage
+                });
             }
-
-
-            // -----------------------------------------
-            // Calculate
-            // -----------------------------------------
 
             CalculateTotal();
         }
@@ -967,25 +403,14 @@ namespace StoreMS.Forms
 
         private void CalculateTotal()
         {
-            decimal grandTotal =
-                0m;
+            decimal grandTotal = 0m;
 
-
-            foreach (
-                SaleDetail item
-                in cartList
-            )
+            foreach (SaleDetail item in cartList)
             {
-                grandTotal +=
-                    item.SubTotal;
+                grandTotal += item.SubTotal;
             }
 
-
-            lblTotalAmount.Text =
-                "$" +
-                grandTotal.ToString(
-                    "N2"
-                );
+            lblTotalAmount.Text = "$" + grandTotal.ToString("N2");
         }
 
 
@@ -993,334 +418,121 @@ namespace StoreMS.Forms
         // BARCODE SCAN
         // =========================================================
 
-        private void txtBarcodeScan_KeyDown(
-            object sender,
-            KeyEventArgs e)
+        private void txtBarcodeScan_KeyDown(object sender, KeyEventArgs e)
         {
             if (e.KeyCode != Keys.Enter)
                 return;
 
-
-            string barcode =
-                txtBarcodeScan.Text.Trim();
-
-
-            if (
-                string.IsNullOrWhiteSpace(
-                    barcode
-                )
-            )
-            {
+            string barcode = txtBarcodeScan.Text.Trim();
+            if (string.IsNullOrWhiteSpace(barcode))
                 return;
-            }
-
 
             try
             {
                 string query = @"
-                    SELECT
-                        ProductID,
-                        ProductName,
-                        Price,
-                        StockQty,
-                        ImagePath
-                    FROM tbProducts
+                    SELECT 
+                        ProductID, 
+                        ProductName, 
+                        Price, 
+                        StockQty, 
+                        ImagePath 
+                    FROM tbProducts 
                     WHERE Barcode = @Barcode";
 
-
-                SqlParameter[] parameters =
-                {
-                    new SqlParameter(
-                        "@Barcode",
-                        barcode
-                    )
-                };
-
-
-                DataTable dt =
-                    Database.ExecuteQuery(
-                        query,
-                        parameters
-                    );
-
-
-                // -----------------------------------------
-                // Not Found
-                // -----------------------------------------
+                SqlParameter[] parameters = { new SqlParameter("@Barcode", barcode) };
+                DataTable dt = Database.ExecuteQuery(query, parameters);
 
                 if (dt.Rows.Count == 0)
                 {
-                    MessageBox.Show(
-                        "រកមិនឃើញទំនិញដែលមាន Barcode នេះទេ!",
-                        "Not Found",
-                        MessageBoxButtons.OK,
-                        MessageBoxIcon.Warning
-                    );
-
+                    MessageBox.Show("រកមិនឃើញទំនិញដែលមាន Barcode នេះទេ!", "Not Found", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                     txtBarcodeScan.SelectAll();
-
                     return;
                 }
 
+                DataRow row = dt.Rows[0];
+                int productId = Convert.ToInt32(row["ProductID"]);
+                string productName = row["ProductName"] == DBNull.Value ? "" : row["ProductName"].ToString();
+                decimal price = row["Price"] == DBNull.Value ? 0m : Convert.ToDecimal(row["Price"]);
+                int stock = row["StockQty"] == DBNull.Value ? 0 : Convert.ToInt32(row["StockQty"]);
+                string imagePath = row["ImagePath"] == DBNull.Value ? "" : row["ImagePath"].ToString();
 
-                // -----------------------------------------
-                // Product
-                // -----------------------------------------
+                Image productImage = LoadProductImage(imagePath);
 
-                DataRow row =
-                    dt.Rows[0];
-
-
-                int productId =
-                    Convert.ToInt32(
-                        row["ProductID"]
-                    );
-
-
-                string productName =
-                    row["ProductName"]
-                    == DBNull.Value
-                    ? ""
-                    : row["ProductName"]
-                        .ToString();
-
-
-                decimal price =
-                    row["Price"]
-                    == DBNull.Value
-                    ? 0m
-                    : Convert.ToDecimal(
-                        row["Price"]
-                    );
-
-
-                int stock =
-                    row["StockQty"]
-                    == DBNull.Value
-                    ? 0
-                    : Convert.ToInt32(
-                        row["StockQty"]
-                    );
-
-
-                string imagePath =
-                    row["ImagePath"]
-                    == DBNull.Value
-                    ? ""
-                    : row["ImagePath"]
-                        .ToString();
-
-
-                Image productImage =
-                    LoadProductImage(
-                        imagePath
-                    );
-
-
-                // -----------------------------------------
-                // Add Cart
-                // -----------------------------------------
-
-                AddToCart(
-                    productId,
-                    productName,
-                    price,
-                    1,
-                    stock,
-                    productImage
-                );
-
-
+                AddToCart(productId, productName, price, 1, stock, productImage);
                 txtBarcodeScan.Clear();
             }
             catch (Exception ex)
             {
-                MessageBox.Show(
-                    "Barcode Error:\n\n" +
-                    ex.Message,
-                    "Error",
-                    MessageBoxButtons.OK,
-                    MessageBoxIcon.Error
-                );
+                MessageBox.Show("Error scanning barcode:\n\n" + ex.Message, "Database Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
-
-
-            e.Handled = true;
-
-            e.SuppressKeyPress = true;
         }
 
 
         // =========================================================
-        // DOUBLE CLICK CART - CHANGE QUANTITY
+        // SEARCH BOX & CATEGORY CHANGED
         // =========================================================
 
-        private void dgvCart_CellDoubleClick(
-            object sender,
-            DataGridViewCellEventArgs e)
+        private void txtSearchProduct_TextChanged(object sender, EventArgs e)
+        {
+            string searchKeyword = txtSearchProduct.Text.Trim();
+            int categoryId = 0;
+
+            if (cmbCategory.SelectedValue != null && int.TryParse(cmbCategory.SelectedValue.ToString(), out int parsedId))
+            {
+                categoryId = parsedId;
+            }
+
+            LoadProducts(searchKeyword, categoryId);
+        }
+
+        private void cmbCategory_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (cmbCategory.SelectedValue == null)
+                return;
+
+            if (int.TryParse(cmbCategory.SelectedValue.ToString(), out int categoryId))
+            {
+                string searchKeyword = txtSearchProduct != null ? txtSearchProduct.Text.Trim() : "";
+                LoadProducts(searchKeyword, categoryId);
+            }
+        }
+
+
+        // =========================================================
+        // CART REMOVE BUTTONS
+        // =========================================================
+
+        private void dgvCart_CellDoubleClick(object sender, DataGridViewCellEventArgs e)
         {
             if (e.RowIndex < 0)
                 return;
 
+            cartList.RemoveAt(e.RowIndex);
+            CalculateTotal();
+        }
 
-            SaleDetail selectedItem =
-                dgvCart.Rows[
-                    e.RowIndex
-                ].DataBoundItem
-                as SaleDetail;
-
-
-            if (selectedItem == null)
-                return;
-
-
-            using (
-                Form prompt =
-                new Form()
-            )
+        private void btnRemoveItem_Click(object sender, EventArgs e)
+        {
+            if (dgvCart.SelectedRows.Count > 0)
             {
-                prompt.Width = 380;
+                int rowIndex = dgvCart.SelectedRows[0].Index;
+                cartList.RemoveAt(rowIndex);
+                CalculateTotal();
+            }
+            else
+            {
+                MessageBox.Show("សូមជ្រើសរើសទំនិញដែលចង់លុបចេញពីកន្ត្រក!", "Select Item", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            }
+        }
 
-                prompt.Height = 190;
-
-                prompt.FormBorderStyle =
-                    FormBorderStyle.FixedDialog;
-
-                prompt.Text =
-                    "កែប្រែចំនួន";
-
-                prompt.StartPosition =
-                    FormStartPosition.CenterParent;
-
-                prompt.MaximizeBox =
-                    false;
-
-                prompt.MinimizeBox =
-                    false;
-
-
-                Label textLabel =
-                    new Label
-                    {
-                        Left = 20,
-
-                        Top = 20,
-
-                        Width = 320,
-
-                        Text =
-                            "បញ្ចូលចំនួនថ្មីសម្រាប់ " +
-                            selectedItem.ProductName
-                    };
-
-
-                TextBox inputBox =
-                    new TextBox
-                    {
-                        Left = 20,
-
-                        Top = 55,
-
-                        Width = 320,
-
-                        Text =
-                            selectedItem.Quantity
-                            .ToString()
-                    };
-
-
-                Button confirmation =
-                    new Button
-                    {
-                        Text = "OK",
-
-                        Left = 240,
-
-                        Top = 95,
-
-                        Width = 100,
-
-                        DialogResult =
-                            DialogResult.OK
-                    };
-
-
-                prompt.Controls.Add(
-                    textLabel
-                );
-
-                prompt.Controls.Add(
-                    inputBox
-                );
-
-                prompt.Controls.Add(
-                    confirmation
-                );
-
-
-                prompt.AcceptButton =
-                    confirmation;
-
-
-                if (
-                    prompt.ShowDialog()
-                    ==
-                    DialogResult.OK
-                )
+        private void btnClearCart_Click(object sender, EventArgs e)
+        {
+            if (cartList.Count > 0)
+            {
+                DialogResult result = MessageBox.Show("តើអ្នកពិតជាចង់លុបទំនិញទាំងអស់ក្នុងកន្ត្រកមែនទេ?", "Confirm Clear", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+                if (result == DialogResult.Yes)
                 {
-                    int newQty;
-
-
-                    if (
-                        !int.TryParse(
-                            inputBox.Text,
-                            out newQty
-                        )
-                        ||
-                        newQty <= 0
-                    )
-                    {
-                        MessageBox.Show(
-                            "ចំនួនមិនត្រឹមត្រូវទេ!",
-                            "Warning",
-                            MessageBoxButtons.OK,
-                            MessageBoxIcon.Warning
-                        );
-
-                        return;
-                    }
-
-
-                    int stockQty =
-                        GetProductStock(
-                            selectedItem.ProductId
-                        );
-
-
-                    if (
-                        newQty >
-                        stockQty
-                    )
-                    {
-                        MessageBox.Show(
-                            "ចំនួនលើសពីស្តុកដែលមាន!\n\n" +
-                            "Stock: " +
-                            stockQty,
-                            "Warning",
-                            MessageBoxButtons.OK,
-                            MessageBoxIcon.Warning
-                        );
-
-                        return;
-                    }
-
-
-                    selectedItem.Quantity =
-                        newQty;
-
-
-                    dgvCart.Refresh();
-
+                    cartList.Clear();
                     CalculateTotal();
                 }
             }
@@ -1328,696 +540,170 @@ namespace StoreMS.Forms
 
 
         // =========================================================
-        // GET PRODUCT STOCK
+        // CHECKOUT / COMPLETE SALE
         // =========================================================
 
-        private int GetProductStock(
-            int productId)
+        private void btnCheckout_Click(object sender, EventArgs e)
         {
+            if (cartList.Count == 0)
+            {
+                MessageBox.Show("មិនមានទំនិញនៅក្នុងកន្ត្រកទិញទេ!", "Empty Cart", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
             try
             {
-                string query = @"
-                    SELECT StockQty
-                    FROM tbProducts
-                    WHERE ProductID = @ProductID";
-
-
-                SqlParameter[] parameters =
+                decimal totalAmount = 0m;
+                foreach (var item in cartList)
                 {
-                    new SqlParameter(
-                        "@ProductID",
-                        productId
-                    )
-                };
-
-
-                DataTable dt =
-                    Database.ExecuteQuery(
-                        query,
-                        parameters
-                    );
-
-
-                if (
-                    dt.Rows.Count ==
-                    0
-                )
-                {
-                    return 0;
+                    totalAmount += item.SubTotal;
                 }
 
-
-                return Convert.ToInt32(
-                    dt.Rows[0][
-                        "StockQty"
-                    ]
-                );
-            }
-            catch
-            {
-                return 0;
-            }
-        }
-
-
-        // =========================================================
-        // CHECKOUT
-        // =========================================================
-
-        private void btnCheckout_Click(
-            object sender,
-            EventArgs e)
-        {
-            // -----------------------------------------
-            // Cart Empty
-            // -----------------------------------------
-
-            if (cartList.Count == 0)
-            {
-                MessageBox.Show(
-                    "សូមបញ្ចូលទំនិញក្នុងកន្ត្រកជាមុនសិន!",
-                    "Warning",
-                    MessageBoxButtons.OK,
-                    MessageBoxIcon.Warning
-                );
-
-                return;
-            }
-
-
-            // -----------------------------------------
-            // Total
-            // -----------------------------------------
-
-            decimal totalAmount =
-                cartList.Sum(
-                    x => x.SubTotal
-                );
-
-
-            // -----------------------------------------
-            // Payment Form
-            // -----------------------------------------
-
-            using (
-                PaymentForm paymentForm =
-                new PaymentForm(
-                    totalAmount
-                )
-            )
-            {
-                paymentForm.ShowDialog();
-
-
-                if (
-                    !paymentForm.IsConfirmed
-                )
+                // បើកផ្ទាំង PaymentForm ឱ្យអ្នកប្រើប្រាស់ជ្រើសរើសវិធីបង់ប្រាក់
+                using (PaymentForm paymentForm = new PaymentForm(totalAmount))
                 {
-                    return;
-                }
-
-
-                try
-                {
-                    int customerId =
-                        0;
-
-
-                    if (
-                        cmbCustomer.SelectedValue
-                        != null
-                    )
+                    if (paymentForm.ShowDialog() == DialogResult.OK)
                     {
-                        int.TryParse(
-                            cmbCustomer
-                                .SelectedValue
-                                .ToString(),
-                            out customerId
-                        );
-                    }
+                        string invoiceNo = "INV-" + DateTime.Now.ToString("yyyyMMdd-HHmmss");
 
-
-                    // -----------------------------------------
-                    // Sale Object
-                    // -----------------------------------------
-
-                    Sale sale =
-                        new Sale
+                        Sale sale = new Sale
                         {
-                            InvoiceNo =
-                                GenerateInvoiceNo(),
-
-                            SaleDate =
-                                DateTime.Now,
-
-                            CustomerId =
-                                customerId,
-
-                            UserId =
-                                currentUserId,
-
-                            TotalAmount =
-                                totalAmount,
-
-                            PaymentMethod =
-                                paymentForm
-                                    .PaymentMethod,
-
-                            SaleDetails =
-                                new List<SaleDetail>(
-                                    cartList
-                                )
+                            InvoiceNo = invoiceNo,
+                            SaleDate = DateTime.Now,
+                            CustomerId = 0,
+                            UserId = currentUserId,
+                            TotalAmount = totalAmount,
+                            PaymentMethod = paymentForm.PaymentMethod,
+                            SaleDetails = cartList.ToList()
                         };
 
+                        // រក្សាទុកចូល Database
+                        bool success = saleRepo.Checkout(sale);
 
-                    // -----------------------------------------
-                    // Save
-                    // -----------------------------------------
-
-                    bool isSuccess =
-                        saleRepo.Checkout(
-                            sale
-                        );
-
-
-                    if (isSuccess)
-                    {
-                        MessageBox.Show(
-                            "ទូទាត់ប្រាក់បានជោគជ័យ!\n\n" +
-
-                            "Invoice: " +
-                            sale.InvoiceNo +
-
-                            "\nTotal: $" +
-                            totalAmount.ToString(
-                                "N2"
-                            ) +
-
-                            "\nChange: $" +
-                            paymentForm
-                                .ChangeAmount
-                                .ToString(
-                                    "N2"
-                                ),
-                            "Success",
-                            MessageBoxButtons.OK,
-                            MessageBoxIcon.Information
-                        );
-
-
-                        // -----------------------------------------
-                        // Print
-                        // -----------------------------------------
-
-                        try
+                        if (success)
                         {
+                            MessageBox.Show(
+                                $"ការលក់បានជោគជ័យ!\nវិធីទូទាត់៖ {paymentForm.PaymentMethod}\nប្រាក់អាប់៖ ${paymentForm.ChangeAmount:N2}",
+                                "Success",
+                                MessageBoxButtons.OK,
+                                MessageBoxIcon.Information
+                            );
+
+                            // បញ្ជាឱ្យព្រីនវិក្កយបត្រចេញមកក្រៅ
                             printDocument1.Print();
+
+                            // សម្អាតកន្ត្រកត្រៀមលក់បន្ត
+                            cartList.Clear();
+                            CalculateTotal();
+                            LoadProducts("");
+                            txtBarcodeScan.Focus();
                         }
-                        catch
+                        else
                         {
-                            // Printer not available
+                            MessageBox.Show("មិនអាចរក្សាទុកការលក់បានទេ សូមព្យាយាមម្ដងទៀត។", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                         }
-
-
-                        // -----------------------------------------
-                        // Clear Cart
-                        // -----------------------------------------
-
-                        cartList.Clear();
-
-                        CalculateTotal();
-
-
-                        // -----------------------------------------
-                        // Reload Products
-                        // -----------------------------------------
-
-                        LoadProducts(
-                            txtSearchProduct.Text.Trim(),
-                            GetSelectedCategoryId()
-                        );
-
-
-                        txtBarcodeScan.Clear();
                     }
                 }
-                catch (Exception ex)
-                {
-                    MessageBox.Show(
-                        "Checkout failed:\n\n" +
-                        ex.Message,
-                        "Checkout Error",
-                        MessageBoxButtons.OK,
-                        MessageBoxIcon.Error
-                    );
-                }
             }
-        }
-
-
-        // =========================================================
-        // GENERATE INVOICE NUMBER
-        // =========================================================
-
-        private string GenerateInvoiceNo()
-        {
-            return
-                "INV-" +
-                DateTime.Now.ToString(
-                    "yyyyMMddHHmmssfff"
-                );
-        }
-
-
-        // =========================================================
-        // PRINT RECEIPT
-        // =========================================================
-
-        private void printDocument1_PrintPage(
-            object sender,
-            PrintPageEventArgs e)
-        {
-            Graphics g =
-                e.Graphics;
-
-
-            using (
-                Font fontTitle =
-                new Font(
-                    "Segoe UI",
-                    14,
-                    FontStyle.Bold
-                )
-            )
-
-            using (
-                Font fontHeader =
-                new Font(
-                    "Segoe UI",
-                    9,
-                    FontStyle.Bold
-                )
-            )
-
-            using (
-                Font fontBody =
-                new Font(
-                    "Segoe UI",
-                    9,
-                    FontStyle.Regular
-                )
-            )
+            catch (Exception ex)
             {
-                float startX =
-                    10;
-
-                float startY =
-                    10;
-
-
-                // -----------------------------------------
-                // Shop Name
-                // -----------------------------------------
-
-                g.DrawString(
-                    "MARTKH24H",
-                    fontTitle,
-                    Brushes.Black,
-                    startX + 50,
-                    startY
-                );
-
-
-                g.DrawString(
-                    "អាសយដ្ឋាន៖ ភ្នំពេញ, កម្ពុជា",
-                    fontBody,
-                    Brushes.Black,
-                    startX + 50,
-                    startY + 25
-                );
-
-
-                g.DrawString(
-                    "------------------------------------------------",
-                    fontBody,
-                    Brushes.Black,
-                    startX,
-                    startY + 45
-                );
-
-
-                // -----------------------------------------
-                // Invoice
-                // -----------------------------------------
-
-                g.DrawString(
-                    "Invoice: " +
-                    GenerateInvoiceNo(),
-                    fontBody,
-                    Brushes.Black,
-                    startX,
-                    startY + 65
-                );
-
-
-                // -----------------------------------------
-                // Date
-                // -----------------------------------------
-
-                g.DrawString(
-                    "កាលបរិច្ឆេទ៖ " +
-                    DateTime.Now.ToString(
-                        "dd/MM/yyyy HH:mm"
-                    ),
-                    fontBody,
-                    Brushes.Black,
-                    startX,
-                    startY + 85
-                );
-
-
-                g.DrawString(
-                    "------------------------------------------------",
-                    fontBody,
-                    Brushes.Black,
-                    startX,
-                    startY + 105
-                );
-
-
-                // -----------------------------------------
-                // Header
-                // -----------------------------------------
-
-                float offset =
-                    startY + 125;
-
-
-                g.DrawString(
-                    "Item",
-                    fontHeader,
-                    Brushes.Black,
-                    startX,
-                    offset
-                );
-
-
-                g.DrawString(
-                    "Qty",
-                    fontHeader,
-                    Brushes.Black,
-                    startX + 150,
-                    offset
-                );
-
-
-                g.DrawString(
-                    "Price",
-                    fontHeader,
-                    Brushes.Black,
-                    startX + 200,
-                    offset
-                );
-
-
-                g.DrawString(
-                    "Total",
-                    fontHeader,
-                    Brushes.Black,
-                    startX + 250,
-                    offset
-                );
-
-
-                offset += 25;
-
-
-                // -----------------------------------------
-                // Items
-                // -----------------------------------------
-
-                foreach (
-                    SaleDetail item
-                    in cartList
-                )
-                {
-                    g.DrawString(
-                        item.ProductName,
-                        fontBody,
-                        Brushes.Black,
-                        startX,
-                        offset
-                    );
-
-
-                    g.DrawString(
-                        item.Quantity.ToString(),
-                        fontBody,
-                        Brushes.Black,
-                        startX + 150,
-                        offset
-                    );
-
-
-                    g.DrawString(
-                        item.Price.ToString(
-                            "N2"
-                        ),
-                        fontBody,
-                        Brushes.Black,
-                        startX + 200,
-                        offset
-                    );
-
-
-                    g.DrawString(
-                        item.SubTotal.ToString(
-                            "N2"
-                        ),
-                        fontBody,
-                        Brushes.Black,
-                        startX + 250,
-                        offset
-                    );
-
-
-                    offset += 20;
-                }
-
-
-                // -----------------------------------------
-                // Total
-                // -----------------------------------------
-
-                g.DrawString(
-                    "------------------------------------------------",
-                    fontBody,
-                    Brushes.Black,
-                    startX,
-                    offset
-                );
-
-
-                offset += 25;
-
-
-                decimal total =
-                    cartList.Sum(
-                        x => x.SubTotal
-                    );
-
-
-                g.DrawString(
-                    "TOTAL: $" +
-                    total.ToString(
-                        "N2"
-                    ),
-                    fontTitle,
-                    Brushes.Black,
-                    startX,
-                    offset
-                );
-
-
-                offset += 35;
-
-
-                g.DrawString(
-                    "អរគុណសម្រាប់ការអញ្ជើញមកទិញទំនិញ!",
-                    fontBody,
-                    Brushes.Black,
-                    startX + 20,
-                    offset
-                );
+                MessageBox.Show("Error during checkout:\n\n" + ex.Message, "System Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 
 
         // =========================================================
-        // REMOVE ITEM
+        // PRINT DOCUMENT EVENT (RECEIPT PRINTING)
         // =========================================================
 
-        private void btnRemoveItem_Click(
-            object sender,
-            EventArgs e)
+        private void printDocument1_PrintPage(object sender, PrintPageEventArgs e)
         {
-            if (
-                dgvCart.SelectedRows.Count ==
-                0
-            )
-            {
-                MessageBox.Show(
-                    "សូមជ្រើសរើសទំនិញដែលចង់លុប!",
-                    "Warning",
-                    MessageBoxButtons.OK,
-                    MessageBoxIcon.Warning
-                );
+            Graphics g = e.Graphics;
 
-                return;
+            // កំណត់ហ្វុងអក្សរសម្រាប់ផ្នែកផ្សេងៗ
+            Font fontTitle = new Font("Segoe UI", 14, FontStyle.Bold);
+            Font fontHeader = new Font("Segoe UI", 9, FontStyle.Regular);
+            Font fontBold = new Font("Segoe UI", 10, FontStyle.Bold);
+            Font fontItem = new Font("Segoe UI", 9, FontStyle.Regular);
+            Brush brush = Brushes.Black;
+
+            float startX = 10;
+            float startY = 10;
+
+            // កំណត់ទទឹងក្រដាសកម្ដៅ (Thermal Printer 80mm ស្មើនឹងប្រហែល 280-300 pixels)
+            float pageWidth = 280;
+
+            StringFormat centerFormat = new StringFormat { Alignment = StringAlignment.Center };
+            StringFormat rightFormat = new StringFormat { Alignment = StringAlignment.Far };
+
+            float y = startY;
+
+            // ==========================================
+            // ១. ហាង និងព័ត៌មានក្បាលវិក្កយបត្រ (Header)
+            // ==========================================
+            g.DrawString("MARTKH24H", fontTitle, brush, new RectangleF(startX, y, pageWidth, 25), centerFormat);
+            y += 30;
+
+            g.DrawString("អាសយដ្ឋាន៖ ភ្នំពេញ, កម្ពុជា", fontHeader, brush, new RectangleF(startX, y, pageWidth, 15), centerFormat);
+            y += 18;
+            g.DrawString("ទូរស័ព្ទ៖ 012 345 678", fontHeader, brush, new RectangleF(startX, y, pageWidth, 15), centerFormat);
+            y += 22;
+
+            g.DrawString("----------------------------------------------------------------", fontHeader, brush, startX, y);
+            y += 15;
+
+            // ព័ត៌មានវិក្កយបត្រ និងកាលបរិច្ឆេទ
+            g.DrawString("កាលបរិច្ឆេទ៖ " + DateTime.Now.ToString("dd-MM-yyyy HH:mm"), fontHeader, brush, startX, y);
+            y += 18;
+            g.DrawString("Cashier: Administrator", fontHeader, brush, startX, y);
+            y += 22;
+
+            g.DrawString("----------------------------------------------------------------", fontHeader, brush, startX, y);
+            y += 15;
+
+            // ==========================================
+            // ២. បញ្ជីទំនិញ (Itemized List Header)
+            // ==========================================
+            g.DrawString("បរិយាយទំនិញ", fontBold, brush, startX, y);
+            g.DrawString("តម្លៃ", fontBold, brush, pageWidth - 40, y, rightFormat);
+            y += 18;
+
+            g.DrawString("----------------------------------------------------------------", fontHeader, brush, startX, y);
+            y += 15;
+
+            // ==========================================
+            // ៣. បង្ហាញទំនិញនីមួយៗក្នុងកន្ត្រក (Cart Items)
+            // ==========================================
+            foreach (var item in cartList)
+            {
+                g.DrawString(item.ProductName, fontItem, brush, startX, y);
+                y += 16;
+
+                string qtyPrice = $"{item.Quantity} x ${item.Price:N2}";
+                g.DrawString(qtyPrice, fontItem, brush, startX + 10, y);
+
+                string subTotalStr = $"${item.SubTotal:N2}";
+                g.DrawString(subTotalStr, fontItem, brush, pageWidth, y, rightFormat);
+
+                y += 22;
             }
 
+            g.DrawString("----------------------------------------------------------------", fontHeader, brush, startX, y);
+            y += 15;
 
-            SaleDetail selectedItem =
-                dgvCart.SelectedRows[0]
-                .DataBoundItem
-                as SaleDetail;
+            // ==========================================
+            // ៤. បូកសរុបទឹកប្រាក់ (Totals & Payment)
+            // ==========================================
+            g.DrawString("សរុបទឹកប្រាក់ (Total):", fontBold, brush, startX, y);
+            g.DrawString(lblTotalAmount.Text, fontBold, brush, pageWidth, y, rightFormat);
+            y += 25;
 
-
-            if (selectedItem != null)
-            {
-                cartList.Remove(
-                    selectedItem
-                );
-
-                CalculateTotal();
-            }
-        }
-
-
-        // =========================================================
-        // CLEAR CART
-        // =========================================================
-
-        private void btnClearCart_Click(
-            object sender,
-            EventArgs e)
-        {
-            if (cartList.Count == 0)
-                return;
-
-
-            DialogResult result =
-                MessageBox.Show(
-                    "តើអ្នកចង់លុបទំនិញទាំងអស់ចេញពីកន្ត្រកមែនទេ?",
-                    "Confirm",
-                    MessageBoxButtons.YesNo,
-                    MessageBoxIcon.Question
-                );
-
-
-            if (
-                result ==
-                DialogResult.Yes
-            )
-            {
-                cartList.Clear();
-
-                CalculateTotal();
-            }
-        }
-
-
-        // =========================================================
-        // SEARCH PRODUCT
-        // =========================================================
-
-        private void txtSearchProduct_TextChanged(
-            object sender,
-            EventArgs e)
-        {
-            int categoryId =
-                GetSelectedCategoryId();
-
-
-            LoadProducts(
-                txtSearchProduct.Text.Trim(),
-                categoryId
-            );
-        }
-
-
-        // =========================================================
-        // CATEGORY CHANGED
-        // =========================================================
-
-        private void cmbCategory_SelectedIndexChanged(
-            object sender,
-            EventArgs e)
-        {
-            if (
-                cmbCategory.SelectedValue ==
-                null
-            )
-            {
-                return;
-            }
-
-
-            int categoryId =
-                GetSelectedCategoryId();
-
-
-            LoadProducts(
-                txtSearchProduct.Text.Trim(),
-                categoryId
-            );
-        }
-
-
-        // =========================================================
-        // GET CATEGORY ID
-        // =========================================================
-
-        private int GetSelectedCategoryId()
-        {
-            if (
-                cmbCategory.SelectedValue ==
-                null
-            )
-            {
-                return 0;
-            }
-
-
-            int categoryId;
-
-
-            if (
-                int.TryParse(
-                    cmbCategory
-                        .SelectedValue
-                        .ToString(),
-                    out categoryId
-                )
-            )
-            {
-                return categoryId;
-            }
-
-
-            return 0;
-        }
-
-
-        // =========================================================
-        // SET CURRENT USER ID
-        // =========================================================
-
-        public void SetCurrentUserId(
-            int userId)
-        {
-            currentUserId =
-                userId;
+            // ==========================================
+            // ៥. ផ្នែកបាតវិក្កយបត្រ (Footer)
+            // ==========================================
+            g.DrawString("អរគុណសម្រាប់ការអញ្ជើញមកទិញទំនិញ!", fontHeader, brush, new RectangleF(startX, y, pageWidth, 15), centerFormat);
+            y += 20;
+            g.DrawString("Please Come Again!", fontHeader, brush, new RectangleF(startX, y, pageWidth, 15), centerFormat);
         }
     }
 }

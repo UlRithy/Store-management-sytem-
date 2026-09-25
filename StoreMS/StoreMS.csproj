@@ -265,6 +265,12 @@
     <Compile Include="Forms\PaymentForm.Designer.cs">
       <DependentUpon>PaymentForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="Forms\ReportForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\ReportForm.Designer.cs">
+      <DependentUpon>ReportForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="Interfaces\IRepository.cs" />
     <Compile Include="Layout\Add_EditForm.cs">
       <SubType>Form</SubType>
@@ -381,6 +387,9 @@
     <Compile Include="Repositories\SupplierRepository.cs" />
     <Compile Include="Repositories\UserRepository.cs" />
     <Compile Include="System\Drawing\Drawing2.cs" />
+    <EmbeddedResource Include="Forms\ReportForm.resx">
+      <DependentUpon>ReportForm.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Layout\Add_EditForm.resx">
       <DependentUpon>Add_EditForm.cs</DependentUpon>
     </EmbeddedResource>
@@ -441,10 +450,14 @@
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>
+    <None Include="Resources\download.png" />
+    <None Include="Resources\data-governance.png" />
     <Content Include="Resources\lock %281%29.png" />
     <Content Include="Resources\logo-removebg-preview.png" />
     <None Include="Resources\search-interface-symbol.png" />
     <None Include="Resources\search-interface-symbol1.png" />
+    <None Include="Resources\search.png" />
+    <None Include="Resources\printer.png" />
     <Content Include="Resources\user.png" />
   </ItemGroup>
   <ItemGroup>

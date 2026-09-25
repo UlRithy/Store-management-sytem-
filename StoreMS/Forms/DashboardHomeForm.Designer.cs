@@ -48,7 +48,7 @@
             this.pnlRecentSales = new Guna.UI2.WinForms.Guna2Panel();
             this.dgvRecentSales = new Guna.UI2.WinForms.Guna2DataGridView();
             this.colInvoice = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.colCustomer = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            //this.colCustomer = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.colItems = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.colTotal = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.colPayment = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -412,7 +412,7 @@
             this.dgvRecentSales.ColumnHeadersHeight = 38;
             this.dgvRecentSales.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.colInvoice,
-            this.colCustomer,
+          
             this.colItems,
             this.colTotal,
             this.colPayment,
@@ -453,12 +453,12 @@
             // 
             // colCustomer
             // 
-            this.colCustomer.FillWeight = 140F;
-            this.colCustomer.HeaderText = "Customer";
-            this.colCustomer.MinimumWidth = 6;
-            this.colCustomer.Name = "colCustomer";
-            this.colCustomer.ReadOnly = true;
-            // 
+            //this.colCustomer.FillWeight = 140F;
+            //this.colCustomer.HeaderText = "Customer";
+            //this.colCustomer.MinimumWidth = 6;
+            //this.colCustomer.Name = "colCustomer";
+            //this.colCustomer.ReadOnly = true;
+            //// 
             // colItems
             // 
             this.colItems.FillWeight = 70F;
@@ -640,7 +640,7 @@
         private System.Windows.Forms.Label lblRecentSalesSub;
         private Guna.UI2.WinForms.Guna2DataGridView dgvRecentSales;
         private System.Windows.Forms.DataGridViewTextBoxColumn colInvoice;
-        private System.Windows.Forms.DataGridViewTextBoxColumn colCustomer;
+
         private System.Windows.Forms.DataGridViewTextBoxColumn colItems;
         private System.Windows.Forms.DataGridViewTextBoxColumn colTotal;
         private System.Windows.Forms.DataGridViewTextBoxColumn colPayment;
