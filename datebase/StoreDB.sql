@@ -1,10 +1,8 @@
 -- ១. បង្កើត និងប្រើប្រាស់ Database
 CREATE DATABASE StoreManagement;
 
-
 GO
 USE StoreManagement;
-
 
 GO
 -- =============================================
@@ -300,7 +298,7 @@ SELECT * FROM tbSaleDetails;
 --DROP TABLE IF EXISTS [dbo].[tbProducts];
 --DROP TABLE IF EXISTS [dbo].[tbSuppliers];
 --DROP TABLE IF EXISTS [dbo].[tbShippers];
---DROP TABLE IF EXISTS [dbo].[tbEmployees];   -- ឥឡូវអាចលុបបានដោយសុវត្ថិភាព
+--DROP TABLE IF EXISTS [dbo].[tbEmployees];  
 --DROP TABLE IF EXISTS [dbo].[tbCategory];
 --DROP TABLE IF EXISTS [dbo].[tbUsers];
 --DROP TABLE IF EXISTS [dbo].[tbCustomers];

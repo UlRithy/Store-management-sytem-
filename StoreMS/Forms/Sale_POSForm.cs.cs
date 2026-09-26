@@ -23,7 +23,7 @@ namespace StoreMS.Forms
 
         private readonly SaleRepository saleRepo = new SaleRepository();
 
-        private readonly BindingList<OrderDetail> cartList = new BindingList<OrderDetail>();
+        private readonly BindingList<SaleDetail> cartList = new BindingList<SaleDetail>();
 
         private readonly PrintDocument printDocument1 = new PrintDocument();
 
@@ -357,7 +357,7 @@ namespace StoreMS.Forms
                 return;
             }
 
-            OrderDetail existingItem = cartList.FirstOrDefault(x => x.ProductId == productId);
+            SaleDetail existingItem = cartList.FirstOrDefault(x => x.ProductId == productId);
 
             if (existingItem != null)
             {
@@ -383,7 +383,7 @@ namespace StoreMS.Forms
                     return;
                 }
 
-                cartList.Add(new OrderDetail
+                cartList.Add(new SaleDetail
                 {
                     ProductId = productId,
                     ProductName = productName,
@@ -405,7 +405,7 @@ namespace StoreMS.Forms
         {
             decimal grandTotal = 0m;
 
-            foreach (OrderDetail item in cartList)
+            foreach (SaleDetail item in cartList)
             {
                 grandTotal += item.SubTotal;
             }
@@ -704,6 +704,11 @@ namespace StoreMS.Forms
             g.DrawString("អរគុណសម្រាប់ការអញ្ជើញមកទិញទំនិញ!", fontHeader, brush, new RectangleF(startX, y, pageWidth, 15), centerFormat);
             y += 20;
             g.DrawString("Please Come Again!", fontHeader, brush, new RectangleF(startX, y, pageWidth, 15), centerFormat);
+        }
+
+        private void dgvCart_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        {
+
         }
     }
 }
