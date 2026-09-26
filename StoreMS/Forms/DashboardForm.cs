@@ -111,5 +111,22 @@ namespace StoreMS.Forms
             lblCurrentPage.Text = "Reports";
             openChildForm(new ReportForm());
         }
+
+        private void guna2TextBox1_TextChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void lblAdminName_Click(object sender, EventArgs e)
+        {
+            MessageBox.Show(
+                $"User ID: {CurrentUserId}\n" +
+                $"Name: {CurrentFullName}\n" +
+                $"Role: {CurrentRole}",
+                "User Information",
+                MessageBoxButtons.OK,
+                MessageBoxIcon.Information
+            );
+        }
     }
 }

@@ -407,6 +407,7 @@
             this.guna2TextBox1.Size = new System.Drawing.Size(427, 44);
             this.guna2TextBox1.TabIndex = 2;
             this.guna2TextBox1.TextOffset = new System.Drawing.Point(12, 0);
+            this.guna2TextBox1.TextChanged += new System.EventHandler(this.guna2TextBox1_TextChanged);
             // 
             // lblAdminName
             // 
@@ -420,6 +421,7 @@
             this.lblAdminName.TabIndex = 3;
             this.lblAdminName.Text = "Sok Dara (Admin)";
             this.lblAdminName.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.lblAdminName.Click += new System.EventHandler(this.lblAdminName_Click);
             // 
             // btnMinimize
             // 
