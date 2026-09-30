@@ -259,15 +259,12 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Data\Database.cs" />
-<<<<<<< HEAD
     <Compile Include="Forms\Employee_Form.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Forms\Employee_Form.Designer.cs">
       <DependentUpon>Employee_Form.cs</DependentUpon>
     </Compile>
-=======
->>>>>>> 369299e0d3bb796713e3dd6fe55b19090f6e7d70
     <Compile Include="Forms\PaymentForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -353,15 +350,12 @@
     <Compile Include="Forms\SupplierForm.Designer.cs">
       <DependentUpon>SupplierForm.cs</DependentUpon>
     </Compile>
-<<<<<<< HEAD
     <Compile Include="Layout\Emplo_AddEdit_Form.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Layout\Emplo_AddEdit_Form.Designer.cs">
       <DependentUpon>Emplo_AddEdit_Form.cs</DependentUpon>
     </Compile>
-=======
->>>>>>> 369299e0d3bb796713e3dd6fe55b19090f6e7d70
     <Compile Include="Layout\Form_Stock_AddEdit.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -399,22 +393,16 @@
     </Compile>
     <Compile Include="Repositories\CategoryRepository.cs" />
     <Compile Include="Repositories\CustomerRepository.cs" />
-<<<<<<< HEAD
     <Compile Include="Repositories\EmployeeRepository.cs" />
-=======
->>>>>>> 369299e0d3bb796713e3dd6fe55b19090f6e7d70
     <Compile Include="Repositories\ProductRepository.cs" />
     <Compile Include="Repositories\SaleRepository.cs" />
     <Compile Include="Repositories\StockRepository.cs" />
     <Compile Include="Repositories\SupplierRepository.cs" />
     <Compile Include="Repositories\UserRepository.cs" />
     <Compile Include="System\Drawing\Drawing2.cs" />
-<<<<<<< HEAD
     <EmbeddedResource Include="Forms\Employee_Form.resx">
       <DependentUpon>Employee_Form.cs</DependentUpon>
     </EmbeddedResource>
-=======
->>>>>>> 369299e0d3bb796713e3dd6fe55b19090f6e7d70
     <EmbeddedResource Include="Forms\ReportForm.resx">
       <DependentUpon>ReportForm.cs</DependentUpon>
     </EmbeddedResource>
@@ -454,12 +442,9 @@
     <EmbeddedResource Include="Layout\Cus_AddEdit_Form.resx">
       <DependentUpon>Cus_AddEdit_Form.cs</DependentUpon>
     </EmbeddedResource>
-<<<<<<< HEAD
     <EmbeddedResource Include="Layout\Emplo_AddEdit_Form.resx">
       <DependentUpon>Emplo_AddEdit_Form.cs</DependentUpon>
     </EmbeddedResource>
-=======
->>>>>>> 369299e0d3bb796713e3dd6fe55b19090f6e7d70
     <EmbeddedResource Include="Layout\Sup_AddEdit_Form.resx">
       <DependentUpon>Sup_AddEdit_Form.cs</DependentUpon>
     </EmbeddedResource>
@@ -499,11 +484,13 @@
       <Visible>False</Visible>
       <ProductName>Microsoft .NET Framework 4.7.2 %28x86 and x64%29</ProductName>
       <Install>true</Install>
+      <Install>true</Install>
     </BootstrapperPackage>
     <BootstrapperPackage Include="Microsoft.Net.Framework.3.5.SP1">
       <Visible>False</Visible>
       <ProductName>.NET Framework 3.5 SP1</ProductName>
       <Install>false</Install>
+      <Install>true</Install>
     </BootstrapperPackage>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
