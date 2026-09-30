@@ -14,9 +14,8 @@ CREATE TABLE [dbo].[tbCategory] (
     [Description] VARCHAR (255) NULL,
     CONSTRAINT [PK_tbCategory] PRIMARY KEY ([CategoryID])
 ) ON [PRIMARY];
-
-
 GO
+
 -- =============================================
 -- 3. tbCustomers
 -- =============================================
@@ -32,25 +31,26 @@ CREATE TABLE [dbo].[tbCustomers] (
     [Country] VARCHAR (255) NULL,
     CONSTRAINT [PK_tbCustomers] PRIMARY KEY CLUSTERED ([CustomerID] ASC)
 ) ON [PRIMARY];
-
-
 GO
+
 -- =============================================
 -- 4. tbEmployees
 -- =============================================
 CREATE TABLE [dbo].[tbEmployees] (
     [EmployeeID] INT IDENTITY (1, 1) NOT NULL,
-    [FullName]   VARCHAR (255) NOT NULL,
+    [FullName]   NVARCHAR (255) NOT NULL,
     [Gender]     VARCHAR (50)  NULL,
     [Phone]      VARCHAR (50)  NULL,
-    [Position]   VARCHAR (100) NULL,
+    [Position]   NVARCHAR (100) NULL,
     [Salary]     DECIMAL (18, 2) DEFAULT ((0)) NULL,
     [HireDate]   DATE          NULL,
     [Username]   VARCHAR (100) NULL,
+    [Address]    NVARCHAR (255) NULL,
+    [Email]      VARCHAR (255) NULL,
     CONSTRAINT [PK_tbEmployees] PRIMARY KEY CLUSTERED ([EmployeeID] ASC)
 );
-
 GO
+
 -- =============================================
 -- 6. tbSuppliers
 -- =============================================
@@ -65,11 +65,10 @@ CREATE TABLE [dbo].[tbSuppliers] (
     [Phone] VARCHAR (255) NULL,
     CONSTRAINT [PK_tbSuppliers] PRIMARY KEY ([SupplierID])
 ) ON [PRIMARY];
-
-
 GO
+
 -- =============================================
--- 7. tbUsers (បានបន្ថែម Column Role និង FullName ស្របតាមកូដ C# របស់អ្នក)
+-- 7. tbUsers (ភ្ជាប់ជាមួយ tbEmployees)
 -- =============================================
 CREATE TABLE [dbo].[tbUsers] (
     [UserID] INT IDENTITY (1, 1) NOT NULL,
@@ -83,9 +82,8 @@ CREATE TABLE [dbo].[tbUsers] (
     CONSTRAINT [PK_tbUsers] PRIMARY KEY ([UserID]),
     CONSTRAINT [FK_tbUsers_tbEmployees] FOREIGN KEY ([EmployeeID]) REFERENCES [dbo].[tbEmployees] ([EmployeeID])
 ) ON [PRIMARY];
-
-
 GO
+
 -- =============================================
 -- 8. tbProducts
 -- =============================================
@@ -106,9 +104,8 @@ CREATE TABLE [dbo].[tbProducts] (
     CONSTRAINT [FK_tbProducts_tbSuppliers] FOREIGN KEY ([SupplierID]) REFERENCES [dbo].[tbSuppliers] ([SupplierID]),
     CONSTRAINT [FK_tbProducts_tbCategory] FOREIGN KEY ([CategoryID]) REFERENCES [dbo].[tbCategory] ([CategoryID])
 ) ON [PRIMARY];
-
-
 GO
+
 -- =============================================
 -- 9. tbStock
 -- =============================================
@@ -120,9 +117,8 @@ CREATE TABLE tbStock (
     Status NVARCHAR (50) DEFAULT 'In Stock',
     LastUpdated DATETIME DEFAULT GETDATE()
 );
-
-
 GO
+
 -- Trigger សម្រាប់ Update Stock
 CREATE TRIGGER trg_UpdateProductStock
     ON tbStock
@@ -134,13 +130,11 @@ CREATE TRIGGER trg_UpdateProductStock
                   INNER JOIN
                   inserted AS i
                   ON p.ProductID = i.ProductId;
-       END
-
-
+       END;
 GO
+
 -- View Stock Details
-CREATE VIEW vwStockDetails
-AS
+CREATE VIEW vwStockDetails AS
 SELECT s.StockId,
        p.ProductId,
        p.ProductName,
@@ -156,9 +150,8 @@ FROM   tbStock AS s
        LEFT OUTER JOIN
        tbCategory AS c
        ON p.CategoryId = c.CategoryId;
-
-
 GO
+
 -- =============================================
 -- 11. tbSales & tbSaleDetails
 -- =============================================
@@ -172,9 +165,8 @@ CREATE TABLE [dbo].[tbSales] (
     [PaymentMethod] VARCHAR (50) NULL,
     CONSTRAINT [PK_tbSales] PRIMARY KEY ([SaleID])
 ) ON [PRIMARY];
-
-
 GO
+
 CREATE TABLE [dbo].[tbSaleDetails] (
     [SaleDetailID] INT IDENTITY (1, 1) NOT NULL,
     [SaleID] INT NULL,
@@ -185,42 +177,38 @@ CREATE TABLE [dbo].[tbSaleDetails] (
     CONSTRAINT [FK_tbSaleDetails_tbSales] FOREIGN KEY ([SaleID]) REFERENCES [dbo].[tbSales] ([SaleID]) ON DELETE CASCADE,
     CONSTRAINT [FK_tbSaleDetails_tbProducts] FOREIGN KEY ([ProductID]) REFERENCES [dbo].[tbProducts] ([ProductID])
 ) ON [PRIMARY];
-
-
 GO
+
 -- =============================================
 -- 12. បញ្ចូលទិន្នន័យគំរូដំបូង (Sample Data)
 -- =============================================
-INSERT  INTO tbCategory (CategoryName, Description)
-VALUES                 ('Beverages', 'Soft drinks, coffees, teas'),
-('Snacks', 'Chips, biscuits, and sweets'),
-('Electronics', 'Electronic devices and accessories');
-
-
+INSERT INTO tbCategory (CategoryName, Description) 
+VALUES ('Beverages', 'Soft drinks, coffees, teas'),
+       ('Snacks', 'Chips, biscuits, and sweets'),
+       ('Electronics', 'Electronic devices and accessories');
 GO
-INSERT  INTO tbSuppliers (SupplierName, ContactName, Phone)
-VALUES                  ('Coca-Cola Supplier', 'Vichea', '012345678');
 
-
+INSERT INTO tbSuppliers (SupplierName, ContactName, Phone) 
+VALUES ('Coca-Cola Supplier', 'Vichea', '012345678');
 GO
-INSERT  INTO tbProducts (ProductName, SupplierID, CategoryID, Unit, Price, CostPrice, StockQty, Barcode, Description)
-VALUES                 ('Coca Cola Can', 1, 1, 'Can', 0.50, 0.35, 100, '8851011123456', 'Fresh cold soft drink'),
-('Snack Potato', 1, 2, 'Pack', 1.50, 1.00, 50, '8852022234567', 'Crispy potato snack');
 
+INSERT INTO tbProducts (ProductName, SupplierID, CategoryID, Unit, Price, CostPrice, StockQty, Barcode, Description) 
+VALUES ('Coca Cola Can', 1, 1, 'Can', 0.50, 0.35, 100, '8851011123456', 'Fresh cold soft drink'),
+       ('Snack Potato', 1, 2, 'Pack', 1.50, 1.00, 50, '8852022234567', 'Crispy potato snack');
+GO
 
+-- បញ្ចូលទិន្នន័យបុគ្គលិក
+INSERT INTO tbEmployees (FullName, Gender, Phone, Email, Address, Position, Salary, HireDate, Username) 
+VALUES (N'Ul Rithy', 'Male', '0967584633', 'rithy.sok@storems.com', N'រាជធានីភ្នំពេញ', 'Store Manager', 850.00, '2025-01-15', 'rithy'),
+       (N'Leang Lina', 'Female', '098765432', 'lina@storems.com', N'ខេត្តសៀមរាប', 'Cashier', 450.00, '2025-03-10', 'lina'),
+       (N'Phat soton', 'Female', '011223344', 'soton@storems.com', N'ខេត្តបាត់ដំបង', 'Stock Keeper', 500.00, '2025-06-20', 'soton');
 GO
--- បញ្ចូលគណនី Admin សម្រាប់ Login
-INSERT INTO tbUsers (Username, Password, Role, FullName, Position, IsActive)
-VALUES 
-    ('admin', '123456', 'Admin', 'System Administrator', 'Manager', 1),
-    ('cashier', '123456', 'Cashier', 'Srey Leak', 'Sales Assistant', 1);
-GO
--- បញ្ចូលទិន្នន័យបុគ្គលិកគំរូចូលក្នុង tbEmployees
-INSERT INTO tbEmployees (FullName, Gender, Phone, Email, Address, Position, Salary, HireDate, Username)
-VALUES 
-(N'សុខ ចាន់ឌី', 'Male', '012345678', 'chandy.sok@storems.com', N'រាជធានីភ្នំពេញ', 'Store Manager', 850.00, '2025-01-15', 'chandy'),
-(N'ស្រី លាភ', 'Female', '098765432', 'sreyleap@storems.com', N'ខេត្តសៀមរាប', 'Cashier', 450.00, '2025-03-10', 'sreyleap'),
-(N'រតនៈ វិបុល', 'Male', '011223344', 'vibol.ratana@storems.com', N'ខេត្តបាត់ដំបង', 'Stock Keeper', 500.00, '2025-06-20', 'vibol');
+
+-- បញ្ចូលគណនី Login (tbUsers)
+INSERT INTO tbUsers (EmployeeID, Username, Password, Role, FullName, Position, IsActive) 
+VALUES (1, 'rithy', '123456', 'Admin', N'Ul Rithy', 'Store Manager', 1),
+       (2, 'lina', '123456', 'Cashier', N'Leang Lina', 'Cashier', 1),
+       (3, 'soton', '123456', 'Staff', N'Phat soton', 'Stock Keeper', 1);
 GO
 --INSERT INTO tbSales (InvoiceNo, TotalAmount, PaymentMethod, SaleDate, UserID) 
 --VALUES (@InvoiceNo, @TotalAmount, @PaymentMethod, GETDATE(), @UserID)

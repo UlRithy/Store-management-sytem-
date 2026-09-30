@@ -35,6 +35,10 @@
             this.dtpHireDate = new Guna.UI2.WinForms.Guna2DateTimePicker();
             this.label7 = new System.Windows.Forms.Label();
             this.txtUsername = new Guna.UI2.WinForms.Guna2TextBox();
+            this.labelPassword = new System.Windows.Forms.Label();
+            this.txtPassword = new Guna.UI2.WinForms.Guna2TextBox();
+            this.labelRole = new System.Windows.Forms.Label();
+            this.cmbRole = new Guna.UI2.WinForms.Guna2ComboBox();
             this.btnSave = new Guna.UI2.WinForms.Guna2Button();
             this.btnCancel = new Guna.UI2.WinForms.Guna2Button();
             this.SuspendLayout();
@@ -118,7 +122,7 @@
             "Other"});
             this.cmbGender.Location = new System.Drawing.Point(36, 192);
             this.cmbGender.Name = "cmbGender";
-            this.cmbGender.Size = new System.Drawing.Size(320, 40);
+            this.cmbGender.Size = new System.Drawing.Size(320, 36);
             this.cmbGender.TabIndex = 4;
             // 
             // label3
@@ -347,6 +351,71 @@
             this.txtUsername.Size = new System.Drawing.Size(320, 40);
             this.txtUsername.TabIndex = 17;
             // 
+            // labelPassword
+            // 
+            this.labelPassword.AutoSize = true;
+            this.labelPassword.Font = new System.Drawing.Font("Segoe UI", 9.5F);
+            this.labelPassword.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(71)))), ((int)(((byte)(85)))), ((int)(((byte)(105)))));
+            this.labelPassword.Location = new System.Drawing.Point(404, 402);
+            this.labelPassword.Name = "labelPassword";
+            this.labelPassword.Size = new System.Drawing.Size(64, 19);
+            this.labelPassword.TabIndex = 21;
+            this.labelPassword.Text = "Password";
+            // 
+            // txtPassword
+            // 
+            this.txtPassword.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(226)))), ((int)(((byte)(232)))), ((int)(((byte)(240)))));
+            this.txtPassword.BorderRadius = 10;
+            this.txtPassword.Cursor = System.Windows.Forms.Cursors.IBeam;
+            this.txtPassword.DefaultText = "";
+            this.txtPassword.DisabledState.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(208)))), ((int)(((byte)(208)))), ((int)(((byte)(208)))));
+            this.txtPassword.DisabledState.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(226)))), ((int)(((byte)(226)))), ((int)(((byte)(226)))));
+            this.txtPassword.DisabledState.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(138)))), ((int)(((byte)(138)))), ((int)(((byte)(138)))));
+            this.txtPassword.DisabledState.PlaceholderForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(138)))), ((int)(((byte)(138)))), ((int)(((byte)(138)))));
+            this.txtPassword.FocusedState.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(37)))), ((int)(((byte)(99)))), ((int)(((byte)(235)))));
+            this.txtPassword.Font = new System.Drawing.Font("Segoe UI", 10F);
+            this.txtPassword.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(15)))), ((int)(((byte)(23)))), ((int)(((byte)(42)))));
+            this.txtPassword.HoverState.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(148)))), ((int)(((byte)(163)))), ((int)(((byte)(184)))));
+            this.txtPassword.Location = new System.Drawing.Point(404, 426);
+            this.txtPassword.Name = "txtPassword";
+            this.txtPassword.PasswordChar = '●';
+            this.txtPassword.PlaceholderForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(148)))), ((int)(((byte)(163)))), ((int)(((byte)(184)))));
+            this.txtPassword.PlaceholderText = "Enter password";
+            this.txtPassword.SelectedText = "";
+            this.txtPassword.Size = new System.Drawing.Size(320, 40);
+            this.txtPassword.TabIndex = 22;
+            this.txtPassword.UseSystemPasswordChar = true;
+            // 
+            // labelRole
+            // 
+            this.labelRole.AutoSize = true;
+            this.labelRole.Font = new System.Drawing.Font("Segoe UI", 9.5F);
+            this.labelRole.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(71)))), ((int)(((byte)(85)))), ((int)(((byte)(105)))));
+            this.labelRole.Location = new System.Drawing.Point(36, 480);
+            this.labelRole.Name = "labelRole";
+            this.labelRole.Size = new System.Drawing.Size(34, 19);
+            this.labelRole.TabIndex = 23;
+            this.labelRole.Text = "Role";
+            // 
+            // cmbRole
+            // 
+            this.cmbRole.BackColor = System.Drawing.Color.Transparent;
+            this.cmbRole.BorderRadius = 10;
+            this.cmbRole.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed;
+            this.cmbRole.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cmbRole.FocusedColor = System.Drawing.Color.Empty;
+            this.cmbRole.Font = new System.Drawing.Font("Segoe UI", 10F);
+            this.cmbRole.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(15)))), ((int)(((byte)(23)))), ((int)(((byte)(42)))));
+            this.cmbRole.ItemHeight = 30;
+            this.cmbRole.Items.AddRange(new object[] {
+            "Admin",
+            "Cashier",
+            "Staff"});
+            this.cmbRole.Location = new System.Drawing.Point(36, 504);
+            this.cmbRole.Name = "cmbRole";
+            this.cmbRole.Size = new System.Drawing.Size(320, 36);
+            this.cmbRole.TabIndex = 24;
+            // 
             // btnSave
             // 
             this.btnSave.BorderRadius = 10;
@@ -359,7 +428,7 @@
             this.btnSave.Font = new System.Drawing.Font("Segoe UI Semibold", 10F);
             this.btnSave.ForeColor = System.Drawing.Color.White;
             this.btnSave.HoverState.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(29)))), ((int)(((byte)(78)))), ((int)(((byte)(216)))));
-            this.btnSave.Location = new System.Drawing.Point(252, 482);
+            this.btnSave.Location = new System.Drawing.Point(448, 555);
             this.btnSave.Name = "btnSave";
             this.btnSave.Size = new System.Drawing.Size(120, 44);
             this.btnSave.TabIndex = 18;
@@ -381,7 +450,7 @@
             this.btnCancel.Font = new System.Drawing.Font("Segoe UI Semibold", 10F);
             this.btnCancel.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(116)))), ((int)(((byte)(139)))));
             this.btnCancel.HoverState.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(248)))), ((int)(((byte)(250)))), ((int)(((byte)(252)))));
-            this.btnCancel.Location = new System.Drawing.Point(388, 482);
+            this.btnCancel.Location = new System.Drawing.Point(584, 555);
             this.btnCancel.Name = "btnCancel";
             this.btnCancel.Size = new System.Drawing.Size(120, 44);
             this.btnCancel.TabIndex = 19;
@@ -393,7 +462,11 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.White;
-            this.ClientSize = new System.Drawing.Size(760, 556);
+            this.ClientSize = new System.Drawing.Size(760, 620);
+            this.Controls.Add(this.cmbRole);
+            this.Controls.Add(this.labelRole);
+            this.Controls.Add(this.txtPassword);
+            this.Controls.Add(this.labelPassword);
             this.Controls.Add(this.btnCancel);
             this.Controls.Add(this.btnSave);
             this.Controls.Add(this.txtUsername);
@@ -438,6 +511,8 @@
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.Label label6;
         private System.Windows.Forms.Label label7;
+        private System.Windows.Forms.Label labelPassword;
+        private System.Windows.Forms.Label labelRole;
         private Guna.UI2.WinForms.Guna2TextBox txtFullName;
         private Guna.UI2.WinForms.Guna2ComboBox cmbGender;
         private Guna.UI2.WinForms.Guna2TextBox txtPhone;
@@ -447,6 +522,8 @@
         private Guna.UI2.WinForms.Guna2TextBox txtSalary;
         private Guna.UI2.WinForms.Guna2DateTimePicker dtpHireDate;
         private Guna.UI2.WinForms.Guna2TextBox txtUsername;
+        private Guna.UI2.WinForms.Guna2TextBox txtPassword;
+        private Guna.UI2.WinForms.Guna2ComboBox cmbRole;
         private Guna.UI2.WinForms.Guna2Button btnSave;
         private Guna.UI2.WinForms.Guna2Button btnCancel;
     }

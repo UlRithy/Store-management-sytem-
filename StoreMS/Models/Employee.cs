@@ -23,7 +23,7 @@ namespace StoreMS.Models
         public decimal Salary { get; set; } = 0;
         public DateTime? HireDate { get; set; }
         public string Username { get; set; } = "";
-
+        public string Role { get; set; }
         // Implementation យក Abstract Method មកសរសេរកូដបំពេញបន្ថែម (Override)
         public override string GetInfo()
         {

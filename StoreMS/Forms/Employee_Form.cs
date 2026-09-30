@@ -18,18 +18,26 @@ namespace StoreMS.Forms
         {
             InitializeComponent();
             _employeeRepository = new EmployeeRepository();
-
         }
 
-    
+        private void Employee_Form_Load_1(object sender, EventArgs e)
+        {
+            LoadEmployeeData();
+            LoadPositionFilter();
+            ApplyRolePermissions();
+            CustomizeDataGridView();
+            FormatDataGridViewColumns();
+        }
+
+        // ការត្រួតពិនិត្យសិទ្ធិអ្នកប្រើប្រាស់ (Role-Based Permissions)
         private void ApplyRolePermissions()
         {
             if (User.CurrentUser != null && User.CurrentUser.Role != "Admin")
             {
-                // លាក់ ឬបិទប៊ូតុង (Disable) មិនឱ្យ Cashier Add, Edit, Delete បាន
-                btnAdd.Visible = false;     // ឬប្រើ btnAdd.Enabled = false;
-                btnEdit.Visible = false;    // ឬប្រើ btnEdit.Enabled = false;
-                btnDelete.Visible = false;  // ឬប្រើ btnDelete.Enabled = false;
+                // លាក់ប៊ូតុងមិនឱ្យ Cashier អាច Add, Edit, Delete បាន
+                btnAdd.Visible = false;
+                btnEdit.Visible = false;
+                btnDelete.Visible = false;
             }
         }
 
@@ -44,7 +52,7 @@ namespace StoreMS.Forms
             }
             catch (Exception ex)
             {
-                MessageBox.Show("មានបញ្ហាក្នុងการទាញយកទិន្នន័យ: " + ex.Message, "កំហុស", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show("មានបញ្ហាក្នុងការទាញយកទិន្នន័យ: " + ex.Message, "កំហុស", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 
@@ -65,24 +73,13 @@ namespace StoreMS.Forms
                 if (cmbPosition.Items.Count > 0)
                     cmbPosition.SelectedIndex = 0;
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 // Handle exception if needed
             }
         }
 
-        // ៣. មុខងារស្វែងរក (Search by Name or Phone)
-        //private void txtSearch_TextChanged(object sender, EventArgs e)
-        //{
-        //    FilterEmployees();
-        //}
-
-        //// ៤. មុខងារ Filter តាម Position
-        //private void cmbPosition_SelectedIndexChanged(object sender, EventArgs e)
-        //{
-        //    FilterEmployees();
-        //}
-
+        // ៣. មុខងារ Filter (តាម Name/Phone និង Position)
         private void FilterEmployees()
         {
             if (_employeeList == null) return;
@@ -112,15 +109,92 @@ namespace StoreMS.Forms
             UpdateTotalCount(resultList.Count);
         }
 
-    
-
-      
         private void UpdateTotalCount(int count)
         {
             lblTotal.Text = $"Total employees: {count}";
         }
 
-        private void btnAdd_Click_1(object sender, EventArgs e)
+
+
+        //  ការតុបតែង DataGridView (Styling)
+        private void CustomizeDataGridView()
+        {
+            dataGridView1.EnableHeadersVisualStyles = false;
+            dataGridView1.ColumnHeadersDefaultCellStyle.BackColor = Color.FromArgb(240, 242, 245);
+            dataGridView1.ColumnHeadersDefaultCellStyle.ForeColor = Color.FromArgb(50, 50, 50);
+            dataGridView1.ColumnHeadersDefaultCellStyle.Font = new Font("Segoe UI", 10, FontStyle.Bold);
+
+            dataGridView1.DefaultCellStyle.SelectionBackColor = Color.FromArgb(220, 224, 230);
+            dataGridView1.DefaultCellStyle.SelectionForeColor = Color.Black;
+        }
+
+        private void FormatDataGridViewColumns()
+        {
+            dataGridView1.AutoGenerateColumns = false; // បិទការបង្កើត Column ស្វ័យប្រវត្តិដើម្បីការពារបញ្ហាជាន់គ្នា
+
+            if (dataGridView1.Columns["colId"] != null)
+            {
+                dataGridView1.Columns["colId"].DataPropertyName = "EmployeeID";
+                dataGridView1.Columns["colId"].Visible = false;
+            }
+
+            if (dataGridView1.Columns["colName"] != null)
+                dataGridView1.Columns["colName"].DataPropertyName = "FullName";
+
+            if (dataGridView1.Columns["colGender"] != null)
+                dataGridView1.Columns["colGender"].DataPropertyName = "Gender";
+
+            if (dataGridView1.Columns["colPhone"] != null)
+                dataGridView1.Columns["colPhone"].DataPropertyName = "Phone";
+
+            if (dataGridView1.Columns["colEmail"] != null)
+                dataGridView1.Columns["colEmail"].DataPropertyName = "Email";
+
+            if (dataGridView1.Columns["colAddress"] != null)
+                dataGridView1.Columns["colAddress"].DataPropertyName = "Address";
+
+            if (dataGridView1.Columns["colPosition"] != null)
+                dataGridView1.Columns["colPosition"].DataPropertyName = "Position";
+
+            if (dataGridView1.Columns["colSalary"] != null)
+            {
+                dataGridView1.Columns["colSalary"].DataPropertyName = "Salary";
+                dataGridView1.Columns["colSalary"].DefaultCellStyle.Format = "N2";
+            }
+
+            if (dataGridView1.Columns["colHireDate"] != null)
+            {
+                dataGridView1.Columns["colHireDate"].DataPropertyName = "HireDate";
+                dataGridView1.Columns["colHireDate"].DefaultCellStyle.Format = "yyyy-MM-dd";
+            }
+
+            if (dataGridView1.Columns["colUsername"] != null)
+                dataGridView1.Columns["colUsername"].DataPropertyName = "Username";
+
+            if (dataGridView1.Columns["colRole"] != null)
+                dataGridView1.Columns["colRole"].DataPropertyName = "Role";
+        }
+
+        // Event Triggers សម្រាប់ Search និង Position Filter
+        private void txtSearch_TextChanged_1(object sender, EventArgs e)
+        {
+            FilterEmployees();
+        }
+
+        private void cmbPosition_SelectedIndexChanged_1(object sender, EventArgs e)
+        {
+            FilterEmployees();
+        }
+
+        private void pnlCard_Paint_1(object sender, PaintEventArgs e)
+        {
+        }
+
+        private void dataGridView1_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        {
+        }
+
+        private void btnAdd_Click(object sender, EventArgs e)
         {
             using (var addForm = new StoreMS.Layout.Emplo_AddEdit_Form())
             {
@@ -132,7 +206,7 @@ namespace StoreMS.Forms
             }
         }
 
-        private void btnEdit_Click_1(object sender, EventArgs e)
+        private void btnEdit_Click(object sender, EventArgs e)
         {
             if (dataGridView1.SelectedRows.Count > 0)
             {
@@ -157,12 +231,7 @@ namespace StoreMS.Forms
             }
         }
 
-        private void pnlCard_Paint(object sender, PaintEventArgs e)
-        {
-
-        }
-
-        private void btnDelete_Click_1(object sender, EventArgs e)
+        private void btnDelete_Click(object sender, EventArgs e)
         {
             if (dataGridView1.SelectedRows.Count > 0)
             {
@@ -193,73 +262,6 @@ namespace StoreMS.Forms
             {
                 MessageBox.Show("សូមជ្រើសរើសជួរដេក (Row) ក្នុងតារាងដែលចង់លុប!", "ការជូនដំណឹង", MessageBoxButtons.OK, MessageBoxIcon.Warning);
             }
-        }
-
-   
-
-        private void dataGridView1_CellContentClick(object sender, DataGridViewCellEventArgs e)
-        {
-
-        }
-
-        private void Employee_Form_Load_1(object sender, EventArgs e)
-        {
-            LoadEmployeeData();
-            LoadPositionFilter();
-            ApplyRolePermissions(); 
-            CustomizeDataGridView();
-            FormatDataGridViewColumns();
-        }
-        private void CustomizeDataGridView()
-        {
-            // បិទ Visual Styles របស់ Header ដើម្បីឱ្យវាស្ដាប់តាមការកំណត់ពណ៌របស់យើង
-            dataGridView1.EnableHeadersVisualStyles = false;
-
-            // កំណត់ពណ៌ក្បាលតារាង (Header Background & Font Color)
-            dataGridView1.ColumnHeadersDefaultCellStyle.BackColor = Color.FromArgb(240, 242, 245); // ពណ៌ប្រផេះស្អាត
-            dataGridView1.ColumnHeadersDefaultCellStyle.ForeColor = Color.FromArgb(50, 50, 50);
-            dataGridView1.ColumnHeadersDefaultCellStyle.Font = new Font("Segoe UI", 10, FontStyle.Bold);
-
-            // កំណត់ពណ៌ពេលយកម៉ៅចុចជ្រើសរើសជួរដេក (Selection Style)
-            dataGridView1.DefaultCellStyle.SelectionBackColor = Color.FromArgb(220, 224, 230);
-            dataGridView1.DefaultCellStyle.SelectionForeColor = Color.Black;
-        }
-        private void FormatDataGridViewColumns()
-        {
-            // ធានាថា DataGridView ប្រើប្រាស់ទំហំដែលយើងកំណត់
-            dataGridView1.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.None;
-
-            // កំណត់ទំហំ Column នីមួយៗតាមឈ្មោះ (Column Name) របស់អ្នក
-            // (សូមប្ដូរឈ្មោះ "colId", "colName"... ទៅតាមឈ្មោះពិតនៃ Column ក្នុង Project របស់អ្នក)
-            if (dataGridView1.Columns["colId"] != null)
-                dataGridView1.Columns["colId"].Width = 40;
-
-            if (dataGridView1.Columns["colName"] != null)
-                dataGridView1.Columns["colName"].Width = 140;
-
-            if (dataGridView1.Columns["colPhone"] != null)
-                dataGridView1.Columns["colPhone"].Width = 120;
-
-            if (dataGridView1.Columns["colEmail"] != null)
-                dataGridView1.Columns["colEmail"].Width = 180;
-
-            if (dataGridView1.Columns["colPosition"] != null)
-                dataGridView1.Columns["colPosition"].Width = 120;
-            if (dataGridView1.Columns["colsalary"] != null)
-                dataGridView1.Columns["colsalary"].Width=120;
-
-            if (dataGridView1.Columns["colHireDate"] != null)
-                dataGridView1.Columns["colHireDate"].Width = 120;
-        }
-
-        private void txtSearch_TextChanged_1(object sender, EventArgs e)
-        {
-            FilterEmployees();
-        }
-
-        private void cmbPosition_SelectedIndexChanged_1(object sender, EventArgs e)
-        {
-            FilterEmployees();
         }
     }
 }

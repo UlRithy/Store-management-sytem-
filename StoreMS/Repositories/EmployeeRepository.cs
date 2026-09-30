@@ -9,11 +9,15 @@ namespace StoreMS.Repositories
 {
     public class EmployeeRepository
     {
-        // 1. ទាញយកទិន្នន័យបុគ្គលិកទាំងអស់ (GetAll)
+        // 1. ទាញយកទិន្នន័យបុគ្គលិកទាំងអស់ (GetAll) - រួមបញ្ចូលទាំង Role ពី tbUsers
         public IEnumerable<Employee> GetAll()
         {
             var employees = new List<Employee>();
-            string query = "SELECT EmployeeID, FullName, Gender, Phone, Email, Address, Position, Salary, HireDate, Username FROM tbEmployees";
+            string query = @"SELECT e.EmployeeID, e.FullName, e.Gender, e.Phone, e.Email, 
+                                    e.Address, e.Position, e.Salary, e.HireDate, e.Username, 
+                                    u.Role 
+                             FROM tbEmployees e
+                             LEFT JOIN tbUsers u ON e.EmployeeID = u.EmployeeID";
 
             DataTable dt = Database.ExecuteQuery(query);
             foreach (DataRow row in dt.Rows)
@@ -29,7 +33,8 @@ namespace StoreMS.Repositories
                     Position = row["Position"] != DBNull.Value ? row["Position"].ToString() : "",
                     Salary = row["Salary"] != DBNull.Value ? Convert.ToDecimal(row["Salary"]) : 0,
                     HireDate = row["HireDate"] != DBNull.Value ? Convert.ToDateTime(row["HireDate"]) : (DateTime?)null,
-                    Username = row["Username"] != DBNull.Value ? row["Username"].ToString() : ""
+                    Username = row["Username"] != DBNull.Value ? row["Username"].ToString() : "",
+                    Role = row["Role"] != DBNull.Value ? row["Role"].ToString() : ""
                 };
                 employees.Add(employee);
             }
@@ -90,9 +95,22 @@ namespace StoreMS.Repositories
             return rowsAffected > 0;
         }
 
-        // 4. លុបបុគ្គលិក (Delete)
+        // 4. លុបបុគ្គលិក (Delete) - រួមទាំងការលុប User ជាប់ពាក់ព័ន្ធដើម្បីការពារ Error Foreign Key
         public bool Delete(int employeeId)
         {
+            try
+            {
+                // លុប User ក្នុង tbUsers មុនសិន
+                string deleteUserQuery = "DELETE FROM tbUsers WHERE EmployeeID = @EmployeeID";
+                SqlParameter[] userParams = { new SqlParameter("@EmployeeID", employeeId) };
+                Database.ExecuteNonQuery(deleteUserQuery, userParams);
+            }
+            catch
+            {
+                // ករណីគ្មាន User ជាប់ពាក់ព័ន្ធ អាចរំលងបាន
+            }
+
+            // បន្ទាប់មកលុប Employee ក្នុង tbEmployees
             string query = "DELETE FROM tbEmployees WHERE EmployeeID = @EmployeeID";
             SqlParameter[] parameters = {
                 new SqlParameter("@EmployeeID", employeeId)

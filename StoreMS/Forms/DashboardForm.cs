@@ -1,4 +1,5 @@
-﻿using StoreMS.Models;
+﻿using StoreManagementSystem.Forms;
+using StoreMS.Models;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -86,7 +87,7 @@ namespace StoreMS.Forms
             if (User.CurrentUser != null)
             {
                 DashboardHomeForm homeForm = new DashboardHomeForm(
-                    User.CurrentUser.UserId,
+                    User.CurrentUser.UserID,
                     User.CurrentUser.FullName,
                     User.CurrentUser.Role
                 );
@@ -164,5 +165,24 @@ namespace StoreMS.Forms
                 MessageBox.Show("អ្នកគ្មានសិទ្ធិគ្រប់គ្រងលើទម្រង់បុគ្គលិកនេះទេ!", "Access Denied", MessageBoxButtons.OK, MessageBoxIcon.Warning);
             }
         }
+
+        private void btnLogout_Click(object sender, EventArgs e)
+        {
+            // ១. សួរបញ្ជាក់អ្នកប្រើប្រាស់ជាមុនសិន
+            DialogResult result = MessageBox.Show("តើអ្នកពិតជាចង់ចាកចេញពីប្រព័ន្ធមែនទេ?", "បញ្ជាក់ការចាកចេញ", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+
+            if (result == DialogResult.Yes)
+            {
+                // ២. សម្អាត User Session ដែលបានរក្សាទុក
+                User.CurrentUser = null;
+
+                // ៣. បើកទម្រង់ Login ឡើងវិញ (ផ្អែកលើឈ្មោះ LoignForm ក្នុង Project របស់អ្នក)
+                LoignForm loginForm = new LoignForm();
+                loginForm.Show();
+
+                // ៤. បិទ Form បច្ចុប្បន្ន (Dashboard) ចោល
+                this.Close();
+            }
+         }
     }
 }
