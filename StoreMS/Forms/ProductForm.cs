@@ -72,8 +72,8 @@ namespace StoreMS.Forms
                 if (dgvProducts.Columns["ProductName"] != null) dgvProducts.Columns["ProductName"].HeaderText = "Product Name";
                 if (dgvProducts.Columns["CategoryName"] != null) dgvProducts.Columns["CategoryName"].HeaderText = "Category";
                 if (dgvProducts.Columns["StockQty"] != null) dgvProducts.Columns["StockQty"].HeaderText = "QTY";
-                if (dgvProducts.Columns["CostPrice"] != null) dgvProducts.Columns["CostPrice"].HeaderText = "Cost Price";
-                if (dgvProducts.Columns["Price"] != null) dgvProducts.Columns["Price"].HeaderText = "Selling Price";
+                if (dgvProducts.Columns["CostPrice"] != null) dgvProducts.Columns["CostPrice"].HeaderText = "Cost Price($)";
+                if (dgvProducts.Columns["Price"] != null) dgvProducts.Columns["Price"].HeaderText = "Selling Price($)";
             }
             catch (Exception ex)
             {

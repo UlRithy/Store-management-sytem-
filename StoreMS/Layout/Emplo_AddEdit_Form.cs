@@ -22,6 +22,7 @@ namespace StoreMS.Layout
             _isEditMode = false;
             lblTitle.Text = "Add New Employee";
 
+            // កំណត់យកតម្លៃទី១ ស្វ័យប្រវត្តិប្រសិនបើមាន Item ក្នុង ComboBox
             if (cmbRole.Items.Count > 0)
                 cmbRole.SelectedIndex = 0;
         }
@@ -96,7 +97,21 @@ namespace StoreMS.Layout
 
             _employee.HireDate = dtpHireDate.Value;
             _employee.Username = txtUsername.Text.Trim();
-            _employee.Role = cmbRole.SelectedItem?.ToString() ?? "Staff";
+
+            // 3. កែសម្រួលកូដទាញយក Role ឱ្យមានសុវត្ថិភាព (មិនឱ្យទទេ)
+            if (cmbRole.SelectedItem != null)
+            {
+                _employee.Role = cmbRole.SelectedItem.ToString();
+            }
+            else if (cmbRole.Items.Count > 0)
+            {
+                cmbRole.SelectedIndex = 0;
+                _employee.Role = cmbRole.SelectedItem.ToString();
+            }
+            else
+            {
+                _employee.Role = "Staff"; // តម្លៃលំនាំដើមការពារក្រែងលោគ្មាន Item
+            }
 
             bool success = false;
 
@@ -108,8 +123,7 @@ namespace StoreMS.Layout
                 if (success)
                 {
                     // ខ. ធ្វើបច្ចុប្បន្នភាពគណនី User ក្នុង (tbUsers) ផងដែរ
-                    // (យើងធ្វើការស្វែងរក User តាម EmployeeID ឬ Username រួច Update ព័ត៌មាន)
-                    var existingUser = _userRepository.GetByUsername(_employee.Username); // ឬតាម EmployeeID ប្រសិនបើមាន Method នោះ
+                    var existingUser = _userRepository.GetByUsername(_employee.Username);
 
                     if (existingUser != null)
                     {
@@ -142,7 +156,7 @@ namespace StoreMS.Layout
                         UserName = txtUsername.Text.Trim(),
                         Password = string.IsNullOrWhiteSpace(txtPassword.Text) ? "123456" : txtPassword.Text.Trim(),
                         FullName = txtFullName.Text.Trim(),
-                        Role = cmbRole.SelectedItem?.ToString() ?? "Staff",
+                        Role = _employee.Role, // យកតាម _employee ដែលបានកំណត់រួច
                         Position = txtPosition.Text.Trim(),
                         IsActive = true
                     };

@@ -138,5 +138,15 @@ namespace StoreMS.Forms
         {
             LoadCustomerData(txtSearch.Text.Trim());
         }
+
+        private void dgvCustomers_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        {
+
+        }
+
+        private void pnlGridCard_Paint(object sender, PaintEventArgs e)
+        {
+
+        }
     }
 }

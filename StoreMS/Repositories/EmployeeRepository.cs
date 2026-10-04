@@ -9,7 +9,7 @@ namespace StoreMS.Repositories
 {
     public class EmployeeRepository
     {
-        // 1. ទាញយកទិន្នន័យបុគ្គលិកទាំងអស់ (GetAll) - រួមបញ្ចូលទាំង Role ពី tbUsers
+        // 1. ទាញយកទិន្នន័យបុគ្គលិកទាំងអស់ (GetAll) - Join តាម Username ជំនួសវិញ ដើម្បីការពាររឿង EmployeeID ក្នុង tbUsers ជាប់ NULL
         public IEnumerable<Employee> GetAll()
         {
             var employees = new List<Employee>();
@@ -17,7 +17,7 @@ namespace StoreMS.Repositories
                                     e.Address, e.Position, e.Salary, e.HireDate, e.Username, 
                                     u.Role 
                              FROM tbEmployees e
-                             LEFT JOIN tbUsers u ON e.EmployeeID = u.EmployeeID";
+                             LEFT JOIN tbUsers u ON e.Username = u.Username";
 
             DataTable dt = Database.ExecuteQuery(query);
             foreach (DataRow row in dt.Rows)
