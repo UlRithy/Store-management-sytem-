@@ -12,16 +12,13 @@ namespace StoreMS.Forms
     public partial class DashboardHomeForm : Form
     {
         private readonly ProductRepository productRepo;
-
-        // មិនចាំបាច់ប្រើ Property ទាំងនេះទៀតទេ ព្រោះយើងទាញយកពី User.CurrentUser ដោយផ្ទាល់
-        // public int CurrentUserId { get; set; }
-        // public string CurrentFullName { get; set; }
-        // public string CurrentRole { get; set; }
+        private readonly StockRepository stockRepo;
 
         public DashboardHomeForm()
         {
             InitializeComponent();
             productRepo = new ProductRepository();
+            stockRepo = new StockRepository();
         }
 
         // រក្សា Constructor នេះទុកក្រែងលោមានកន្លែងផ្សេងហៅ ប៉ុន្តែអាចបញ្ចេញចោលបានបើមិនប្រើ
@@ -42,7 +39,6 @@ namespace StoreMS.Forms
             int hour = DateTime.Now.Hour;
             string timeOfDay = hour < 12 ? "morning" : (hour < 18 ? "afternoon" : "evening");
 
-            // 🌟 ទាញយកឈ្មោះអ្នកប្រើប្រាស់បច្ចុប្បន្នពី User.CurrentUser ផ្ទាល់
             string displayName = (User.CurrentUser != null && !string.IsNullOrEmpty(User.CurrentUser.FullName))
                 ? User.CurrentUser.FullName
                 : "Admin";
@@ -57,12 +53,15 @@ namespace StoreMS.Forms
             {
                 var products = productRepo.GetAll();
                 int productCount = products.Count;
-                int lowStockCount = products.Count(p => p.StockQty <= 10);
                 int categoryCount = products
                     .Where(p => !string.IsNullOrWhiteSpace(p.CategoryName))
                     .Select(p => p.CategoryName)
                     .Distinct()
                     .Count();
+
+                // Low stock: ប្រើ Quantity <= MinStockLevel ដូចទំព័រ Stock
+                int lowStockCount = stockRepo.GetAllStock()
+                    .Count(s => s.Quantity <= s.MinStockLevel);
 
                 lblKpiProductsValue.Text = productCount.ToString("N0");
                 lblKpiProductsDelta.Text = "Across " + categoryCount + " categories";
@@ -109,7 +108,6 @@ namespace StoreMS.Forms
         {
             dgvRecentSales.Rows.Clear();
 
-            // ទាញយកទិន្នន័យលក់ចុងក្រោយដោយដក Customer ចេញ
             DataTable sales = TryGetDataTable(@"
                 SELECT TOP 10
                     s.InvoiceNo AS Invoice,
@@ -150,10 +148,10 @@ namespace StoreMS.Forms
 
             try
             {
-                var items = productRepo.GetAll()
-                    .Where(p => p.StockQty <= 10)
-                    .OrderBy(p => p.StockQty)
-                    .ThenBy(p => p.ProductName)
+                var items = stockRepo.GetAllStock()
+                    .Where(s => s.Quantity <= s.MinStockLevel)
+                    .OrderBy(s => s.Quantity)
+                    .ThenBy(s => s.ProductName)
                     .Take(10)
                     .ToList();
 
@@ -165,7 +163,7 @@ namespace StoreMS.Forms
 
                 foreach (var item in items)
                 {
-                    flpLowStock.Controls.Add(BuildStockRow(item.ProductName, item.StockQty, 10));
+                    flpLowStock.Controls.Add(BuildStockRow(item.ProductName, item.Quantity, item.MinStockLevel));
                 }
             }
             catch (Exception)

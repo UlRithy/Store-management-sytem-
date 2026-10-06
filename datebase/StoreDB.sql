@@ -50,7 +50,22 @@ CREATE TABLE [dbo].[tbEmployees] (
     CONSTRAINT [PK_tbEmployees] PRIMARY KEY CLUSTERED ([EmployeeID] ASC)
 );
 GO
-
+CREATE VIEW vwEmployeeDetails AS
+SELECT 
+    e.EmployeeID AS Id,
+    e.FullName,
+    e.Gender,
+    e.Phone,
+    e.Position,
+    e.Salary,
+    e.HireDate,
+    e.Username,
+    e.Email,
+    e.Address,
+    ISNULL(u.Role, 'Staff') AS SystemRole 
+FROM tbEmployees e
+LEFT JOIN tbUsers u ON e.EmployeeID = u.EmployeeID;
+GO
 -- =============================================
 -- 6. tbSuppliers
 -- =============================================
